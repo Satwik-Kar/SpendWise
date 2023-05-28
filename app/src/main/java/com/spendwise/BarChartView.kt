@@ -10,7 +10,8 @@ import android.view.View
 class BarChartView(context: Context, listOfData: List<Float>) : View(context) {
     private var chartData: List<Float> = listOfData
     private val paint = Paint()
-
+    val rect = RectF()
+    val adjustMent = 20f
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -32,29 +33,29 @@ class BarChartView(context: Context, listOfData: List<Float>) : View(context) {
             val invert4 = height - barHeight4;
             val barHeight5 = (chartData[4] / 500f * height)
             val invert5 = height - barHeight5;
-            val barHeight6 = (chartData[5] / 500f * height)
-            val invert6 = height - barHeight6;
-            val barHeight500 = (500f / 500f * height)
+            // for labels in the chart
+            val barHeight500 = (500f / (500f+adjustMent) * height)
             val invert500 = height - barHeight500
-            val barHeight400 = (400f / 500f * height)
+            val barHeight400 = (400f / (500f+adjustMent)* height)
             val invert400 = height - barHeight400
-            val barHeight300 = (300f / 500f * height)
+            val barHeight300 = (300f / (500f+adjustMent) * height)
             val invert300 = height - barHeight300
-            val barHeight200 = (200f / 500f * height)
+            val barHeight200 = (200f / (500f+adjustMent) * height)
             val invert200 = height - barHeight200
-            val barHeight100 = (100f / 500f * height)
+            val barHeight100 = (100f / (500f+adjustMent) * height)
             val invert100 = height - barHeight100
-            val barHeight0 = (0f / 500f * height)
+            val barHeight0 = (0f / (500f+adjustMent) * height)
             val invert0 = height - barHeight0
-            canvas.drawRoundRect(100f, invert1, 180f, invert0, 30f, 30f, paint)
-            canvas.drawRoundRect(200f, invert2, 280f, invert0, 30f, 30f, paint)
-            canvas.drawRoundRect(300f, invert3, 380f, invert0, 30f, 30f, paint)
-            canvas.drawRoundRect(400f, invert4, 480f, invert0, 30f, 30f, paint)
-            canvas.drawRoundRect(500f, invert5, 580f, invert0, 30f, 30f, paint)
-            canvas.drawRoundRect(600f, invert6, 680f, invert0, 30f, 30f, paint)
-
-            val rectF = RectF(730f, invert500, 750f, invert0)
-            canvas.drawRoundRect(rectF, 23f, 23f, paint)
+            canvas.drawRoundRect(100f, invert1, 180f, invert0, 24f, 24f, paint)
+            canvas.drawRoundRect(200f, invert2, 280f, invert0, 24f, 24f, paint)
+            canvas.drawRoundRect(300f, invert3, 380f, invert0, 24f, 24f, paint)
+            canvas.drawRoundRect(400f, invert4, 480f, invert0, 24f, 24f, paint)
+            canvas.drawRoundRect(500f, invert5, 580f, invert0, 24f, 24f, paint)
+            rect.left = 730f
+            rect.top = invert500
+            rect.right = 750f
+            rect.bottom = invert0
+            canvas.drawRoundRect(rect, 23f, 23f, paint)
             canvas.drawText("500", 790f, invert500, paint)
             canvas.drawText("400", 790f, invert400, paint)
             canvas.drawText("300", 790f, invert300, paint)

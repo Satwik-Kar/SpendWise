@@ -9,7 +9,7 @@ class HomeActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        var datas = listOf<Float>(0f, 200f, 300f, 500f, 300f, 100f)
+        val datas = listOf<Float>(500f, 200f, 300f, 500f, 300f)
         val barView = BarChartView(applicationContext, datas)
 
         val barChartLayout = findViewById<LinearLayout>(R.id.linearLayoutBarChart)
