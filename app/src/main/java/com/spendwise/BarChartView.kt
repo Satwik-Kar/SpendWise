@@ -52,7 +52,7 @@ class BarChartView(context: Context, listOfData: List<Float>) : View(context) {
             canvas.drawRoundRect(400f, invert4, 480f, invert0, 24f, 24f, paint)
             canvas.drawRoundRect(500f, invert5, 580f, invert0, 24f, 24f, paint)
             rect.left = 730f
-            rect.top = invert500
+            rect.top = invert500+adjustMent
             rect.right = 750f
             rect.bottom = invert0
             canvas.drawRoundRect(rect, 23f, 23f, paint)
