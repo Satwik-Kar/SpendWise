@@ -1,5 +1,6 @@
 package com.spendwise
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -7,8 +8,10 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.view.View
 
-class BarChartView(context: Context, listOfData: List<Float>) : View(context) {
+class BarChartView(context: Context, listOfData: List<Float>,listOfLabels:List<String>) : View(context) {
     private var chartData: List<Float> = listOfData
+    private var chartDataLabels: List<String> = listOfLabels
+
     private val paint = Paint()
     val rect = RectF()
     val adjustMent = 20f
@@ -17,10 +20,11 @@ class BarChartView(context: Context, listOfData: List<Float>) : View(context) {
         super.onDraw(canvas)
 
         paint.strokeWidth = 10f
-        paint.color = Color.BLACK
+        paint.color = Color.BLUE
         paint.style = Paint.Style.FILL
         paint.textSize = 40f
-
+        paint.textAlign = Paint.Align.CENTER
+        paint.isFakeBoldText = true
 
         if (canvas != null) {
             val barHeight1 = (chartData[0] / 500f * height)
@@ -51,8 +55,15 @@ class BarChartView(context: Context, listOfData: List<Float>) : View(context) {
             canvas.drawRoundRect(300f, invert3, 380f, invert0, 24f, 24f, paint)
             canvas.drawRoundRect(400f, invert4, 480f, invert0, 24f, 24f, paint)
             canvas.drawRoundRect(500f, invert5, 580f, invert0, 24f, 24f, paint)
+            canvas.drawText(chartDataLabels[0], 100f, invert1-20, paint)
+            canvas.drawText(chartDataLabels[1], 200f, invert2-20, paint)
+            canvas.drawText(chartDataLabels[2], 300f, invert3-20, paint)
+            canvas.drawText(chartDataLabels[3], 400f, invert4-20, paint)
+            canvas.drawText(chartDataLabels[4], 500f, invert5-20, paint)
+
+
             rect.left = 730f
-            rect.top = invert500+adjustMent
+            rect.top = invert500 - 20
             rect.right = 750f
             rect.bottom = invert0
             canvas.drawRoundRect(rect, 23f, 23f, paint)
@@ -68,4 +79,6 @@ class BarChartView(context: Context, listOfData: List<Float>) : View(context) {
         }
 
     }
+
+
 }
