@@ -1,6 +1,5 @@
 package com.spendwise
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -14,29 +13,29 @@ class BarChartView(context: Context, listOfData: List<Float>,listOfLabels:List<S
 
     private val paint = Paint()
     val rect = RectF()
-    val adjustMent = 20f
+    val adjustMent = 50f
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
         paint.strokeWidth = 10f
-        paint.color = Color.BLUE
+        paint.color = Color.parseColor("#50C878")
         paint.style = Paint.Style.FILL
         paint.textSize = 40f
         paint.textAlign = Paint.Align.CENTER
         paint.isFakeBoldText = true
 
         if (canvas != null) {
-            val barHeight1 = (chartData[0] / 500f * height)
+            val barHeight1 = ((chartData[0] - 30) / 500f * height)
             val invert1 = height - barHeight1
-            val barHeight2 = (chartData[1] / 500f * height)
-            val invert2 = height - barHeight2;
-            val barHeight3 = (chartData[2] / 500f * height)
-            val invert3 = height - barHeight3;
-            val barHeight4 = (chartData[3] / 500f * height)
-            val invert4 = height - barHeight4;
-            val barHeight5 = (chartData[4] / 500f * height)
-            val invert5 = height - barHeight5;
+            val barHeight2 = ((chartData[1]- 30) / 500f * height)
+            val invert2 = height - barHeight2
+            val barHeight3 = ((chartData[2]- 30) / 500f * height)
+            val invert3 = height - barHeight3
+            val barHeight4 = ((chartData[3]- 30 )/ 500f * height)
+            val invert4 = height - barHeight4
+            val barHeight5 = ((chartData[4]- 30) / 500f * height)
+            val invert5 = height - barHeight5
             // for labels in the chart
             val barHeight500 = (500f / (500f+adjustMent) * height)
             val invert500 = height - barHeight500
@@ -67,12 +66,12 @@ class BarChartView(context: Context, listOfData: List<Float>,listOfLabels:List<S
             rect.right = 750f
             rect.bottom = invert0
             canvas.drawRoundRect(rect, 23f, 23f, paint)
-            canvas.drawText("500", 790f, invert500, paint)
-            canvas.drawText("400", 790f, invert400, paint)
-            canvas.drawText("300", 790f, invert300, paint)
-            canvas.drawText("200", 790f, invert200, paint)
-            canvas.drawText("100", 790f, invert100, paint)
-            canvas.drawText("0", 790f, invert0, paint)
+            canvas.drawText("- 500", 790f, invert500, paint)
+            canvas.drawText("- 400", 790f, invert400, paint)
+            canvas.drawText("- 300", 790f, invert300, paint)
+            canvas.drawText("- 200", 790f, invert200, paint)
+            canvas.drawText("- 100", 790f, invert100, paint)
+            canvas.drawText("-0", 790f, invert0, paint)
 
         } else {
             throw NullPointerException("No Canvas")
