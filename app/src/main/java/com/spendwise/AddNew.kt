@@ -24,6 +24,12 @@ import java.sql.Blob
 
 import java.util.Calendar
 
+
+/**
+ * Add new.
+ *
+ * @constructor Create empty constructor for add new
+ */
 class AddNew : AppCompatActivity() {
     private val PICK_FILE_REQUEST_CODE = 1
 
@@ -47,6 +53,11 @@ class AddNew : AppCompatActivity() {
     private lateinit var FILE_DATA: ByteArray
     private lateinit var DESCRIPTION: String
 
+    /**
+     * On create.
+     *
+     * @param savedInstanceState Saved instance state
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new)
@@ -81,7 +92,7 @@ class AddNew : AppCompatActivity() {
             CATEGORY = detailCategory.selectedItem.toString()
             P_METHOD =  detailMethod.selectedItem.toString()
             AMOUNT = detailDate.text.toString()
-            DESCRIPTION = detailDate.text.toString()
+            DESCRIPTION = detailDesc.text.toString()
 
 
             if (TITLE.isNotEmpty() && DATE.isNotEmpty() && CATEGORY.isNotEmpty() && P_METHOD.isNotEmpty() && AMOUNT.isNotEmpty() && DESCRIPTION.isNotEmpty()) {
@@ -103,6 +114,9 @@ class AddNew : AppCompatActivity() {
 
     }
 
+    /**
+     * Show date picker dialog.
+     */
     private fun showDatePickerDialog() {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -118,12 +132,23 @@ class AddNew : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    /**
+     * Format date.
+     *
+     * @param year Year
+     * @param month Month
+     * @param day Day
+     * @return
+     */
     private fun formatDate(year: Int, month: Int, day: Int): String {
         val formattedMonth = if (month + 1 < 10) "0${month + 1}" else "${month + 1}"
         val formattedDay = if (day < 10) "0$day" else "$day"
         return "$formattedDay/$formattedMonth/$year"
     }
 
+    /**
+     * Get file.
+     */
     private fun getFile() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
@@ -132,6 +157,12 @@ class AddNew : AppCompatActivity() {
         startActivityForResult(intent, PICK_FILE_REQUEST_CODE)
     }
 
+    /**
+     * Submit.
+     *
+     * @param hasDescription Has description
+     * @param hasReceipt Has receipt
+     */
     private fun submit(hasDescription: Boolean, hasReceipt: Boolean) {
         val database = DatabaseHelper(this@AddNew)
         if (hasReceipt && hasDescription) {
@@ -150,6 +181,13 @@ class AddNew : AppCompatActivity() {
 
         }
     }
+
+    /**
+     * Handle photo selection.
+     *
+     * @param contentResolver Content resolver
+     * @param uri Uri
+     */
     private fun handlePhotoSelection(contentResolver: ContentResolver, uri: Uri) {
         try {
             val inputStream: InputStream? = contentResolver.openInputStream(uri)
@@ -167,6 +205,13 @@ class AddNew : AppCompatActivity() {
         }
     }
 
+    /**
+     * Get file name.
+     *
+     * @param contentResolver Content resolver
+     * @param uri Uri
+     * @return
+     */
     @SuppressLint("Range")
     private fun getFileName(contentResolver: ContentResolver, uri: Uri): String? {
         var displayName: String? = null
@@ -183,6 +228,13 @@ class AddNew : AppCompatActivity() {
         }
         return displayName
     }
+
+    /**
+     * Handle document selection.
+     *
+     * @param contentResolver Content resolver
+     * @param uri Uri
+     */
     private fun handleDocumentSelection(contentResolver: ContentResolver, uri: Uri) {
         try {
             val inputStream: InputStream? = contentResolver.openInputStream(uri)
@@ -198,6 +250,13 @@ class AddNew : AppCompatActivity() {
         }
     }
 
+    /**
+     * On activity result.
+     *
+     * @param requestCode Request code
+     * @param resultCode Result code
+     * @param data Data
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
