@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">SpendWise</string>
+    <string-array name="expenseDetails_spinner_category">
+
+
+        <item>Category</item>
+        <item>Grocery</item>
+        <item>Cold Drinks</item>
+        <item>Snacks</item>
+        <item>Transportation</item>
+        <item>Snacks</item>
+        <item>Entertainment</item>
+
+    </string-array>
+
+    <string-array name="expenseDetails_spinner_p_method">
+
+
+        <item>Payment method</item>
+        <item>Credit Card</item>
+        <item>Debit Card</item>
+        <item>Cash</item>
+        <item>UPI (India)</item>
+
+    </string-array>
+
+
 </resources>
