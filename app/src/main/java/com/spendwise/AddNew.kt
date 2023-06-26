@@ -17,6 +17,7 @@ import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
+import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
@@ -107,6 +108,9 @@ class AddNew : AppCompatActivity() {
             } else if (TITLE.isNotEmpty() && DATE.isNotEmpty() && CATEGORY.isNotEmpty() && P_METHOD.isNotEmpty() && AMOUNT.isNotEmpty() && DESCRIPTION.isNotEmpty() && !hasReceipt) {
 
                 submit(hasDescription = true, hasReceipt = false)
+            } else {
+                Toast.makeText(this@AddNew, "Please fill the empty fields.", Toast.LENGTH_LONG)
+                    .show()
             }
 
 
@@ -198,6 +202,9 @@ class AddNew : AppCompatActivity() {
 
             }
         }
+        val intent = Intent(this@AddNew,HomeActivity::class.java)
+        startActivity(intent)
+        finishAffinity()
 
 
     }

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-
 class HomeActivity : Activity() {
     lateinit var barLinearLayout: LinearLayout
     lateinit var homeLinearLayout: LinearLayout
@@ -111,6 +110,8 @@ class HomeActivity : Activity() {
 
 
     }
+
+
     private inner class ListAdapter(var titles:ArrayList<String>,var dates:ArrayList<String>,var amounts:ArrayList<String>):RecyclerView.Adapter<ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.list_of_expenses_recycler_view, parent, false)
@@ -136,7 +137,6 @@ class HomeActivity : Activity() {
 
         }
     }
-
     private inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val title: TextView = itemView.findViewById(R.id.title_view)
         val date: TextView = itemView.findViewById(R.id.date_view)
