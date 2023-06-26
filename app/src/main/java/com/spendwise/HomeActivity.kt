@@ -11,12 +11,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class HomeActivity : Activity() {
     lateinit var barLinearLayout: LinearLayout
+    lateinit var homeLinearLayout: LinearLayout
+
     lateinit var addNewBtn: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        barLinearLayout = this.findViewById(R.id.barLinearLayout)
+        val view = layoutInflater.inflate(R.layout.first_element_home,null)
+        barLinearLayout = view.findViewById(R.id.barLinearLayout)
+        homeLinearLayout = this.findViewById(R.id.homeActivity_LinearLayout)
+        homeLinearLayout.addView(view)
         addNewBtn = this.findViewById(R.id.addNew)
         val animatedView = BarChartView(this, arrayListOf<Float>(100f,200f,300f,400f,500f),
             arrayListOf("s","s","s","s","s")
