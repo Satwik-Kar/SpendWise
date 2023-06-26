@@ -19,11 +19,10 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.InputStream
-import java.sql.Blob
 
 import java.util.Calendar
+import kotlin.properties.Delegates
 
 
 /**
@@ -51,15 +50,9 @@ class AddNew : AppCompatActivity() {
     private lateinit var CATEGORY: String
     private lateinit var P_METHOD: String
     private lateinit var AMOUNT: String
-    private lateinit var FILE_DATA: ByteArray
+    private lateinit var RECIEPT: ByteArray
     private lateinit var DESCRIPTION: String
-    private val COLUMN_TITLE = "title"
-    private val COLUMN_DATE = "date"
-    private val COLUMN_CATEGORY = "category"
-    private val COLUMN_P_METHOD = "p_method"
-    private val COLUMN_AMOUNT = "amount"
-    private val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
-    private val COLUMN_DESCRIPTION = "description"
+    private var hasReceipt = false
 
     /**
      * On create.
@@ -98,21 +91,20 @@ class AddNew : AppCompatActivity() {
             TITLE = detailTitle.text.toString()
             DATE = detailDate.text.toString()
             CATEGORY = detailCategory.selectedItem.toString()
-            P_METHOD =  detailMethod.selectedItem.toString()
-            AMOUNT = detailDate.text.toString()
+            P_METHOD = detailMethod.selectedItem.toString()
+            AMOUNT = detailAmount.text.toString()
             DESCRIPTION = detailDesc.text.toString()
 
-
-            if (TITLE.isNotEmpty() && DATE.isNotEmpty() && CATEGORY.isNotEmpty() && P_METHOD.isNotEmpty() && AMOUNT.isNotEmpty() && DESCRIPTION.isNotEmpty()) {
+            if (TITLE.isNotEmpty() && DATE.isNotEmpty() && CATEGORY.isNotEmpty() && P_METHOD.isNotEmpty() && AMOUNT.isNotEmpty() && DESCRIPTION.isNotEmpty() && hasReceipt) {
 
                 submit(hasDescription = true, hasReceipt = true)
-            } else if (TITLE.isNotEmpty() && DATE.isNotEmpty() && CATEGORY.isNotEmpty() && P_METHOD.isNotEmpty() && AMOUNT.isNotEmpty() && DESCRIPTION.isEmpty()) {
+            } else if (TITLE.isNotEmpty() && DATE.isNotEmpty() && CATEGORY.isNotEmpty() && P_METHOD.isNotEmpty() && AMOUNT.isNotEmpty() && DESCRIPTION.isEmpty() && !hasReceipt) {
 
                 submit(hasDescription = false, hasReceipt = false)
-            } else if (TITLE.isNotEmpty() && DATE.isNotEmpty() && CATEGORY.isNotEmpty() && P_METHOD.isNotEmpty() && AMOUNT.isNotEmpty()  && DESCRIPTION.isEmpty()) {
+            } else if (TITLE.isNotEmpty() && DATE.isNotEmpty() && CATEGORY.isNotEmpty() && P_METHOD.isNotEmpty() && AMOUNT.isNotEmpty() && DESCRIPTION.isEmpty() && hasReceipt) {
 
                 submit(hasDescription = false, hasReceipt = true)
-            } else if (TITLE.isNotEmpty() && DATE.isNotEmpty() && CATEGORY.isNotEmpty() && P_METHOD.isNotEmpty() && AMOUNT.isNotEmpty()  && DESCRIPTION.isNotEmpty()) {
+            } else if (TITLE.isNotEmpty() && DATE.isNotEmpty() && CATEGORY.isNotEmpty() && P_METHOD.isNotEmpty() && AMOUNT.isNotEmpty() && DESCRIPTION.isNotEmpty() && !hasReceipt) {
 
                 submit(hasDescription = true, hasReceipt = false)
             }
@@ -174,32 +166,40 @@ class AddNew : AppCompatActivity() {
     @SuppressLint("Range")
     private fun submit(hasDescription: Boolean, hasReceipt: Boolean) {
         val database = DatabaseHelper(this@AddNew)
-        if (hasReceipt && hasDescription) {
-            database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, FILE_DATA, DESCRIPTION)
+        var a by Delegates.notNull<Int>()
+        if (hasDescription && hasReceipt) {
+            a = 1
+        } else if (!hasDescription && hasReceipt) {
+            a = 2
+        } else if (hasDescription && !hasReceipt) {
+            a = 3
+        } else if (!hasReceipt && !hasDescription) {
+            a = 4
         }
-        if (hasReceipt && !hasDescription) {
-            database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, FILE_DATA)
-        }
-        if (!hasReceipt && hasDescription) {
-            database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, DESCRIPTION)
-            Log.e("database", "successfullmine")
 
-        }
-        if (!hasReceipt && !hasDescription) {
-            database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT)
+        when (a) {
+            1 -> {
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, RECIEPT, DESCRIPTION)
 
+            }
+
+            2 -> {
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, RECIEPT)
+
+            }
+
+            3 -> {
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, DESCRIPTION)
+                Log.e("database", "successfullmine")
+            }
+
+            4 -> {
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT)
+
+            }
         }
-//        var databaseRead = DatabaseHelper(this@AddNew)
-//        var cursor = databaseRead.retrieveData()
-//        while (cursor!!.moveToNext()){
-//            val id =  cursor.getString(cursor.getColumnIndex("_id"))
-//            val title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE))
-//            val date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE))
-//            val category = cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY))
-//            val p_method = cursor.getString(cursor.getColumnIndex(COLUMN_P_METHOD))
-//            val amount = cursor.getString(cursor.getColumnIndex(COLUMN_AMOUNT))
-//            val receipt = cursor.getBlob(cursor.getColumnIndex(COLUMN_BLOB_RECEIPT))
-//            val description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION))
+
+
     }
 
     /**
@@ -209,6 +209,7 @@ class AddNew : AppCompatActivity() {
      * @param uri Uri
      */
     private fun handlePhotoSelection(contentResolver: ContentResolver, uri: Uri) {
+
         try {
             val inputStream: InputStream? = contentResolver.openInputStream(uri)
             val displayName = getFileName(contentResolver, uri)
@@ -216,11 +217,13 @@ class AddNew : AppCompatActivity() {
             val outputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
             val byteArray = outputStream.toByteArray()
-            FILE_DATA = byteArray
+            RECIEPT = byteArray
+            hasReceipt = true
             detailReceiptUri.setText(displayName)
 
             inputStream?.close()
         } catch (e: Exception) {
+            hasReceipt = false
             e.printStackTrace()
         }
     }
@@ -240,7 +243,7 @@ class AddNew : AppCompatActivity() {
             if (it.moveToFirst()) {
                 try {
                     displayName = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
 
@@ -260,7 +263,7 @@ class AddNew : AppCompatActivity() {
             val inputStream = contentResolver.openInputStream(uri)
 
             val fileReader = inputStream?.readBytes()
-            FILE_DATA = fileReader!!
+            RECIEPT = fileReader!!
             val displayName = getFileName(contentResolver, uri)
             detailReceiptUri.setText(displayName)
 

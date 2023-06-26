@@ -14,8 +14,6 @@ class DatabaseHelper(context: Context) :
     companion object {
         private const val DATABASE_NAME = "ExpenseDetails.db"
         private const val DATABASE_VERSION = 1
-
-        // Define your table and column names
         private const val TABLE_NAME = "Expenses"
         private const val COLUMN_TITLE = "title"
         private const val COLUMN_DATE = "date"
