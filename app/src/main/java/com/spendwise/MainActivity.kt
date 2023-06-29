@@ -1,12 +1,15 @@
 package com.spendwise
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.telecom.Call
 import android.util.Log
+import android.view.ViewGroup
+import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,24 +25,23 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val signedIn = getSharedPreferences("credentials", MODE_PRIVATE).getBoolean("hasAccountLoggedIn",false)
-        if (signedIn){
+        val signedIn = getSharedPreferences("credentials", MODE_PRIVATE).getBoolean(
+            "hasAccountLoggedIn",
+            false
+        )
+        if (signedIn) {
             Handler().postDelayed({
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 finish()
             }, SPLASH_TIMEOUT)
-        }else{
+        } else {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build()
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
             signIn()
         }
-
-
-
-
 
 
     }
@@ -53,10 +55,10 @@ class MainActivity : Activity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
-            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            handleSignInResult(result)
-        }else{
-            Toast.makeText(this@MainActivity,"Try again later!",Toast.LENGTH_LONG).show()
+            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data!!)
+            handleSignInResult(result!!)
+        } else {
+            Toast.makeText(this@MainActivity, "Try again later!", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -66,18 +68,35 @@ class MainActivity : Activity() {
         if (result.isSuccess) {
 
             val acct = result.signInAccount!!
-            getSharedPreferences("credentials", MODE_PRIVATE).edit().putBoolean("hasAccountLoggedIn",true)
-                .putString("name",acct.displayName).putString("uid",acct.id)
-                .putString("email",acct.email).putString("photo_url", acct.photoUrl?.toString()).apply()
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
+            getSharedPreferences("credentials", MODE_PRIVATE).edit()
+                .putBoolean("hasAccountLoggedIn", true)
+                .putString("name", acct.displayName).putString("uid", acct.id)
+                .putString("email", acct.email).putString("photo_url", acct.photoUrl?.toString())
+                .apply()
+            val view = layoutInflater.inflate(R.layout.countryview, null)
+            val layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            val builder = AlertDialog.Builder(this@MainActivity)
+            builder.setTitle("Choose Country")
+            builder.setMessage("Choose the default country")
+            builder.setView(view)
+            builder.setPositiveButton("Next") { _, _ ->
+                val response = view.findViewById<Spinner>(R.id.spinner).selectedItem
+                getSharedPreferences("credentials", MODE_PRIVATE).edit().putString("country",response.toString()).apply()
+                startActivity(Intent(this@MainActivity,HomeActivity::class.java))
+                finishAffinity()
+            }
+            builder.show()
 
 
         } else {
 
-            Toast.makeText(this, "Sign-in failed:"+  result.status.status, Toast.LENGTH_SHORT).show()
-            getSharedPreferences("credentials", MODE_PRIVATE).edit().putBoolean("hasAccountLoggedIn",false).apply()
+            Toast.makeText(this, "Sign-in failed:" + result.status.status, Toast.LENGTH_SHORT)
+                .show()
+            getSharedPreferences("credentials", MODE_PRIVATE).edit()
+                .putBoolean("hasAccountLoggedIn", false).apply()
         }
     }
 

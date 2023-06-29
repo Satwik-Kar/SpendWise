@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/baseline_title_24"
-        android:drawableTint="@color/app_theme_green"
+        android:drawableTint="@color/app_theme"
         android:ems="10"
         android:hint="Expense Title"
         android:inputType="text"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:drawableStart="@drawable/baseline_calendar_month_24"
-        android:drawableTint="@color/app_theme_green"
+        android:drawableTint="@color/app_theme"
         android:ems="10"
         android:enabled="false"
         android:hint="Date of expense"
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/expenseDetails_date"
         app:layout_constraintTop_toTopOf="@+id/expenseDetails_date"
-        app:tint="@color/app_theme_green"
+        app:tint="@color/app_theme"
         app:srcCompat="@drawable/baseline_calendar_month_24" />
 
 
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:drawableStart="@drawable/baseline_attach_money_24"
-        android:drawableTint="@color/app_theme_green"
+        android:drawableTint="@color/app_theme"
         android:ems="10"
         android:hint="Amount"
         android:inputType="number"
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:drawableStart="@drawable/baseline_receipt_long_24"
-        android:drawableTint="@color/app_theme_green"
+        android:drawableTint="@color/app_theme"
         android:ems="10"
         android:enabled="false"
         android:hint="Bill/Reciept (Optional)"
@@ -109,7 +109,7 @@
         app:layout_constraintStart_toEndOf="@+id/expenseDetails_reciept"
         app:layout_constraintTop_toTopOf="@+id/expenseDetails_reciept"
         app:srcCompat="@drawable/baseline_add_photo_alternate_24"
-        app:tint="@color/app_theme_green" />
+        app:tint="@color/app_theme" />
 
     <EditText
         android:id="@+id/expenseDetails_desc"
@@ -117,7 +117,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:drawableStart="@drawable/baseline_description_24"
-        android:drawableTint="@color/app_theme_green"
+        android:drawableTint="@color/app_theme"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Description (Optional)"

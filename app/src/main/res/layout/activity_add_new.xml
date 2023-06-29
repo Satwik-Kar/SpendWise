@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/app_theme_green"
+        android:backgroundTint="@color/app_theme"
         android:text="Add Expense"
         android:textColor="#ffffff"
         android:textStyle="bold"

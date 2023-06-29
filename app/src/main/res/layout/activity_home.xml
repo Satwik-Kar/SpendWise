@@ -15,7 +15,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:src="@drawable/baseline_add_24"
-        app:backgroundTint="@color/app_theme_green"
+        app:backgroundTint="@color/app_theme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

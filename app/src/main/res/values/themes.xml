@@ -3,9 +3,9 @@
     <style name="Base.Theme.SpendWise" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:statusBarColor">#50C878</item>
-        <item name="android:navigationBarColor">#50C878</item>
-
+        <item name="android:statusBarColor">@color/app_theme</item>
+        <item name="android:navigationBarColor">@color/app_theme</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.SpendWise" parent="Base.Theme.SpendWise" />

@@ -2,7 +2,6 @@ package com.spendwise
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.view.View
@@ -19,7 +18,7 @@ class BarChartView(context: Context, listOfData: List<Float>,listOfLabels:List<S
         super.onDraw(canvas)
 
         paint.strokeWidth = 10f
-        paint.color = resources.getColor(R.color.app_theme_green);
+        paint.color = resources.getColor(R.color.app_theme);
         paint.style = Paint.Style.FILL
         paint.textSize = 40f
         paint.textAlign = Paint.Align.CENTER

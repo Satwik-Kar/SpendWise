@@ -4,16 +4,21 @@ package com.spendwise
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class HomeActivity : Activity() {
@@ -31,22 +36,32 @@ class HomeActivity : Activity() {
 
     lateinit var addNewBtn: FloatingActionButton
     lateinit var recyclerViewListExpenses: RecyclerView
-    private  val TABLE_NAME = "Expenses"
-    private  val COLUMN_TITLE = "title"
-    private  val COLUMN_DATE = "date"
-    private  val COLUMN_CATEGORY = "category"
-    private  val COLUMN_P_METHOD = "p_method"
-    private  val COLUMN_AMOUNT = "amount"
-    private  val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
-    private  val COLUMN_DESCRIPTION = "description"
+    private val TABLE_NAME = "Expenses"
+    private val COLUMN_TITLE = "title"
+    private val COLUMN_DATE = "date"
+    private val COLUMN_CATEGORY = "category"
+    private val COLUMN_P_METHOD = "p_method"
+    private val COLUMN_AMOUNT = "amount"
+    private val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
+    private val COLUMN_DESCRIPTION = "description"
 
     @SuppressLint("Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        val firstElementHome = layoutInflater.inflate(R.layout.first_element_home,null)
-        val secondElementHome = layoutInflater.inflate(R.layout.list_of_expenses,null)
+        val firstElementHome = layoutInflater.inflate(R.layout.first_element_home, null)
+        val secondElementHome = layoutInflater.inflate(R.layout.list_of_expenses, null)
+        val uri = getSharedPreferences("credentials", MODE_PRIVATE).getString("photo_url", null)
+        Log.e("uri", "onCreate: $uri")
+        if (uri != null) {
+            val requestOptions: RequestOptions = RequestOptions.circleCropTransform()
 
+            Glide.with(this).load(uri.toUri()).apply(requestOptions)
+                .into(firstElementHome.findViewById<ImageView>(R.id.accountPicture));
+
+        } else {
+            Log.e("account-photo", "onCreate: photo_url is null")
+        }
         recyclerViewListExpenses = secondElementHome.findViewById(R.id.recyclerView_list_expenses)
         barLinearLayout = firstElementHome.findViewById(R.id.barLinearLayout)
         homeLinearLayout = this.findViewById(R.id.homeActivity_LinearLayout)
@@ -59,11 +74,11 @@ class HomeActivity : Activity() {
         descriptions = ArrayList()
         ids = ArrayList()
 
-        try{
+        try {
             val database = DatabaseHelper(this)
             val cursor = database.retrieveData()!!
             cursor.use {
-                while (it.moveToNext()){
+                while (it.moveToNext()) {
                     val id = it.getString(it.getColumnIndex("_id"))
                     val title = it.getString(it.getColumnIndex(COLUMN_TITLE))
                     val date = it.getString(it.getColumnIndex(COLUMN_DATE))
@@ -85,49 +100,57 @@ class HomeActivity : Activity() {
                 }
             }
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             Log.e("database", "onCreate: $e")
         }
 
-        val dividerItemDecoration = DividerItemDecoration(recyclerViewListExpenses.context, LinearLayoutManager.VERTICAL)
+        val dividerItemDecoration =
+            DividerItemDecoration(recyclerViewListExpenses.context, LinearLayoutManager.VERTICAL)
         recyclerViewListExpenses.addItemDecoration(dividerItemDecoration)
-        val adapter = ListAdapter(titles,dates, amounts)
-        recyclerViewListExpenses.adapter = adapter
-        recyclerViewListExpenses.layoutManager = LinearLayoutManager(this)
+        if(titles.isNotEmpty()){
+            val adapter = ListAdapter(titles, dates, amounts)
+            recyclerViewListExpenses.adapter = adapter
+            recyclerViewListExpenses.layoutManager = LinearLayoutManager(this)
+
+        }else{
+            secondElementHome.findViewById<TextView>(R.id.noitemtext).visibility = View.VISIBLE
+        }
         homeLinearLayout.addView(firstElementHome)
         homeLinearLayout.addView(secondElementHome)
 
+
         addNewBtn = this.findViewById(R.id.addNew)
-        val animatedView = BarChartView(this, arrayListOf(100f,200f,300f,400f,500f),
-            arrayListOf("s","s","s","s","s")
+        val animatedView = BarChartView(
+            this, arrayListOf(100f, 200f, 300f, 400f, 500f), arrayListOf("s", "s", "s", "s", "s")
         )
         barLinearLayout.addView(animatedView)
         addNewBtn.setOnClickListener {
-            val intent = Intent(this@HomeActivity,AddNew::class.java)
+            val intent = Intent(this@HomeActivity, AddNew::class.java)
             startActivity(intent)
         }
-
 
 
     }
 
 
-    private inner class ListAdapter(var titles:ArrayList<String>,var dates:ArrayList<String>,var amounts:ArrayList<String>):RecyclerView.Adapter<ViewHolder>() {
+    private inner class ListAdapter(
+        var titles: ArrayList<String>, var dates: ArrayList<String>, var amounts: ArrayList<String>
+    ) : RecyclerView.Adapter<ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_of_expenses_recycler_view, parent, false)
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_of_expenses_recycler_view, parent, false)
             return ViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-           val titleView = holder.title
-           val dateView = holder.date
-           val amountView = holder.amount
+            val titleView = holder.title
+            val dateView = holder.date
+            val amountView = holder.amount
 
             titleView.text = titles[position]
             dateView.text = dates[position]
             amountView.text = amounts[position]
-
 
 
         }
@@ -137,7 +160,8 @@ class HomeActivity : Activity() {
 
         }
     }
-    private inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+
+    private inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.title_view)
         val date: TextView = itemView.findViewById(R.id.date_view)
         val amount: TextView = itemView.findViewById(R.id.amount_view)
