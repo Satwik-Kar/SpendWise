@@ -54,6 +54,7 @@ class AddNew : AppCompatActivity() {
     private lateinit var RECIEPT: ByteArray
     private lateinit var DESCRIPTION: String
     private var hasReceipt = false
+    private var countryCurrencyMap = HashMap<String, String>(0)
 
     /**
      * On create.
@@ -115,6 +116,202 @@ class AddNew : AppCompatActivity() {
 
 
         }
+        countryCurrencyMap["Afghanistan"] = "؋"
+        countryCurrencyMap["Albania"] = "L"
+        countryCurrencyMap["Algeria"] = "د.ج"
+        countryCurrencyMap["Andorra"] = "€"
+        countryCurrencyMap["Angola"] = "Kz"
+        countryCurrencyMap["Antigua and Barbuda"] = "$"
+        countryCurrencyMap["Argentina"] = "$"
+        countryCurrencyMap["Armenia"] = "֏"
+        countryCurrencyMap["Australia"] = "$"
+        countryCurrencyMap["Austria"] = "€"
+        countryCurrencyMap["Azerbaijan"] = "₼"
+        countryCurrencyMap["Bahamas"] = "$"
+        countryCurrencyMap["Bahrain"] = ".د.ب"
+        countryCurrencyMap["Bangladesh"] = "৳"
+        countryCurrencyMap["Barbados"] = "$"
+        countryCurrencyMap["Belarus"] = "Br"
+        countryCurrencyMap["Belgium"] = "€"
+        countryCurrencyMap["Belize"] = "$"
+        countryCurrencyMap["Benin"] = "CFA"
+        countryCurrencyMap["Bhutan"] = "Nu."
+        countryCurrencyMap["Bolivia"] = "Bs."
+        countryCurrencyMap["Bosnia and Herzegovina"] = "KM"
+        countryCurrencyMap["Botswana"] = "P"
+        countryCurrencyMap["Brazil"] = "R$"
+        countryCurrencyMap["Brunei"] = "$"
+        countryCurrencyMap["Bulgaria"] = "лв"
+        countryCurrencyMap["Burkina Faso"] = "CFA"
+        countryCurrencyMap["Burundi"] = "Fr"
+        countryCurrencyMap["Cambodia"] = "៛"
+        countryCurrencyMap["Cameroon"] = "CFA"
+        countryCurrencyMap["Canada"] = "$"
+        countryCurrencyMap["Cape Verde"] = "CVE"
+        countryCurrencyMap["Central African Republic"] = "CFA"
+        countryCurrencyMap["Chad"] = "CFA"
+        countryCurrencyMap["Chile"] = "$"
+        countryCurrencyMap["China"] = "¥"
+        countryCurrencyMap["Colombia"] = "$"
+        countryCurrencyMap["Comoros"] = "Fr"
+        countryCurrencyMap["Congo, Democratic Republic of the"] = "CDF"
+        countryCurrencyMap["Congo, Republic of the"] = "CFA"
+        countryCurrencyMap["Costa Rica"] = "₡"
+        countryCurrencyMap["Croatia"] = "kn"
+        countryCurrencyMap["Cuba"] = "$"
+        countryCurrencyMap["Cyprus"] = "€"
+        countryCurrencyMap["Czech Republic"] = "Kč"
+        countryCurrencyMap["Denmark"] = "kr"
+        countryCurrencyMap["Djibouti"] = "Fr"
+        countryCurrencyMap["Dominica"] = "$"
+        countryCurrencyMap["Dominican Republic"] = "RD$"
+        countryCurrencyMap["East Timor"] = "USD"
+        countryCurrencyMap["Ecuador"] = "USD"
+        countryCurrencyMap["Egypt"] = "ج.م"
+        countryCurrencyMap["El Salvador"] = "$"
+        countryCurrencyMap["Equatorial Guinea"] = "CFA"
+        countryCurrencyMap["Eritrea"] = "Nfk"
+        countryCurrencyMap["Estonia"] = "€"
+        countryCurrencyMap["Eswatini"] = "SZL"
+        countryCurrencyMap["Ethiopia"] = "ETB"
+        countryCurrencyMap["Fiji"] = "$"
+        countryCurrencyMap["Finland"] = "€"
+        countryCurrencyMap["France"] = "€"
+        countryCurrencyMap["Gabon"] = "CFA"
+        countryCurrencyMap["Gambia"] = "GMD"
+        countryCurrencyMap["Georgia"] = "₾"
+        countryCurrencyMap["Germany"] = "€"
+        countryCurrencyMap["Ghana"] = "₵"
+        countryCurrencyMap["Greece"] = "€"
+        countryCurrencyMap["Grenada"] = "$"
+        countryCurrencyMap["Guatemala"] = "Q"
+        countryCurrencyMap["Guinea"] = "GNF"
+        countryCurrencyMap["Guinea-Bissau"] = "CFA"
+        countryCurrencyMap["Guyana"] = "$"
+        countryCurrencyMap["Haiti"] = "G"
+        countryCurrencyMap["Honduras"] = "L"
+        countryCurrencyMap["Hungary"] = "Ft"
+        countryCurrencyMap["Iceland"] = "kr"
+        countryCurrencyMap["India"] = "₹"
+        countryCurrencyMap["Indonesia"] = "Rp"
+        countryCurrencyMap["Iran"] = "﷼"
+        countryCurrencyMap["Iraq"] = "ع.د"
+        countryCurrencyMap["Ireland"] = "€"
+        countryCurrencyMap["Israel"] = "₪"
+        countryCurrencyMap["Italy"] = "€"
+        countryCurrencyMap["Jamaica"] = "J$"
+        countryCurrencyMap["Japan"] = "¥"
+        countryCurrencyMap["Jordan"] = "د.ا"
+        countryCurrencyMap["Kazakhstan"] = "₸"
+        countryCurrencyMap["Kenya"] = "KSh"
+        countryCurrencyMap["Kiribati"] = "$"
+        countryCurrencyMap["Korea, North"] = "₩"
+        countryCurrencyMap["Korea, South"] = "₩"
+        countryCurrencyMap["Kosovo"] = "€"
+        countryCurrencyMap["Kuwait"] = "د.ك"
+        countryCurrencyMap["Kyrgyzstan"] = "лв"
+        countryCurrencyMap["Laos"] = "₭"
+        countryCurrencyMap["Latvia"] = "€"
+        countryCurrencyMap["Lebanon"] = "ل.ل"
+        countryCurrencyMap["Lesotho"] = "L"
+        countryCurrencyMap["Liberia"] = "L$"
+        countryCurrencyMap["Libya"] = "ل.د"
+        countryCurrencyMap["Liechtenstein"] = "CHF"
+        countryCurrencyMap["Lithuania"] = "€"
+        countryCurrencyMap["Luxembourg"] = "€"
+        countryCurrencyMap["Madagascar"] = "Ar"
+        countryCurrencyMap["Malawi"] = "MK"
+        countryCurrencyMap["Malaysia"] = "RM"
+        countryCurrencyMap["Maldives"] = "ރ."
+        countryCurrencyMap["Mali"] = "CFA"
+        countryCurrencyMap["Malta"] = "€"
+        countryCurrencyMap["Marshall Islands"] = "$"
+        countryCurrencyMap["Mauritania"] = "MRU"
+        countryCurrencyMap["Mauritius"] = "₨"
+        countryCurrencyMap["Mexico"] = "$"
+        countryCurrencyMap["Micronesia"] = "$"
+        countryCurrencyMap["Moldova"] = "MDL"
+        countryCurrencyMap["Monaco"] = "€"
+        countryCurrencyMap["Mongolia"] = "₮"
+        countryCurrencyMap["Montenegro"] = "€"
+        countryCurrencyMap["Morocco"] = "د.م."
+        countryCurrencyMap["Mozambique"] = "MT"
+        countryCurrencyMap["Myanmar"] = "Ks"
+        countryCurrencyMap["Namibia"] = "$"
+        countryCurrencyMap["Nauru"] = "$"
+        countryCurrencyMap["Nepal"] = "₨"
+        countryCurrencyMap["Netherlands"] = "€"
+        countryCurrencyMap["New Zealand"] = "$"
+        countryCurrencyMap["Nicaragua"] = "C$"
+        countryCurrencyMap["Niger"] = "CFA"
+        countryCurrencyMap["Nigeria"] = "₦"
+        countryCurrencyMap["North Macedonia"] = "ден"
+        countryCurrencyMap["Norway"] = "kr"
+        countryCurrencyMap["Oman"] = "ر.ع."
+        countryCurrencyMap["Pakistan"] = "₨"
+        countryCurrencyMap["Palau"] = "$"
+        countryCurrencyMap["Panama"] = "B/."
+        countryCurrencyMap["Papua New Guinea"] = "K"
+        countryCurrencyMap["Paraguay"] = "₲"
+        countryCurrencyMap["Peru"] = "S/."
+        countryCurrencyMap["Philippines"] = "₱"
+        countryCurrencyMap["Poland"] = "zł"
+        countryCurrencyMap["Portugal"] = "€"
+        countryCurrencyMap["Qatar"] = "ر.ق"
+        countryCurrencyMap["Romania"] = "lei"
+        countryCurrencyMap["Russia"] = "₽"
+        countryCurrencyMap["Rwanda"] = "Fr"
+        countryCurrencyMap["Saint Kitts and Nevis"] = "$"
+        countryCurrencyMap["Saint Lucia"] = "$"
+        countryCurrencyMap["Saint Vincent and the Grenadines"] = "$"
+        countryCurrencyMap["Samoa"] = "T"
+        countryCurrencyMap["San Marino"] = "€"
+        countryCurrencyMap["Sao Tome and Principe"] = "Db"
+        countryCurrencyMap["Saudi Arabia"] = "﷼"
+        countryCurrencyMap["Senegal"] = "CFA"
+        countryCurrencyMap["Serbia"] = "дин."
+        countryCurrencyMap["Seychelles"] = "₨"
+        countryCurrencyMap["Sierra Leone"] = "Le"
+        countryCurrencyMap["Singapore"] = "$"
+        countryCurrencyMap["Slovakia"] = "€"
+        countryCurrencyMap["Slovenia"] = "€"
+        countryCurrencyMap["Solomon Islands"] = "$"
+        countryCurrencyMap["Somalia"] = "S"
+        countryCurrencyMap["South Africa"] = "R"
+        countryCurrencyMap["South Sudan"] = "£"
+        countryCurrencyMap["Spain"] = "€"
+        countryCurrencyMap["Sri Lanka"] = "Rs"
+        countryCurrencyMap["Sudan"] = "SDG"
+        countryCurrencyMap["Suriname"] = "$"
+        countryCurrencyMap["Sweden"] = "kr"
+        countryCurrencyMap["Switzerland"] = "Fr"
+        countryCurrencyMap["Syria"] = "£"
+        countryCurrencyMap["Taiwan"] = "NT$"
+        countryCurrencyMap["Tajikistan"] = "ЅМ"
+        countryCurrencyMap["Tanzania"] = "Sh"
+        countryCurrencyMap["Thailand"] = "฿"
+        countryCurrencyMap["Togo"] = "CFA"
+        countryCurrencyMap["Tonga"] = "T$"
+        countryCurrencyMap["Trinidad and Tobago"] = "TT$"
+        countryCurrencyMap["Tunisia"] = "د.ت"
+        countryCurrencyMap["Turkey"] = "₺"
+        countryCurrencyMap["Turkmenistan"] = "T"
+        countryCurrencyMap["Tuvalu"] = "$"
+        countryCurrencyMap["Uganda"] = "Sh"
+        countryCurrencyMap["Ukraine"] = "₴"
+        countryCurrencyMap["United Arab Emirates"] = "AED"
+        countryCurrencyMap["United Kingdom"] = "£"
+        countryCurrencyMap["United States"] = "$"
+        countryCurrencyMap["Uruguay"] = "$"
+        countryCurrencyMap["Uzbekistan"] = "so'm"
+        countryCurrencyMap["Vanuatu"] = "Vt"
+        countryCurrencyMap["Vatican City"] = "€"
+        countryCurrencyMap["Venezuela"] = "Bs."
+        countryCurrencyMap["Vietnam"] = "₫"
+        countryCurrencyMap["Yemen"] = "﷼"
+        countryCurrencyMap["Zambia"] = "ZK"
+        countryCurrencyMap["Zimbabwe"] = "Z$"
+
 
     }
 
@@ -180,29 +377,34 @@ class AddNew : AppCompatActivity() {
         } else if (!hasReceipt && !hasDescription) {
             a = 4
         }
+        val defaultCountry =
+            getSharedPreferences("credentials", MODE_PRIVATE).getString("country", "India")
+        val sign = countryCurrencyMap[defaultCountry]
 
         when (a) {
             1 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, RECIEPT, DESCRIPTION)
+                database.insertData(
+                    TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", RECIEPT, DESCRIPTION
+                )
 
             }
 
             2 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, RECIEPT)
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", RECIEPT)
 
             }
 
             3 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, DESCRIPTION)
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", DESCRIPTION)
                 Log.e("database", "successfullmine")
             }
 
             4 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT)
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT")
 
             }
         }
-        val intent = Intent(this@AddNew,HomeActivity::class.java)
+        val intent = Intent(this@AddNew, HomeActivity::class.java)
         startActivity(intent)
         finishAffinity()
 

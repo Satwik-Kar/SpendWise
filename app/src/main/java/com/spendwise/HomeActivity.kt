@@ -44,7 +44,6 @@ class HomeActivity : Activity() {
     private val COLUMN_AMOUNT = "amount"
     private val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
     private val COLUMN_DESCRIPTION = "description"
-
     @SuppressLint("Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,6 +127,7 @@ class HomeActivity : Activity() {
             val intent = Intent(this@HomeActivity, AddNew::class.java)
             startActivity(intent)
         }
+
 
 
     }
