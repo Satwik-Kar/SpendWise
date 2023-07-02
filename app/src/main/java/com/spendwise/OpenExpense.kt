@@ -11,12 +11,15 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.joanzapata.pdfview.PDFView
 import com.joanzapata.pdfview.listener.OnDrawListener
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener
 import java.io.File
 import java.io.IOException
+import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 
 
 /**
@@ -43,6 +46,7 @@ class OpenExpense : AppCompatActivity() {
     private val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
     private lateinit var pdfRenderer: PdfRenderer
     private lateinit var currentPage: PdfRenderer.Page
+    private var pagerCounter = 0
 
     /**
      * On create
@@ -85,6 +89,18 @@ class OpenExpense : AppCompatActivity() {
         }
 
         toggleDisplayMode(receiptType)
+        imageViewViewer.setOnClickListener {
+
+            try{
+                currentPage.close()
+                pagerCounter++
+                displayPage(pagerCounter)
+            }catch (e:Exception){
+                Toast.makeText(this@OpenExpense, "No more page.", Toast.LENGTH_SHORT).show()
+            }
+
+
+        }
 
     }
 
@@ -118,7 +134,7 @@ class OpenExpense : AppCompatActivity() {
         pdfFile.writeBytes(byteArray)
         try {
             openPdf(pdfFile)
-            displayPage(0)
+            displayPage(pagerCounter)
         } catch (e: IOException) {
             e.printStackTrace()
         }
