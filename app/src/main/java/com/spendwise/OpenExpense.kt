@@ -1,22 +1,29 @@
 package com.spendwise
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.pdf.PdfRenderer
 import android.os.Bundle
-import android.util.Base64
+import android.os.ParcelFileDescriptor
 import android.util.Log
 import android.view.View
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.joanzapata.pdfview.PDFView
+import com.joanzapata.pdfview.listener.OnDrawListener
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener
 import java.io.File
-import java.nio.charset.StandardCharsets
+import java.io.IOException
 
+
+/**
+ * Open expense
+ *
+ * @constructor Create empty Open expense
+ */
 class OpenExpense : AppCompatActivity() {
 
     lateinit var title: String
@@ -30,10 +37,20 @@ class OpenExpense : AppCompatActivity() {
     private lateinit var receiptType: String
     private lateinit var pdfView: PDFView
     private lateinit var imageViewViewer: ImageView
+    private lateinit var linearLayout: LinearLayout
+    private lateinit var secondViewElementImage: View
     private val COLUMN_BLOB_TYPE = "BlobDataType"
     private val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
+    private lateinit var pdfRenderer: PdfRenderer
+    private lateinit var currentPage: PdfRenderer.Page
 
+    /**
+     * On create
+     *
+     * @param savedInstanceState
+     */
     @SuppressLint("Range")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_expense)
@@ -45,17 +62,17 @@ class OpenExpense : AppCompatActivity() {
         desc = intent.getStringExtra("desc").toString()
         amount = intent.getStringExtra("amount").toString()
         val firstViewElement = layoutInflater.inflate(R.layout.open_expense_first_element, null)
-        val secondViewElement = layoutInflater.inflate(R.layout.pdf_view, null)
-        val linearLayout = this.findViewById<LinearLayout>(R.id.openExpenseLinearLayout)
+        secondViewElementImage = layoutInflater.inflate(R.layout.image_viewer, null)
+        linearLayout = this.findViewById<LinearLayout>(R.id.openExpenseLinearLayout)
         firstViewElement.findViewById<TextView>(R.id.openExpense_title).text = title
         firstViewElement.findViewById<TextView>(R.id.openExpense_date).text = date
         firstViewElement.findViewById<TextView>(R.id.openExpense_category).text = category
         firstViewElement.findViewById<TextView>(R.id.openExpense_p_method).text = pMethod
         firstViewElement.findViewById<TextView>(R.id.openExpense_Desc).text = desc
         firstViewElement.findViewById<TextView>(R.id.openExpense_amount).text = amount
-        pdfView = secondViewElement.findViewById(R.id.pdfView)
-        imageViewViewer = secondViewElement.findViewById(R.id.imageViewViewer)
+        imageViewViewer = secondViewElementImage.findViewById(R.id.imageViewViewer)
         linearLayout.addView(firstViewElement)
+
 
         val database = DatabaseHelper(applicationContext)
         val cursor = database.retrieveDataById(id)
@@ -69,10 +86,14 @@ class OpenExpense : AppCompatActivity() {
 
         toggleDisplayMode(receiptType)
 
-        linearLayout.addView(secondViewElement)
     }
 
 
+    /**
+     * Toggle display mode
+     *
+     * @param type
+     */
     private fun toggleDisplayMode(type: String) {
         when (type) {
             "image" -> {
@@ -80,33 +101,67 @@ class OpenExpense : AppCompatActivity() {
             }
 
             "pdf" -> {
+
                 displayPdf()
             }
         }
     }
 
+    /**
+     * Display pdf
+     *
+     */
     private fun displayPdf() {
-        imageViewViewer.visibility = View.INVISIBLE
-        pdfView.visibility = View.VISIBLE
 
         val byteArray = receipt
-        val pdfFile = File.createTempFile("temp", ".pdf",applicationContext.cacheDir)
+        val pdfFile = File(applicationContext.cacheDir, "temporary.pdf")
         pdfFile.writeBytes(byteArray)
-        pdfView.fromFile(pdfFile)
-            .onLoad(OnLoadCompleteListener {
-                Log.e("PDFVIEWER", "displayPdf: completed LOAD-$it")
+        try {
+            openPdf(pdfFile)
+            displayPage(0)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        linearLayout.addView(secondViewElementImage)
+        Log.e("ABSOLUTE", "displayPdf: " + pdfFile.absolutePath)
 
-
-            })
-            .load()
-        Log.e("ABSOLUTE", "displayPdf: "+pdfFile.absolutePath)
     }
 
+    /**
+     * Display image
+     *
+     */
     private fun displayImage() {
-        pdfView.visibility = View.INVISIBLE
-        imageViewViewer.visibility = View.VISIBLE
         val bitmap = BitmapFactory.decodeByteArray(receipt, 0, receipt.size)
 
+
+        imageViewViewer.setImageBitmap(bitmap)
+        linearLayout.addView(secondViewElementImage)
+    }
+
+    /**
+     * Open pdf
+     *
+     * @param file
+     */
+    private fun openPdf(file: File) {
+        val fileDescriptor: ParcelFileDescriptor =
+            ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+        pdfRenderer = PdfRenderer(fileDescriptor)
+    }
+
+    /**
+     * Display page
+     *
+     */
+    private fun displayPage(index:Int) {
+
+
+        currentPage = pdfRenderer.openPage(index)
+
+        val bitmap =
+            Bitmap.createBitmap(currentPage.width, currentPage.height, Bitmap.Config.ARGB_8888)
+        currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
 
         imageViewViewer.setImageBitmap(bitmap)
     }
