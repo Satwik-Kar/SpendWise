@@ -11,6 +11,7 @@ import android.widget.Toast
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     val CONTEXT = context
+
     companion object {
         private const val DATABASE_NAME = "ExpenseDetails.db"
         private const val DATABASE_VERSION = 1
@@ -21,6 +22,8 @@ class DatabaseHelper(context: Context) :
         private const val COLUMN_P_METHOD = "p_method"
         private const val COLUMN_AMOUNT = "amount"
         private const val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
+        private const val COLUMN_BLOB_TYPE = "BlobDataType"
+
         private const val COLUMN_DESCRIPTION = "description"
     }
 
@@ -34,6 +37,7 @@ class DatabaseHelper(context: Context) :
                 "$COLUMN_P_METHOD TEXT, " +
                 "$COLUMN_AMOUNT TEXT, " +
                 "$COLUMN_BLOB_RECEIPT BLOB, " +
+                "$COLUMN_BLOB_TYPE TEXT," +
                 "$COLUMN_DESCRIPTION TEXT)"
         db.execSQL(createTableQuery)
     }
@@ -53,6 +57,7 @@ class DatabaseHelper(context: Context) :
         p_method: String,
         amount: String,
         blobFileData: ByteArray,
+        blobType: String,
         description: String
     ) {
         val db = writableDatabase
@@ -63,7 +68,9 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_P_METHOD, p_method)
             put(COLUMN_AMOUNT, amount)
             put(COLUMN_BLOB_RECEIPT, blobFileData)
+            put(COLUMN_BLOB_TYPE, blobType)
             put(COLUMN_DESCRIPTION, description)
+
         }
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -94,6 +101,7 @@ class DatabaseHelper(context: Context) :
         category: String,
         p_method: String,
         amount: String,
+        blobType: String,
         blobFileData: ByteArray
     ) {
         val db = writableDatabase
@@ -104,6 +112,7 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_P_METHOD, p_method)
             put(COLUMN_AMOUNT, amount)
             put(COLUMN_BLOB_RECEIPT, blobFileData)
+            put(COLUMN_BLOB_TYPE, blobType)
         }
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -135,5 +144,11 @@ class DatabaseHelper(context: Context) :
     fun retrieveData(): Cursor? {
         val db = readableDatabase
         return db.query(TABLE_NAME, null, null, null, null, null, null)
+    }
+    fun retrieveDataById(id: String): Cursor? {
+        val db = readableDatabase
+        val selection = "_id = ?"
+        val selectionArgs = arrayOf(id)
+        return db.query(TABLE_NAME, null, selection, selectionArgs, null, null, null)
     }
 }

@@ -155,6 +155,7 @@ class HomeActivity : Activity() {
             amountView.text = amounts[position]
             cardView.setOnClickListener {
                 val intent = Intent(this@HomeActivity,OpenExpense::class.java)
+                intent.putExtra("id",ids[position])
                 intent.putExtra("title",titles[position])
                 intent.putExtra("date",dates[position])
                 intent.putExtra("category",categories[position])

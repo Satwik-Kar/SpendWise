@@ -55,6 +55,7 @@ class AddNew : AppCompatActivity() {
     private lateinit var DESCRIPTION: String
     private var hasReceipt = false
     private var countryCurrencyMap = HashMap<String, String>(0)
+    private lateinit var blobType: String
 
     /**
      * On create.
@@ -384,13 +385,15 @@ class AddNew : AppCompatActivity() {
         when (a) {
             1 -> {
                 database.insertData(
-                    TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", RECIEPT, DESCRIPTION
+                    TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", RECIEPT, blobType, DESCRIPTION
                 )
 
             }
 
             2 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", RECIEPT)
+                database.insertData(
+                    TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", blobType, RECIEPT
+                )
 
             }
 
@@ -429,11 +432,13 @@ class AddNew : AppCompatActivity() {
             RECIEPT = byteArray
             hasReceipt = true
             detailReceiptUri.setText(displayName)
+            blobType = "image"
 
             inputStream?.close()
         } catch (e: Exception) {
             hasReceipt = false
             e.printStackTrace()
+            Log.e("error add new", "handleImageSelection: " + e.localizedMessage)
         }
     }
 
@@ -473,12 +478,15 @@ class AddNew : AppCompatActivity() {
 
             val fileReader = inputStream?.readBytes()
             RECIEPT = fileReader!!
+            hasReceipt = true
             val displayName = getFileName(contentResolver, uri)
             detailReceiptUri.setText(displayName)
-
+            blobType = "pdf"
             inputStream.close()
         } catch (e: Exception) {
-            e.printStackTrace()
+            hasReceipt = false
+
+            Log.e("error add new", "handleDocumentSelection: " + e.localizedMessage)
         }
     }
 
@@ -505,6 +513,9 @@ class AddNew : AppCompatActivity() {
                     }
                 }
             }
+        } else {
+
+            Log.e("onActivityResult", "onActivityResult: canceled")
         }
     }
 
