@@ -1,18 +1,26 @@
 package com.spendwise
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.pdf.PdfRenderer
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.util.Log
 import android.view.View
+import android.webkit.WebView
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.joanzapata.pdfview.PDFView
 import com.joanzapata.pdfview.listener.OnDrawListener
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener
@@ -30,6 +38,8 @@ import java.lang.NullPointerException
  */
 class OpenExpense : AppCompatActivity() {
 
+    private lateinit var pdfFile: File
+    private lateinit var imageFile: File
     lateinit var title: String
     lateinit var id: String
     lateinit var date: String
@@ -39,8 +49,10 @@ class OpenExpense : AppCompatActivity() {
     lateinit var amount: String
     private lateinit var receipt: ByteArray
     private lateinit var receiptType: String
-    private lateinit var pdfView: PDFView
     private lateinit var imageViewViewer: ImageView
+    private lateinit var nextBtn: Button
+    private lateinit var prevBtn: Button
+    private lateinit var fullScrBtn: FloatingActionButton
     private lateinit var linearLayout: LinearLayout
     private lateinit var secondViewElementImage: View
     private val COLUMN_BLOB_TYPE = "BlobDataType"
@@ -48,7 +60,8 @@ class OpenExpense : AppCompatActivity() {
     private lateinit var pdfRenderer: PdfRenderer
     private lateinit var currentPage: PdfRenderer.Page
     private var pagerCounter = 0
-    private  var hasReceipt= false
+    private var pages = 0
+    private var hasReceipt = false
 
     /**
      * On create
@@ -77,6 +90,9 @@ class OpenExpense : AppCompatActivity() {
         firstViewElement.findViewById<TextView>(R.id.openExpense_Desc).text = desc
         firstViewElement.findViewById<TextView>(R.id.openExpense_amount).text = amount
         imageViewViewer = secondViewElementImage.findViewById(R.id.imageViewViewer)
+        nextBtn = secondViewElementImage.findViewById(R.id.nextBtn)
+        prevBtn = secondViewElementImage.findViewById(R.id.previousBtn)
+        fullScrBtn = secondViewElementImage.findViewById(R.id.fullScreen)
         linearLayout.addView(firstViewElement)
 
 
@@ -88,7 +104,7 @@ class OpenExpense : AppCompatActivity() {
                     receipt = it!!.getBlob(it.getColumnIndex(COLUMN_BLOB_RECEIPT))
                     receiptType = it.getString(it.getColumnIndex(COLUMN_BLOB_TYPE))
                     hasReceipt = true
-                }catch (e:NullPointerException){
+                } catch (e: NullPointerException) {
                     hasReceipt = false
                     receiptType = "N/A"
                 }
@@ -97,19 +113,87 @@ class OpenExpense : AppCompatActivity() {
             }
         }
 
-        toggleDisplayMode(receiptType,hasReceipt)
-        imageViewViewer.setOnClickListener {
+        toggleDisplayMode(receiptType, hasReceipt)
+        prevBtn.setOnClickListener {
 
-            try{
-                currentPage.close()
-                pagerCounter++
+            try {
+
+                pagerCounter--
                 displayPage(pagerCounter)
-            }catch (e:Exception){
-                Toast.makeText(this@OpenExpense, "No more page.", Toast.LENGTH_SHORT).show()
+
+            } catch (e: Exception) {
+                Log.e("pageerror", "onCreate: $e")
+                Toast.makeText(this@OpenExpense, "No more previous page.", Toast.LENGTH_SHORT)
+                    .show()
+                pagerCounter = 0
             }
 
 
         }
+        nextBtn.setOnClickListener {
+
+            try {
+
+                pagerCounter++
+                displayPage(pagerCounter)
+
+
+            } catch (e: Exception) {
+                Toast.makeText(this@OpenExpense, "No more page.", Toast.LENGTH_SHORT).show()
+                pagerCounter = pages
+                Log.e("pageerror", "onCreate: $e")
+            }
+
+
+        }
+        fullScrBtn.setOnClickListener {
+            if (receiptType == "pdf"){
+                val uri: Uri =
+                    FileProvider.getUriForFile(this, "com.spendwise.fileprovider", pdfFile)
+
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setDataAndType(uri, "application/pdf")
+                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                        Intent.FLAG_ACTIVITY_NO_HISTORY or
+                        Intent.FLAG_ACTIVITY_NO_ANIMATION
+
+                try {
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+            }else if(receiptType == "image"){
+                val imageUri = FileProvider.getUriForFile(
+                    this,
+                    "${packageName}.fileprovider",
+                    imageFile
+                )
+
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setDataAndType(imageUri, "image/*")
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                try {
+                    startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
+                    // Handle the case where no image viewer app is installed
+                    Toast.makeText(this, "No image viewer app found", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+
+
+
+
+
+
+        }
+
 
     }
 
@@ -118,19 +202,24 @@ class OpenExpense : AppCompatActivity() {
      * Toggle display mode
      *
      * @param type
+     * @param hasReceipt
      */
-    private fun toggleDisplayMode(type: String,hasReceipt:Boolean) {
-        if (!hasReceipt){
+    private fun toggleDisplayMode(type: String, hasReceipt: Boolean) {
+        if (!hasReceipt) {
             return
         }
         when (type) {
             "image" -> {
                 displayImage()
+                nextBtn.visibility = View.GONE
+                prevBtn.visibility = View.GONE
             }
 
             "pdf" -> {
 
                 displayPdf()
+                nextBtn.visibility = View.VISIBLE
+                prevBtn.visibility = View.VISIBLE
             }
         }
     }
@@ -142,7 +231,7 @@ class OpenExpense : AppCompatActivity() {
     private fun displayPdf() {
 
         val byteArray = receipt
-        val pdfFile = File(applicationContext.cacheDir, "temporary.pdf")
+        pdfFile = File(applicationContext.cacheDir, "temporary.pdf")
         pdfFile.writeBytes(byteArray)
         try {
             openPdf(pdfFile)
@@ -151,7 +240,7 @@ class OpenExpense : AppCompatActivity() {
             e.printStackTrace()
         }
         linearLayout.addView(secondViewElementImage)
-        Log.e("ABSOLUTE", "displayPdf: " + pdfFile.absolutePath)
+
 
     }
 
@@ -165,6 +254,8 @@ class OpenExpense : AppCompatActivity() {
 
         imageViewViewer.setImageBitmap(bitmap)
         linearLayout.addView(secondViewElementImage)
+        imageFile = File(applicationContext.cacheDir,"temporary.jpg")
+        imageFile.writeBytes(receipt)
     }
 
     /**
@@ -182,15 +273,20 @@ class OpenExpense : AppCompatActivity() {
      * Display page
      *
      */
-    private fun displayPage(index:Int) {
+    private fun displayPage(index: Int) {
 
+        try {
+            currentPage.close()
+        } catch (e: Exception) {
+            Log.e("pageerror", "displayPage: $e")
+        }
 
         currentPage = pdfRenderer.openPage(index)
 
         val bitmap =
             Bitmap.createBitmap(currentPage.width, currentPage.height, Bitmap.Config.ARGB_8888)
         currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-
+        pages = pdfRenderer.pageCount
         imageViewViewer.setImageBitmap(bitmap)
     }
 

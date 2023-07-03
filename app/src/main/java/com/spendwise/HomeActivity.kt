@@ -4,6 +4,7 @@ package com.spendwise
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.icu.util.Calendar
 import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
@@ -45,7 +46,8 @@ class HomeActivity : Activity() {
     private val COLUMN_AMOUNT = "amount"
     private val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
     private val COLUMN_DESCRIPTION = "description"
-    @SuppressLint("Range")
+
+    @SuppressLint("Range", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -62,6 +64,9 @@ class HomeActivity : Activity() {
         } else {
             Log.e("account-photo", "onCreate: photo_url is null")
         }
+        val name= getSharedPreferences("credentials", MODE_PRIVATE).getString("name","Sir")!!
+        val firstName  =name.split(" ")
+        firstElementHome.findViewById<TextView>(R.id.homeWelcomeName).text = "${getWishes()} ${firstName[0]}"
         recyclerViewListExpenses = secondElementHome.findViewById(R.id.recyclerView_list_expenses)
         barLinearLayout = firstElementHome.findViewById(R.id.barLinearLayout)
         homeLinearLayout = this.findViewById(R.id.homeActivity_LinearLayout)
@@ -107,12 +112,12 @@ class HomeActivity : Activity() {
         val dividerItemDecoration =
             DividerItemDecoration(recyclerViewListExpenses.context, LinearLayoutManager.VERTICAL)
         recyclerViewListExpenses.addItemDecoration(dividerItemDecoration)
-        if(titles.isNotEmpty()){
-            val adapter = ListAdapter(titles, dates, categories,pMethods,descriptions,amounts)
+        if (titles.isNotEmpty()) {
+            val adapter = ListAdapter(titles, dates, categories, pMethods, descriptions, amounts)
             recyclerViewListExpenses.adapter = adapter
             recyclerViewListExpenses.layoutManager = LinearLayoutManager(this)
 
-        }else{
+        } else {
             secondElementHome.findViewById<TextView>(R.id.noitemtext).visibility = View.VISIBLE
         }
         homeLinearLayout.addView(firstElementHome)
@@ -130,12 +135,27 @@ class HomeActivity : Activity() {
         }
 
 
+    }
+    fun getWishes(): String {
+        val calendar = Calendar.getInstance()
 
+        return when (calendar.get(Calendar.HOUR_OF_DAY)) {
+            in 0..11 -> "Good morning!"
+            in 12..15 -> "Good afternoon!"
+            in 16..20 -> "Good evening!"
+            else -> "Hello!"
+        }
     }
 
 
+
     private inner class ListAdapter(
-        var titles: ArrayList<String>, var dates: ArrayList<String>, var categories: ArrayList<String>,var p_methods: ArrayList<String>,var descriptions: ArrayList<String>,var amounts: ArrayList<String>
+        var titles: ArrayList<String>,
+        var dates: ArrayList<String>,
+        var categories: ArrayList<String>,
+        var p_methods: ArrayList<String>,
+        var descriptions: ArrayList<String>,
+        var amounts: ArrayList<String>
     ) : RecyclerView.Adapter<ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
@@ -154,18 +174,16 @@ class HomeActivity : Activity() {
             dateView.text = dates[position]
             amountView.text = amounts[position]
             cardView.setOnClickListener {
-                val intent = Intent(this@HomeActivity,OpenExpense::class.java)
-                intent.putExtra("id",ids[position])
-                intent.putExtra("title",titles[position])
-                intent.putExtra("date",dates[position])
-                intent.putExtra("category",categories[position])
-                intent.putExtra("p_method",p_methods[position])
-                intent.putExtra("desc",descriptions[position])
-                intent.putExtra("amount",amounts[position])
+                val intent = Intent(this@HomeActivity, OpenExpense::class.java)
+                intent.putExtra("id", ids[position])
+                intent.putExtra("title", titles[position])
+                intent.putExtra("date", dates[position])
+                intent.putExtra("category", categories[position])
+                intent.putExtra("p_method", p_methods[position])
+                intent.putExtra("desc", descriptions[position])
+                intent.putExtra("amount", amounts[position])
 
                 startActivity(intent)
-
-
 
 
             }
@@ -183,7 +201,7 @@ class HomeActivity : Activity() {
         val title: TextView = itemView.findViewById(R.id.title_view)
         val date: TextView = itemView.findViewById(R.id.date_view)
         val amount: TextView = itemView.findViewById(R.id.amount_view)
-        val cardView : CardView = itemView.findViewById(R.id.listExpenses_cardView)
+        val cardView: CardView = itemView.findViewById(R.id.listExpenses_cardView)
 
     }
 }
