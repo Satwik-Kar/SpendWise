@@ -20,6 +20,7 @@ import java.io.File
 import java.io.IOException
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
+import java.lang.NullPointerException
 
 
 /**
@@ -47,6 +48,7 @@ class OpenExpense : AppCompatActivity() {
     private lateinit var pdfRenderer: PdfRenderer
     private lateinit var currentPage: PdfRenderer.Page
     private var pagerCounter = 0
+    private  var hasReceipt= false
 
     /**
      * On create
@@ -82,13 +84,20 @@ class OpenExpense : AppCompatActivity() {
         val cursor = database.retrieveDataById(id)
         cursor.use {
             while (cursor != null && cursor.moveToNext()) {
-                receipt = it!!.getBlob(it.getColumnIndex(COLUMN_BLOB_RECEIPT))
-                receiptType = it.getString(it.getColumnIndex(COLUMN_BLOB_TYPE))
+                try {
+                    receipt = it!!.getBlob(it.getColumnIndex(COLUMN_BLOB_RECEIPT))
+                    receiptType = it.getString(it.getColumnIndex(COLUMN_BLOB_TYPE))
+                    hasReceipt = true
+                }catch (e:NullPointerException){
+                    hasReceipt = false
+                    receiptType = "N/A"
+                }
+
 
             }
         }
 
-        toggleDisplayMode(receiptType)
+        toggleDisplayMode(receiptType,hasReceipt)
         imageViewViewer.setOnClickListener {
 
             try{
@@ -110,7 +119,10 @@ class OpenExpense : AppCompatActivity() {
      *
      * @param type
      */
-    private fun toggleDisplayMode(type: String) {
+    private fun toggleDisplayMode(type: String,hasReceipt:Boolean) {
+        if (!hasReceipt){
+            return
+        }
         when (type) {
             "image" -> {
                 displayImage()

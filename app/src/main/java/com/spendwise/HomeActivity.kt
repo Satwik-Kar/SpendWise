@@ -108,7 +108,7 @@ class HomeActivity : Activity() {
             DividerItemDecoration(recyclerViewListExpenses.context, LinearLayoutManager.VERTICAL)
         recyclerViewListExpenses.addItemDecoration(dividerItemDecoration)
         if(titles.isNotEmpty()){
-            val adapter = ListAdapter(titles, dates, amounts,pMethods,descriptions,amounts)
+            val adapter = ListAdapter(titles, dates, categories,pMethods,descriptions,amounts)
             recyclerViewListExpenses.adapter = adapter
             recyclerViewListExpenses.layoutManager = LinearLayoutManager(this)
 

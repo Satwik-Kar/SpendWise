@@ -10,7 +10,6 @@ import android.widget.Toast
 
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-    val CONTEXT = context
 
     companion object {
         private const val DATABASE_NAME = "ExpenseDetails.db"
