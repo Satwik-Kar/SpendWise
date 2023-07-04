@@ -108,8 +108,6 @@ class OpenExpense : AppCompatActivity() {
                     hasReceipt = false
                     receiptType = "N/A"
                 }
-
-
             }
         }
 
@@ -131,26 +129,18 @@ class OpenExpense : AppCompatActivity() {
 
         }
         nextBtn.setOnClickListener {
-
             try {
-
                 pagerCounter++
                 displayPage(pagerCounter)
-
-
             } catch (e: Exception) {
                 Toast.makeText(this@OpenExpense, "No more page.", Toast.LENGTH_SHORT).show()
                 pagerCounter = pages
                 Log.e("pageerror", "onCreate: $e")
             }
-
-
         }
         fullScrBtn.setOnClickListener {
             if (receiptType == "pdf"){
-                val uri: Uri =
-                    FileProvider.getUriForFile(this, "com.spendwise.fileprovider", pdfFile)
-
+                val uri: Uri = FileProvider.getUriForFile(this, "com.spendwise.fileprovider", pdfFile)
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.setDataAndType(uri, "application/pdf")
                 intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or
