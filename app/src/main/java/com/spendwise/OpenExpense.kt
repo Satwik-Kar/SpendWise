@@ -226,10 +226,10 @@ class OpenExpense : AppCompatActivity() {
 
         if (hasFile == true.toString()) {
             val filePath = filePath
-            val file = File(filePath)
-            if (file.exists()) {
+            pdfFile = File(filePath)
+            if (pdfFile.exists()) {
                 try {
-                    openPdf(file)
+                    openPdf(pdfFile)
                     displayPage(pagerCounter)
                     linearLayout.addView(secondViewElementImage)
                 } catch (e: IOException) {
