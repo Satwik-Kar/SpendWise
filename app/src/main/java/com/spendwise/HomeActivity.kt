@@ -4,6 +4,7 @@ package com.spendwise
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.database.sqlite.SQLiteBlobTooBigException
 import android.icu.util.Calendar
 import android.opengl.Visibility
 import android.os.Bundle
@@ -35,6 +36,7 @@ class HomeActivity : Activity() {
     private lateinit var descriptions: ArrayList<String>
     private lateinit var ids: ArrayList<String>
     private lateinit var amounts: ArrayList<String>
+    private lateinit var filePaths: ArrayList<String>
 
     lateinit var addNewBtn: FloatingActionButton
     lateinit var recyclerViewListExpenses: RecyclerView
@@ -46,7 +48,8 @@ class HomeActivity : Activity() {
     private val COLUMN_AMOUNT = "amount"
     private val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
     private val COLUMN_DESCRIPTION = "description"
-
+    private val COLUMN_HAS_FILE = "HasFile"
+    private val COLUMN_FILE_PATH = "FilePath"
     @SuppressLint("Range", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +81,7 @@ class HomeActivity : Activity() {
         reciepts = ArrayList()
         descriptions = ArrayList()
         ids = ArrayList()
-
+        filePaths = ArrayList()
         try {
             val database = DatabaseHelper(this)
             val cursor = database.retrieveData()!!
@@ -90,15 +93,14 @@ class HomeActivity : Activity() {
                     val category = it.getString(it.getColumnIndex(COLUMN_CATEGORY))
                     val pMethod = it.getString(it.getColumnIndex(COLUMN_P_METHOD))
                     val amount = it.getString(it.getColumnIndex(COLUMN_AMOUNT))
-                    val receipt = it.getBlob(it.getColumnIndex(COLUMN_BLOB_RECEIPT))
                     val description = it.getString(it.getColumnIndex(COLUMN_DESCRIPTION))
+
                     ids.add(id)
                     titles.add(title)
                     dates.add(date)
                     categories.add(category)
                     pMethods.add(pMethod)
                     amounts.add(amount)
-                    reciepts.add(receipt)
                     descriptions.add(description)
 
 
@@ -107,6 +109,7 @@ class HomeActivity : Activity() {
 
         } catch (e: Exception) {
             Log.e("database", "onCreate: $e")
+
         }
 
         val dividerItemDecoration =

@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import android.widget.Toast
 
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -22,6 +21,8 @@ class DatabaseHelper(context: Context) :
         private const val COLUMN_AMOUNT = "amount"
         private const val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
         private const val COLUMN_BLOB_TYPE = "BlobDataType"
+        private const val COLUMN_HAS_FILE = "HasFile"
+        private const val COLUMN_FILE_PATH = "FilePath"
 
         private const val COLUMN_DESCRIPTION = "description"
     }
@@ -37,6 +38,8 @@ class DatabaseHelper(context: Context) :
                 "$COLUMN_AMOUNT TEXT, " +
                 "$COLUMN_BLOB_RECEIPT BLOB, " +
                 "$COLUMN_BLOB_TYPE TEXT," +
+                "$COLUMN_HAS_FILE TEXT," +
+                "$COLUMN_FILE_PATH TEXT," +
                 "$COLUMN_DESCRIPTION TEXT)"
         db.execSQL(createTableQuery)
     }
@@ -57,7 +60,9 @@ class DatabaseHelper(context: Context) :
         amount: String,
         blobFileData: ByteArray,
         blobType: String,
-        description: String
+        description: String,
+        hasFile: String,
+        filePath: String
     ) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -69,6 +74,8 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_BLOB_RECEIPT, blobFileData)
             put(COLUMN_BLOB_TYPE, blobType)
             put(COLUMN_DESCRIPTION, description)
+            put(COLUMN_HAS_FILE,hasFile)
+            put(COLUMN_FILE_PATH,filePath)
 
         }
         db.insert(TABLE_NAME, null, values)
@@ -101,7 +108,9 @@ class DatabaseHelper(context: Context) :
         p_method: String,
         amount: String,
         blobType: String,
-        blobFileData: ByteArray
+        blobFileData: ByteArray,
+        hasFile: String,
+        filePath: String
     ) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -112,6 +121,8 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_AMOUNT, amount)
             put(COLUMN_BLOB_RECEIPT, blobFileData)
             put(COLUMN_BLOB_TYPE, blobType)
+            put(COLUMN_HAS_FILE, hasFile)
+            put(COLUMN_FILE_PATH, filePath)
         }
         db.insert(TABLE_NAME, null, values)
         db.close()

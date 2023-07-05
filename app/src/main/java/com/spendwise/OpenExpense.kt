@@ -62,6 +62,10 @@ class OpenExpense : AppCompatActivity() {
     private var pagerCounter = 0
     private var pages = 0
     private var hasReceipt = false
+    private var hasFile = false
+    private var filePath = ""
+    private val COLUMN_HAS_FILE = "HasFile"
+    private val COLUMN_FILE_PATH = "FilePath"
 
     /**
      * On create
@@ -101,7 +105,15 @@ class OpenExpense : AppCompatActivity() {
         cursor.use {
             while (cursor != null && cursor.moveToNext()) {
                 try {
-                    receipt = it!!.getBlob(it.getColumnIndex(COLUMN_BLOB_RECEIPT))
+                    val hasFile = it!!.getString(it.getColumnIndex(COLUMN_HAS_FILE))
+                    if (hasFile == true.toString()) {
+
+                        filePath = it.getString(it.getColumnIndex(COLUMN_FILE_PATH))
+
+                    } else {
+                        receipt = it!!.getBlob(it.getColumnIndex(COLUMN_BLOB_RECEIPT))
+                    }
+
                     receiptType = it.getString(it.getColumnIndex(COLUMN_BLOB_TYPE))
                     hasReceipt = true
                 } catch (e: NullPointerException) {
@@ -139,16 +151,13 @@ class OpenExpense : AppCompatActivity() {
             }
         }
         fullScrBtn.setOnClickListener {
-            if (receiptType == "pdf"){
-                val uri: Uri = FileProvider.getUriForFile(this, "com.spendwise.fileprovider", pdfFile)
+            if (receiptType == "pdf") {
+                val uri: Uri =
+                    FileProvider.getUriForFile(this, "com.spendwise.fileprovider", pdfFile)
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.setDataAndType(uri, "application/pdf")
-                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                        Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                        Intent.FLAG_ACTIVITY_NO_HISTORY or
-                        Intent.FLAG_ACTIVITY_NO_ANIMATION
+                intent.flags =
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NO_ANIMATION
 
                 try {
                     startActivity(intent)
@@ -156,11 +165,9 @@ class OpenExpense : AppCompatActivity() {
                     e.printStackTrace()
                 }
 
-            }else if(receiptType == "image"){
+            } else if (receiptType == "image") {
                 val imageUri = FileProvider.getUriForFile(
-                    this,
-                    "${packageName}.fileprovider",
-                    imageFile
+                    this, "${packageName}.fileprovider", imageFile
                 )
 
                 val intent = Intent(Intent.ACTION_VIEW)
@@ -175,11 +182,6 @@ class OpenExpense : AppCompatActivity() {
                 }
 
             }
-
-
-
-
-
 
 
         }
@@ -219,16 +221,43 @@ class OpenExpense : AppCompatActivity() {
      *
      */
     private fun displayPdf() {
+        lateinit var byteArray: ByteArray
 
-        val byteArray = receipt
-        pdfFile = File(applicationContext.cacheDir, "temporary.pdf")
-        pdfFile.writeBytes(byteArray)
-        try {
-            openPdf(pdfFile)
-            displayPage(pagerCounter)
-        } catch (e: IOException) {
-            e.printStackTrace()
+        if (hasFile.toString() == true.toString()) {
+            val filePath = filePath
+            val file = File(filePath)
+            if (file.exists()) {
+                try {
+                    openPdf(file)
+                    displayPage(pagerCounter)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }else{
+                Toast.makeText(this@OpenExpense, "File does not exist.", Toast.LENGTH_SHORT).show()
+
+            }
+
+
+        } else {
+            byteArray = receipt
+            var file = File(applicationContext.cacheDir,"temp.pdf")
+            file.writeBytes(byteArray)
+            if (file.exists()) {
+                try {
+                    openPdf(file)
+                    displayPage(pagerCounter)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }else{
+                Toast.makeText(this@OpenExpense, "File does not exist.", Toast.LENGTH_SHORT).show()
+
+            }
         }
+
+
+
         linearLayout.addView(secondViewElementImage)
 
 
@@ -244,7 +273,7 @@ class OpenExpense : AppCompatActivity() {
 
         imageViewViewer.setImageBitmap(bitmap)
         linearLayout.addView(secondViewElementImage)
-        imageFile = File(applicationContext.cacheDir,"temporary.jpg")
+        imageFile = File(applicationContext.cacheDir, "temporary.jpg")
         imageFile.writeBytes(receipt)
     }
 

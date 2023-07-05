@@ -20,6 +20,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.InputStream
 
 import java.util.Calendar
@@ -53,7 +54,9 @@ class AddNew : AppCompatActivity() {
     private lateinit var AMOUNT: String
     private lateinit var RECIEPT: ByteArray
     private lateinit var DESCRIPTION: String
+    private var filePath: String = "N/A"
     private var hasReceipt = false
+    private var hasFile = false
     private var countryCurrencyMap = HashMap<String, String>(0)
     private lateinit var blobType: String
 
@@ -385,14 +388,14 @@ class AddNew : AppCompatActivity() {
         when (a) {
             1 -> {
                 database.insertData(
-                    TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", RECIEPT, blobType, DESCRIPTION
+                    TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", RECIEPT, blobType, DESCRIPTION,hasFile.toString(),filePath
                 )
 
             }
 
             2 -> {
                 database.insertData(
-                    TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", blobType, RECIEPT
+                    TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", blobType, RECIEPT,hasFile.toString(),filePath
                 )
 
             }
@@ -429,7 +432,19 @@ class AddNew : AppCompatActivity() {
             val outputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
             val byteArray = outputStream.toByteArray()
-            RECIEPT = byteArray
+            val byteArraySizeInMB = byteArray.size / (1024.0 * 1024.0)
+            if(byteArraySizeInMB <= 1.0){
+                RECIEPT = byteArray
+                hasFile = false
+
+            }else{
+                var file = File(applicationContext.dataDir,displayName!!)
+                file.writeBytes(byteArray)
+                filePath = file.absolutePath
+                hasFile = true
+
+            }
+
             hasReceipt = true
             detailReceiptUri.setText(displayName)
             blobType = "image"
