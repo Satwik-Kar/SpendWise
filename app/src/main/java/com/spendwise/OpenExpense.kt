@@ -271,6 +271,7 @@ class OpenExpense : AppCompatActivity() {
             val options = BitmapFactory.Options()
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
             val bitmap = BitmapFactory.decodeFile(filePath, options)
+            imageFile = File(filePath)
             imageViewViewer.setImageBitmap(bitmap)
 
 
