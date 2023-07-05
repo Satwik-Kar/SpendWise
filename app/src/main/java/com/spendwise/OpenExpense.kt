@@ -62,7 +62,7 @@ class OpenExpense : AppCompatActivity() {
     private var pagerCounter = 0
     private var pages = 0
     private var hasReceipt = false
-    private var hasFile = false
+    private var hasFile = "false"
     private var filePath = ""
     private val COLUMN_HAS_FILE = "HasFile"
     private val COLUMN_FILE_PATH = "FilePath"
@@ -105,13 +105,13 @@ class OpenExpense : AppCompatActivity() {
         cursor.use {
             while (cursor != null && cursor.moveToNext()) {
                 try {
-                    val hasFile = it!!.getString(it.getColumnIndex(COLUMN_HAS_FILE))
+                    hasFile = it!!.getString(it.getColumnIndex(COLUMN_HAS_FILE))
                     if (hasFile == true.toString()) {
 
                         filePath = it.getString(it.getColumnIndex(COLUMN_FILE_PATH))
 
                     } else {
-                        receipt = it!!.getBlob(it.getColumnIndex(COLUMN_BLOB_RECEIPT))
+                        receipt = it.getBlob(it.getColumnIndex(COLUMN_BLOB_RECEIPT))
                     }
 
                     receiptType = it.getString(it.getColumnIndex(COLUMN_BLOB_TYPE))
@@ -222,43 +222,41 @@ class OpenExpense : AppCompatActivity() {
      */
     private fun displayPdf() {
         lateinit var byteArray: ByteArray
+        Log.e("hasFile", "displayImage: $hasFile")
 
-        if (hasFile.toString() == true.toString()) {
+        if (hasFile == true.toString()) {
             val filePath = filePath
             val file = File(filePath)
             if (file.exists()) {
                 try {
                     openPdf(file)
                     displayPage(pagerCounter)
+                    linearLayout.addView(secondViewElementImage)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-            }else{
+            } else {
                 Toast.makeText(this@OpenExpense, "File does not exist.", Toast.LENGTH_SHORT).show()
 
             }
 
 
         } else {
-            byteArray = receipt
-            var file = File(applicationContext.cacheDir,"temp.pdf")
-            file.writeBytes(byteArray)
-            if (file.exists()) {
+            pdfFile = File(applicationContext.cacheDir, "temp.pdf")
+            pdfFile.writeBytes(receipt)
+            if (pdfFile.exists()) {
                 try {
-                    openPdf(file)
+                    openPdf(pdfFile)
                     displayPage(pagerCounter)
+                    linearLayout.addView(secondViewElementImage)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-            }else{
+            } else {
                 Toast.makeText(this@OpenExpense, "File does not exist.", Toast.LENGTH_SHORT).show()
 
             }
         }
-
-
-
-        linearLayout.addView(secondViewElementImage)
 
 
     }
@@ -268,13 +266,26 @@ class OpenExpense : AppCompatActivity() {
      *
      */
     private fun displayImage() {
-        val bitmap = BitmapFactory.decodeByteArray(receipt, 0, receipt.size)
+        Log.e("hasFile", "displayImage: $hasFile")
+        if (hasFile == true.toString()) {
+            val options = BitmapFactory.Options()
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888
+            val bitmap = BitmapFactory.decodeFile(filePath, options)
+            imageViewViewer.setImageBitmap(bitmap)
 
 
-        imageViewViewer.setImageBitmap(bitmap)
+        } else {
+            val bitmap = BitmapFactory.decodeByteArray(receipt, 0, receipt.size)
+            imageViewViewer.setImageBitmap(bitmap)
+            linearLayout.addView(secondViewElementImage)
+            imageFile = File(applicationContext.cacheDir, "temporary.jpg")
+            imageFile.writeBytes(receipt)
+
+
+        }
+        linearLayout.removeView(secondViewElementImage)
+
         linearLayout.addView(secondViewElementImage)
-        imageFile = File(applicationContext.cacheDir, "temporary.jpg")
-        imageFile.writeBytes(receipt)
     }
 
     /**

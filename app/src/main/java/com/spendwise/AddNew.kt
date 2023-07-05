@@ -441,6 +441,7 @@ class AddNew : AppCompatActivity() {
                 var file = File(applicationContext.dataDir,displayName!!)
                 file.writeBytes(byteArray)
                 filePath = file.absolutePath
+                RECIEPT = ByteArray(0)
                 hasFile = true
 
             }
@@ -490,11 +491,23 @@ class AddNew : AppCompatActivity() {
     private fun handleDocumentSelection(contentResolver: ContentResolver, uri: Uri) {
         try {
             val inputStream = contentResolver.openInputStream(uri)
-
-            val fileReader = inputStream?.readBytes()
-            RECIEPT = fileReader!!
-            hasReceipt = true
             val displayName = getFileName(contentResolver, uri)
+            val fileReader = inputStream?.readBytes()!!
+            val byteArraySizeInMB = fileReader.size / (1024.0 * 1024.0)
+            if(byteArraySizeInMB <= 1.0){
+                RECIEPT = fileReader
+                hasFile = false
+
+            }else{
+                val file = File(applicationContext.dataDir,displayName!!)
+                file.writeBytes(fileReader)
+                filePath = file.absolutePath
+                RECIEPT= ByteArray(0)
+                hasFile = true
+
+            }
+
+            hasReceipt = true
             detailReceiptUri.setText(displayName)
             blobType = "pdf"
             inputStream.close()
