@@ -3,6 +3,7 @@ package com.spendwise
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.database.sqlite.SQLiteBlobTooBigException
 import android.icu.util.Calendar
@@ -15,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
@@ -124,17 +126,21 @@ class HomeActivity : Activity() {
         }
         val accountPicture = firstElementHome.findViewById<ImageView>(R.id.accountPicture)
         val view = layoutInflater.inflate(R.layout.home_alert_profile_view, null)
-        val alertDialog = AlertDialog.Builder(this,R.style.CustomAlertDialogStyle)
+        val alertDialog = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
         accountPicture.setOnClickListener {
             val name = getSharedPreferences("credentials", MODE_PRIVATE).getString("name", "N/A")
             val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", "N/A")
             val imgUri =
                 getSharedPreferences("credentials", MODE_PRIVATE).getString("photo_url", "N/A")
-            val country = getSharedPreferences("credentials", MODE_PRIVATE).getString("country", "Default Country • N/A")
+            val country = getSharedPreferences("credentials", MODE_PRIVATE).getString(
+                "country", "Default Country • N/A"
+            )
             val imageView = view.findViewById<ImageView>(R.id.profile_image)
             val nameView = view.findViewById<TextView>(R.id.profile_display_name)
             val emailView = view.findViewById<TextView>(R.id.profile_email)
             val countryView = view.findViewById<TextView>(R.id.profile_country)
+            val settingView = view.findViewById<CardView>(R.id.profile_setting)
+            val logOutView = view.findViewById<CardView>(R.id.profile_log)
 
             val parent = view.parent as? ViewGroup
             parent?.removeView(view)
@@ -151,9 +157,41 @@ class HomeActivity : Activity() {
             emailView.text = email
             alertDialog.create()
             alertDialog.show()
+            settingView.setOnClickListener {
+
+                val intent = Intent(this@HomeActivity, Settings::class.java)
+                startActivity(intent)
+            }
+            logOutView.setOnClickListener {
+                val alert = AlertDialog.Builder(this@HomeActivity)
+                alert.setTitle("Log out").setMessage("Are you sure to log out?")
+                alert.setPositiveButton("Log out"
+
+
+                ) { _, _ ->
+                    getSharedPreferences("credentials", MODE_PRIVATE).edit()
+                        .putBoolean("hasAccountLoggedIn", false).apply()
+
+
+                    finishAffinity()
+                    Toast.makeText(this@HomeActivity, "Logged Out", Toast.LENGTH_LONG).show()
+
+
+                }
+                alert.setNegativeButton("No") { _, _ ->
+
+                    Toast.makeText(
+                        this@HomeActivity, "Logging out cancelled", Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+                alert.create().show()
+
+
+            }
+
 
         }
-
         homeLinearLayout.addView(firstElementHome)
         homeLinearLayout.addView(secondElementHome)
 
@@ -171,7 +209,7 @@ class HomeActivity : Activity() {
 
     }
 
-    fun getWishes(): String {
+    private fun getWishes(): String {
         val calendar = Calendar.getInstance()
 
         return when (calendar.get(Calendar.HOUR_OF_DAY)) {
