@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -40,16 +41,13 @@ class HomeActivity : Activity() {
 
     lateinit var addNewBtn: FloatingActionButton
     lateinit var recyclerViewListExpenses: RecyclerView
-    private val TABLE_NAME = "Expenses"
     private val COLUMN_TITLE = "title"
     private val COLUMN_DATE = "date"
     private val COLUMN_CATEGORY = "category"
     private val COLUMN_P_METHOD = "p_method"
     private val COLUMN_AMOUNT = "amount"
-    private val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
     private val COLUMN_DESCRIPTION = "description"
-    private val COLUMN_HAS_FILE = "HasFile"
-    private val COLUMN_FILE_PATH = "FilePath"
+
     @SuppressLint("Range", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +65,10 @@ class HomeActivity : Activity() {
         } else {
             Log.e("account-photo", "onCreate: photo_url is null")
         }
-        val name= getSharedPreferences("credentials", MODE_PRIVATE).getString("name","Sir")!!
-        val firstName  =name.split(" ")
-        firstElementHome.findViewById<TextView>(R.id.homeWelcomeName).text = "${getWishes()} ${firstName[0]}"
+        val name = getSharedPreferences("credentials", MODE_PRIVATE).getString("name", "Sir")!!
+        val firstName = name.split(" ")
+        firstElementHome.findViewById<TextView>(R.id.homeWelcomeName).text =
+            "${getWishes()} ${firstName[0]}"
         recyclerViewListExpenses = secondElementHome.findViewById(R.id.recyclerView_list_expenses)
         barLinearLayout = firstElementHome.findViewById(R.id.barLinearLayout)
         homeLinearLayout = this.findViewById(R.id.homeActivity_LinearLayout)
@@ -123,6 +122,38 @@ class HomeActivity : Activity() {
         } else {
             secondElementHome.findViewById<TextView>(R.id.noitemtext).visibility = View.VISIBLE
         }
+        val accountPicture = firstElementHome.findViewById<ImageView>(R.id.accountPicture)
+        val view = layoutInflater.inflate(R.layout.home_alert_profile_view, null)
+        val alertDialog = AlertDialog.Builder(this,R.style.CustomAlertDialogStyle)
+        accountPicture.setOnClickListener {
+            val name = getSharedPreferences("credentials", MODE_PRIVATE).getString("name", "N/A")
+            val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", "N/A")
+            val imgUri =
+                getSharedPreferences("credentials", MODE_PRIVATE).getString("photo_url", "N/A")
+            val country = getSharedPreferences("credentials", MODE_PRIVATE).getString("country", "Default Country • N/A")
+            val imageView = view.findViewById<ImageView>(R.id.profile_image)
+            val nameView = view.findViewById<TextView>(R.id.profile_display_name)
+            val emailView = view.findViewById<TextView>(R.id.profile_email)
+            val countryView = view.findViewById<TextView>(R.id.profile_country)
+
+            val parent = view.parent as? ViewGroup
+            parent?.removeView(view)
+            alertDialog.setView(view)
+            val requestOptions: RequestOptions = RequestOptions.circleCropTransform()
+            if (imgUri != "N/A") {
+                Glide.with(this@HomeActivity).load(imgUri).apply(requestOptions).into(imageView)
+            } else {
+                Glide.with(this@HomeActivity).load(R.drawable.baseline_account_circle_24)
+                    .apply(requestOptions).into(imageView)
+            }
+            countryView.text = "Default Country • $country"
+            nameView.text = name
+            emailView.text = email
+            alertDialog.create()
+            alertDialog.show()
+
+        }
+
         homeLinearLayout.addView(firstElementHome)
         homeLinearLayout.addView(secondElementHome)
 
@@ -139,6 +170,7 @@ class HomeActivity : Activity() {
 
 
     }
+
     fun getWishes(): String {
         val calendar = Calendar.getInstance()
 
@@ -149,7 +181,6 @@ class HomeActivity : Activity() {
             else -> "Hello!"
         }
     }
-
 
 
     private inner class ListAdapter(

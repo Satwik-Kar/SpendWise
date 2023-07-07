@@ -74,10 +74,6 @@ class MainActivity : Activity() {
                 .putString("email", acct.email).putString("photo_url", acct.photoUrl?.toString())
                 .apply()
             val view = layoutInflater.inflate(R.layout.countryview, null)
-            val layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
             val builder = AlertDialog.Builder(this@MainActivity)
             builder.setTitle("Choose Country")
             builder.setMessage("Choose the default country")
