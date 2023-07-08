@@ -3,11 +3,9 @@ package com.spendwise
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
-import android.database.sqlite.SQLiteBlobTooBigException
 import android.icu.util.Calendar
-import android.opengl.Visibility
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,7 +23,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 class HomeActivity : Activity() {
     lateinit var barLinearLayout: LinearLayout
@@ -141,6 +142,7 @@ class HomeActivity : Activity() {
             val countryView = view.findViewById<TextView>(R.id.profile_country)
             val settingView = view.findViewById<CardView>(R.id.profile_setting)
             val logOutView = view.findViewById<CardView>(R.id.profile_log)
+            val versionTextView = view.findViewById<TextView>(R.id.versionText)
 
             val parent = view.parent as? ViewGroup
             parent?.removeView(view)
@@ -155,6 +157,9 @@ class HomeActivity : Activity() {
             countryView.text = "Default Country • $country"
             nameView.text = name
             emailView.text = email
+            val packageInfo = packageManager.getPackageInfo(packageName, 0);
+            versionTextView.text = getString(R.string.app_name) + " • v"+ packageInfo.versionName
+
             alertDialog.create()
             alertDialog.show()
             settingView.setOnClickListener {
@@ -169,10 +174,13 @@ class HomeActivity : Activity() {
 
 
                 ) { _, _ ->
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build()
+                   val googleSignInClient = GoogleSignIn.getClient(this, gso)
+                    googleSignInClient.signOut()
                     getSharedPreferences("credentials", MODE_PRIVATE).edit()
                         .putBoolean("hasAccountLoggedIn", false).apply()
-
-
                     finishAffinity()
                     Toast.makeText(this@HomeActivity, "Logged Out", Toast.LENGTH_LONG).show()
 

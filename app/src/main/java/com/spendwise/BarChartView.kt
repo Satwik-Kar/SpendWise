@@ -14,7 +14,7 @@ class BarChartView(context: Context, listOfData: List<Float>,listOfLabels:List<S
     val rect = RectF()
     val adjustMent = 80f
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         paint.strokeWidth = 10f

@@ -19,6 +19,7 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
@@ -36,11 +37,11 @@ class AddNew : AppCompatActivity() {
     private val PICK_FILE_REQUEST_CODE = 1
 
     private val calendar = Calendar.getInstance()
-    lateinit var detailTitle: EditText
+    lateinit var detailTitle: TextInputEditText
     lateinit var detailDate: EditText
-    lateinit var detailAmount: EditText
+    lateinit var detailAmount: TextInputEditText
     lateinit var detailReceiptUri: EditText
-    lateinit var detailDesc: EditText
+    lateinit var detailDesc: TextInputEditText
     lateinit var detailCategory: Spinner
     lateinit var detailMethod: Spinner
 
@@ -71,11 +72,11 @@ class AddNew : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.detailsview, null)
         val addNewLinearLayout = findViewById<LinearLayout>(R.id.expenseDetails)
         addNewLinearLayout.addView(view)
-        detailTitle = addNewLinearLayout.findViewById<EditText>(R.id.expenseDetails_title)
-        detailDate = addNewLinearLayout.findViewById<EditText>(R.id.expenseDetails_date)
+        detailTitle = addNewLinearLayout.findViewById(R.id.expenseDetailsTitle)
+        detailDate = addNewLinearLayout.findViewById(R.id.expenseDetails_date)
         showCalendarbtn =
-            addNewLinearLayout.findViewById<FloatingActionButton>(R.id.showCalendarBtn)
-        showFilesbtn = addNewLinearLayout.findViewById<FloatingActionButton>(R.id.showFilesBtn)
+            addNewLinearLayout.findViewById(R.id.showCalendarBtn)
+        showFilesbtn = addNewLinearLayout.findViewById(R.id.showFilesBtn)
 
         showCalendarbtn.setOnClickListener {
             showDatePickerDialog()
@@ -86,9 +87,9 @@ class AddNew : AppCompatActivity() {
         detailCategory = addNewLinearLayout.findViewById(R.id.expenseDetails_spinner_category)
         detailMethod = addNewLinearLayout.findViewById(R.id.expenseDetails_spinner_payment_method)
 
-        detailAmount = addNewLinearLayout.findViewById(R.id.expenseDetails_amount)
+        detailAmount = addNewLinearLayout.findViewById(R.id.expenseDetailsAmount)
         detailReceiptUri = addNewLinearLayout.findViewById(R.id.expenseDetails_reciept)
-        detailDesc = addNewLinearLayout.findViewById(R.id.expenseDetails_desc)
+        detailDesc = addNewLinearLayout.findViewById(R.id.expenseDetailsDesc)
         submitDetails = findViewById(R.id.expenseDetails_submit)
 
 
