@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.icu.util.Calendar
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -157,8 +156,8 @@ class HomeActivity : Activity() {
             countryView.text = "Default Country • $country"
             nameView.text = name
             emailView.text = email
-            val packageInfo = packageManager.getPackageInfo(packageName, 0);
-            versionTextView.text = getString(R.string.app_name) + " • v"+ packageInfo.versionName
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            versionTextView.text = getString(R.string.app_name) + " • v" + packageInfo.versionName
 
             alertDialog.create()
             alertDialog.show()
@@ -170,14 +169,15 @@ class HomeActivity : Activity() {
             logOutView.setOnClickListener {
                 val alert = AlertDialog.Builder(this@HomeActivity)
                 alert.setTitle("Log out").setMessage("Are you sure to log out?")
-                alert.setPositiveButton("Log out"
+                alert.setPositiveButton(
+                    "Log out"
 
 
                 ) { _, _ ->
                     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
                         .build()
-                   val googleSignInClient = GoogleSignIn.getClient(this, gso)
+                    val googleSignInClient = GoogleSignIn.getClient(this, gso)
                     googleSignInClient.signOut()
                     getSharedPreferences("credentials", MODE_PRIVATE).edit()
                         .putBoolean("hasAccountLoggedIn", false).apply()
@@ -211,6 +211,7 @@ class HomeActivity : Activity() {
         barLinearLayout.addView(animatedView)
         addNewBtn.setOnClickListener {
             val intent = Intent(this@HomeActivity, AddNew::class.java)
+            intent.type = "new"
             startActivity(intent)
         }
 

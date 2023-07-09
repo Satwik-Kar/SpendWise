@@ -7,28 +7,21 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.util.Log
 import android.view.View
-import android.webkit.WebView
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.joanzapata.pdfview.PDFView
-import com.joanzapata.pdfview.listener.OnDrawListener
-import com.joanzapata.pdfview.listener.OnLoadCompleteListener
 import java.io.File
 import java.io.IOException
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
-import java.lang.NullPointerException
 
 
 /**
@@ -53,6 +46,8 @@ class OpenExpense : AppCompatActivity() {
     private lateinit var nextBtn: Button
     private lateinit var prevBtn: Button
     private lateinit var fullScrBtn: FloatingActionButton
+    private lateinit var delete: FloatingActionButton
+    private lateinit var edit: FloatingActionButton
     private lateinit var linearLayout: LinearLayout
     private lateinit var secondViewElementImage: View
     private val COLUMN_BLOB_TYPE = "BlobDataType"
@@ -77,6 +72,8 @@ class OpenExpense : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_expense)
+        delete = findViewById(R.id.floatingActionButtonDelete)
+        edit = findViewById(R.id.floatingActionButtonEdit)
         title = intent.getStringExtra("title").toString()
         id = intent.getStringExtra("id").toString()
         date = intent.getStringExtra("date").toString()
@@ -98,8 +95,50 @@ class OpenExpense : AppCompatActivity() {
         prevBtn = secondViewElementImage.findViewById(R.id.previousBtn)
         fullScrBtn = secondViewElementImage.findViewById(R.id.fullScreen)
         linearLayout.addView(firstViewElement)
+        delete.setOnClickListener {
+            val alert = AlertDialog.Builder(this@OpenExpense)
+            alert.setPositiveButton("Delete") { _, _ ->
+                val database = DatabaseHelper(this)
+                try {
+
+                    database.deleteDataById(id)
+                    if (hasFile == true.toString()) {
+                        try {
+                            pdfFile.delete()
+                        } catch (e: Exception) {
+                            Log.e("delete", "onCreate: ${e.message}")
+                        }
+                        try {
+                            imageFile.delete()
+                        } catch (e: Exception) {
+                            Log.e("delete", "onCreate: ${e.message}")
+
+                        }
+
+                    }
+                    val intent = Intent(this@OpenExpense, HomeActivity::class.java)
+                    startActivity(intent)
+                    finishAffinity()
+                    Toast.makeText(this@OpenExpense, "Deleted", Toast.LENGTH_LONG).show()
+
+                } catch (e: Exception) {
+                    Log.e("delete", "onCreate: cannot delete data" + e.message)
+                }
 
 
+            }
+            alert.setNegativeButton("No") { _, _ ->
+
+                Toast.makeText(this@OpenExpense, "Delete Cancelled", Toast.LENGTH_LONG).show()
+            }
+            alert.setMessage("Are you sure to delete this expense?")
+            alert.setTitle("Delete?")
+            alert.show()
+
+        }
+        edit.setOnClickListener {
+
+        }
         val database = DatabaseHelper(applicationContext)
         val cursor = database.retrieveDataById(id)
         cursor.use {

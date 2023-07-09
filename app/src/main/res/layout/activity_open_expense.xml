@@ -7,6 +7,19 @@
     tools:context=".OpenExpense">
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButtonEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButtonDelete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/floatingActionButtonDelete"
+        app:layout_constraintTop_toTopOf="@+id/floatingActionButtonDelete"
+        app:srcCompat="@drawable/baseline_edit_24"
+        app:tint="#2196F3" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -51,6 +64,19 @@
                 android:orientation="vertical" />
         </ScrollView>
     </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButtonDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="#FFFFFF"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        app:srcCompat="@drawable/baseline_delete_24"
+        app:tint="#D60505" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

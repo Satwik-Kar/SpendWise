@@ -8,7 +8,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
@@ -18,12 +17,12 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
-
 import java.util.Calendar
 import kotlin.properties.Delegates
 
@@ -69,6 +68,7 @@ class AddNew : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new)
+        val type = intent.type
         val view = layoutInflater.inflate(R.layout.detailsview, null)
         val addNewLinearLayout = findViewById<LinearLayout>(R.id.expenseDetails)
         addNewLinearLayout.addView(view)
@@ -389,14 +389,31 @@ class AddNew : AppCompatActivity() {
         when (a) {
             1 -> {
                 database.insertData(
-                    TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", RECIEPT, blobType, DESCRIPTION,hasFile.toString(),filePath
+                    TITLE,
+                    DATE,
+                    CATEGORY,
+                    P_METHOD,
+                    "$sign $AMOUNT",
+                    RECIEPT,
+                    blobType,
+                    DESCRIPTION,
+                    hasFile.toString(),
+                    filePath
                 )
 
             }
 
             2 -> {
                 database.insertData(
-                    TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", blobType, RECIEPT,hasFile.toString(),filePath
+                    TITLE,
+                    DATE,
+                    CATEGORY,
+                    P_METHOD,
+                    "$sign $AMOUNT",
+                    blobType,
+                    RECIEPT,
+                    hasFile.toString(),
+                    filePath
                 )
 
             }
@@ -434,12 +451,12 @@ class AddNew : AppCompatActivity() {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
             val byteArray = outputStream.toByteArray()
             val byteArraySizeInMB = byteArray.size / (1024.0 * 1024.0)
-            if(byteArraySizeInMB <= 1.0){
+            if (byteArraySizeInMB <= 1.0) {
                 RECIEPT = byteArray
                 hasFile = false
 
-            }else{
-                var file = File(applicationContext.dataDir,displayName!!)
+            } else {
+                var file = File(applicationContext.dataDir, displayName!!)
                 file.writeBytes(byteArray)
                 filePath = file.absolutePath
                 RECIEPT = ByteArray(0)
@@ -495,15 +512,15 @@ class AddNew : AppCompatActivity() {
             val displayName = getFileName(contentResolver, uri)
             val fileReader = inputStream?.readBytes()!!
             val byteArraySizeInMB = fileReader.size / (1024.0 * 1024.0)
-            if(byteArraySizeInMB <= 1.0){
+            if (byteArraySizeInMB <= 1.0) {
                 RECIEPT = fileReader
                 hasFile = false
 
-            }else{
-                val file = File(applicationContext.dataDir,displayName!!)
+            } else {
+                val file = File(applicationContext.dataDir, displayName!!)
                 file.writeBytes(fileReader)
                 filePath = file.absolutePath
-                RECIEPT= ByteArray(0)
+                RECIEPT = ByteArray(0)
                 hasFile = true
 
             }

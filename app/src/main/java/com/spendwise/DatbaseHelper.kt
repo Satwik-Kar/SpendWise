@@ -74,8 +74,8 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_BLOB_RECEIPT, blobFileData)
             put(COLUMN_BLOB_TYPE, blobType)
             put(COLUMN_DESCRIPTION, description)
-            put(COLUMN_HAS_FILE,hasFile)
-            put(COLUMN_FILE_PATH,filePath)
+            put(COLUMN_HAS_FILE, hasFile)
+            put(COLUMN_FILE_PATH, filePath)
 
         }
         db.insert(TABLE_NAME, null, values)
@@ -155,10 +155,52 @@ class DatabaseHelper(context: Context) :
         val db = readableDatabase
         return db.query(TABLE_NAME, null, null, null, null, null, null)
     }
+
     fun retrieveDataById(id: String): Cursor? {
         val db = readableDatabase
         val selection = "_id = ?"
         val selectionArgs = arrayOf(id)
         return db.query(TABLE_NAME, null, selection, selectionArgs, null, null, null)
     }
+
+    fun deleteDataById(id: String) {
+        val db = writableDatabase
+        val deleteQuery = "DELETE FROM $TABLE_NAME WHERE _id = $id"
+        db.execSQL(deleteQuery)
+        db.close()
+    }
+
+    fun updateData(
+        id: String,
+        title: String,
+        date: String,
+        category: String,
+        p_method: String,
+        amount: String,
+        blobFileData: ByteArray?,
+        blobType: String?,
+        description: String?,
+        hasFile: String?,
+        filePath: String?
+    ) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_TITLE, title)
+            put(COLUMN_DATE, date)
+            put(COLUMN_CATEGORY, category)
+            put(COLUMN_P_METHOD, p_method)
+            put(COLUMN_AMOUNT, amount)
+            blobFileData?.let { put(COLUMN_BLOB_RECEIPT, it) }
+            blobType?.let { put(COLUMN_BLOB_TYPE, it) }
+            description?.let { put(COLUMN_DESCRIPTION, it) }
+            hasFile?.let { put(COLUMN_HAS_FILE, it) }
+            filePath?.let { put(COLUMN_FILE_PATH, it) }
+        }
+        val selection = "_id = ?"
+        val selectionArgs = arrayOf(id)
+        db.update(TABLE_NAME, values, selection, selectionArgs)
+        db.close()
+    }
+
+
 }
