@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
 import java.io.File
 import java.io.IOException
 
@@ -73,7 +74,7 @@ class OpenExpense : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_expense)
         delete = findViewById(R.id.floatingActionButtonDelete)
-        edit = findViewById(R.id.floatingActionButtonEdit)
+
         title = intent.getStringExtra("title").toString()
         id = intent.getStringExtra("id").toString()
         date = intent.getStringExtra("date").toString()
@@ -90,6 +91,7 @@ class OpenExpense : AppCompatActivity() {
         firstViewElement.findViewById<TextView>(R.id.openExpense_p_method).text = pMethod
         firstViewElement.findViewById<TextView>(R.id.openExpense_Desc).text = desc
         firstViewElement.findViewById<TextView>(R.id.openExpense_amount).text = amount
+        edit = findViewById(R.id.floatingActionButtonEdit)
         imageViewViewer = secondViewElementImage.findViewById(R.id.imageViewViewer)
         nextBtn = secondViewElementImage.findViewById(R.id.nextBtn)
         prevBtn = secondViewElementImage.findViewById(R.id.previousBtn)
@@ -137,6 +139,49 @@ class OpenExpense : AppCompatActivity() {
 
         }
         edit.setOnClickListener {
+
+            val alert = AlertDialog.Builder(this@OpenExpense)
+            alert.setTitle("Edit")
+            alert.setMessage("Edit the details and click OK to save.")
+            val view = layoutInflater.inflate(R.layout.edit_view, null)
+            alert.setView(view)
+            val titleInner = view.findViewById<TextInputEditText>(R.id.expenseEditTitle)
+            val amountInner = view.findViewById<TextInputEditText>(R.id.expenseEditAmount)
+            val descInner = view.findViewById<TextInputEditText>(R.id.expenseEditDesc)
+            titleInner.setText(title)
+            amountInner.setText(amount)
+            descInner.setText(desc)
+            alert.setPositiveButton("Ok") { _, _ ->
+
+
+                if (titleInner.text!!.isNotEmpty() && amountInner.text!!.isNotEmpty() && descInner.text!!.isNotEmpty()) {
+                    val database = DatabaseHelper(this@OpenExpense)
+                    database.updateData(
+                        id,
+                        titleInner.text.toString(),
+                        amountInner.text.toString(),
+                        descInner.text.toString()
+                    )
+                    startActivity(Intent(this@OpenExpense, HomeActivity::class.java))
+                    Toast.makeText(this@OpenExpense, "Edited Successfully", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+
+                    Toast.makeText(
+                        this@OpenExpense,
+                        "Fill up the required fields.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+
+
+            }
+            alert.setNegativeButton("Cancel") { _, _ ->
+                Toast.makeText(this@OpenExpense, "Cancelled", Toast.LENGTH_SHORT).show()
+
+            }
+            alert.show()
 
         }
         val database = DatabaseHelper(applicationContext)

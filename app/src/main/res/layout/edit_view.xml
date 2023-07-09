@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="20sp">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/expenseEdit_title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawableTint="@color/app_theme"
+        android:hint="Edit Amount"
+        app:boxCornerRadiusTopStart="18dp"
+        app:boxStrokeColor="@color/app_theme"
+        app:boxStrokeWidth="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expenseEdit_amount"
+        app:startIconDrawable="@drawable/baseline_attach_money_24"
+        app:startIconTint="@color/app_theme">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/expenseEditAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/expenseEdit_desc"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawableTint="@color/app_theme"
+        android:hint="Edit Description"
+        app:boxCornerRadiusTopStart="18dp"
+        app:boxStrokeColor="@color/app_theme"
+        app:boxStrokeWidth="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expenseEdit_title"
+        app:startIconDrawable="@drawable/baseline_description_24"
+        app:startIconTint="@color/app_theme">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/expenseEditDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/expenseEdit_amount"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/baseline_title_24"
+        android:drawableTint="@color/app_theme"
+        android:hint="Edit Title"
+        app:boxCornerRadiusTopStart="18dp"
+        app:boxStrokeColor="@color/app_theme"
+        app:boxStrokeWidth="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/baseline_title_24"
+        app:startIconTint="@color/app_theme">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/expenseEditTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -173,28 +173,15 @@ class DatabaseHelper(context: Context) :
     fun updateData(
         id: String,
         title: String,
-        date: String,
-        category: String,
-        p_method: String,
         amount: String,
-        blobFileData: ByteArray?,
-        blobType: String?,
-        description: String?,
-        hasFile: String?,
-        filePath: String?
-    ) {
+        description: String,
+
+        ) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_TITLE, title)
-            put(COLUMN_DATE, date)
-            put(COLUMN_CATEGORY, category)
-            put(COLUMN_P_METHOD, p_method)
             put(COLUMN_AMOUNT, amount)
-            blobFileData?.let { put(COLUMN_BLOB_RECEIPT, it) }
-            blobType?.let { put(COLUMN_BLOB_TYPE, it) }
-            description?.let { put(COLUMN_DESCRIPTION, it) }
-            hasFile?.let { put(COLUMN_HAS_FILE, it) }
-            filePath?.let { put(COLUMN_FILE_PATH, it) }
+            put(COLUMN_DESCRIPTION, description)
         }
         val selection = "_id = ?"
         val selectionArgs = arrayOf(id)
