@@ -31,65 +31,85 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val stateAppLock =
+            getSharedPreferences("credentials", MODE_PRIVATE).getBoolean("setting_app_lock", true)
+        if (stateAppLock) {
+            val bm = BiometricManager.from(this)
+            when (bm.canAuthenticate()) {
 
-        val bm = BiometricManager.from(this)
-        when (bm.canAuthenticate()) {
+                BiometricManager.BIOMETRIC_SUCCESS -> {
+                }
 
-            BiometricManager.BIOMETRIC_SUCCESS -> {
-            }
-
-            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-
-            }
-
-            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-            }
-
-            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-            }
-        }
-        val executor = ContextCompat.getMainExecutor(this)
-        biometricPrompt = BiometricPrompt(this@MainActivity,
-            executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-
-                @SuppressLint("RestrictedApi")
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                    Toast.makeText(this@MainActivity, errString, Toast.LENGTH_SHORT).show()
-
-                    finishAffinity()
-
+                BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
 
                 }
 
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-                    Handler().postDelayed({
-                        val intent = Intent(this@MainActivity, HomeActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }, SPLASH_TIMEOUT)
-
-
+                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
                 }
 
-            })
-        biometricPromptInfo = PromptInfo.Builder().setTitle("SpendWise Security")
-            .setDescription("Use biometric sensors to move inside SpendWise")
-            .setDeviceCredentialAllowed(true).build()
-        val signedIn = getSharedPreferences("credentials", MODE_PRIVATE).getBoolean(
-            "hasAccountLoggedIn", false
-        )
-        if (signedIn) {
-            biometricPrompt.authenticate(biometricPromptInfo)
+                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                }
+            }
+            val executor = ContextCompat.getMainExecutor(this)
+            biometricPrompt = BiometricPrompt(this@MainActivity,
+                executor,
+                object : BiometricPrompt.AuthenticationCallback() {
+
+                    @SuppressLint("RestrictedApi")
+                    override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                        super.onAuthenticationError(errorCode, errString)
+                        Toast.makeText(this@MainActivity, errString, Toast.LENGTH_SHORT).show()
+
+                        finishAffinity()
+
+
+                    }
+
+                    override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                        super.onAuthenticationSucceeded(result)
+                        Handler().postDelayed({
+                            val intent = Intent(this@MainActivity, HomeActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }, SPLASH_TIMEOUT)
+
+
+                    }
+
+                })
+            biometricPromptInfo = PromptInfo.Builder().setTitle("SpendWise Security")
+                .setDescription("Use biometric sensors to move inside SpendWise")
+                .setDeviceCredentialAllowed(true).build()
+            val signedIn = getSharedPreferences("credentials", MODE_PRIVATE).getBoolean(
+                "hasAccountLoggedIn", false
+            )
+            if (signedIn) {
+                biometricPrompt.authenticate(biometricPromptInfo)
+            } else {
+                val gso =
+                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
+                        .build()
+                mGoogleSignInClient = GoogleSignIn.getClient(this@MainActivity, gso)
+                signIn()
+
+            }
         } else {
-            val gso =
-                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
-                    .build()
-            mGoogleSignInClient = GoogleSignIn.getClient(this@MainActivity, gso)
-            signIn()
-
+            val signedIn = getSharedPreferences("credentials", MODE_PRIVATE).getBoolean(
+                "hasAccountLoggedIn", false
+            )
+            if (signedIn) {
+                Handler().postDelayed({
+                    val intent = Intent(this@MainActivity, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }, SPLASH_TIMEOUT)
+            } else {
+                val gso =
+                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
+                        .build()
+                mGoogleSignInClient = GoogleSignIn.getClient(this@MainActivity, gso)
+                signIn()
+            }
         }
 
 
