@@ -250,7 +250,7 @@ class HomeActivity : Activity() {
             val dateView = holder.date
             val amountView = holder.amount
             val cardView = holder.cardView
-
+            holder.imageView.setImageResource(R.drawable.baseline_auto_awesome_24)
             titleView.text = titles[position]
             dateView.text = dates[position]
             amountView.text = amounts[position]
@@ -283,6 +283,7 @@ class HomeActivity : Activity() {
         val date: TextView = itemView.findViewById(R.id.date_view)
         val amount: TextView = itemView.findViewById(R.id.amount_view)
         val cardView: CardView = itemView.findViewById(R.id.listExpenses_cardView)
+        val imageView: ImageView = itemView.findViewById(R.id.imageView2)
 
     }
 }
