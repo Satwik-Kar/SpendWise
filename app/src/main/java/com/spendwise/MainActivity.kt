@@ -1,6 +1,5 @@
 package com.spendwise
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -51,11 +50,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             val executor = ContextCompat.getMainExecutor(this)
-            biometricPrompt = BiometricPrompt(this@MainActivity,
+            biometricPrompt = BiometricPrompt(
+                this@MainActivity,
                 executor,
                 object : BiometricPrompt.AuthenticationCallback() {
-
-                    @SuppressLint("RestrictedApi")
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         super.onAuthenticationError(errorCode, errString)
                         Toast.makeText(this@MainActivity, errString, Toast.LENGTH_SHORT).show()

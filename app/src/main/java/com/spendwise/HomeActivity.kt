@@ -175,8 +175,7 @@ class HomeActivity : Activity() {
 
                 ) { _, _ ->
                     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build()
+                        .requestEmail().build()
                     val googleSignInClient = GoogleSignIn.getClient(this, gso)
                     googleSignInClient.signOut()
                     getSharedPreferences("credentials", MODE_PRIVATE).edit()
