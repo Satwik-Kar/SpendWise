@@ -163,6 +163,7 @@ class OpenExpense : AppCompatActivity() {
                         descInner.text.toString()
                     )
                     startActivity(Intent(this@OpenExpense, HomeActivity::class.java))
+                    finishAffinity()
                     Toast.makeText(this@OpenExpense, "Edited Successfully", Toast.LENGTH_SHORT)
                         .show()
                 } else {
