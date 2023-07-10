@@ -1,12 +1,10 @@
 package com.spendwise
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.ViewGroup
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -80,8 +78,9 @@ class MainActivity : Activity() {
             builder.setView(view)
             builder.setPositiveButton("Next") { _, _ ->
                 val response = view.findViewById<Spinner>(R.id.spinner).selectedItem
-                getSharedPreferences("credentials", MODE_PRIVATE).edit().putString("country",response.toString()).apply()
-                startActivity(Intent(this@MainActivity,HomeActivity::class.java))
+                getSharedPreferences("credentials", MODE_PRIVATE).edit()
+                    .putString("country", response.toString()).apply()
+                startActivity(Intent(this@MainActivity, HomeActivity::class.java))
                 finishAffinity()
             }
             builder.show()

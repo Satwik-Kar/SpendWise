@@ -168,9 +168,7 @@ class OpenExpense : AppCompatActivity() {
                 } else {
 
                     Toast.makeText(
-                        this@OpenExpense,
-                        "Fill up the required fields.",
-                        Toast.LENGTH_SHORT
+                        this@OpenExpense, "Fill up the required fields.", Toast.LENGTH_SHORT
                     ).show()
 
                 }
