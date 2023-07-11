@@ -7,13 +7,15 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
-class DatabaseHelper(context: Context) :
+class DatabaseHelper(context: Context, userID: String) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+
+
+    private val TABLE_NAME = userID
 
     companion object {
         private const val DATABASE_NAME = "ExpenseDetails.db"
         private const val DATABASE_VERSION = 1
-        private const val TABLE_NAME = "Expenses"
         private const val COLUMN_TITLE = "title"
         private const val COLUMN_DATE = "date"
         private const val COLUMN_CATEGORY = "category"
@@ -23,7 +25,6 @@ class DatabaseHelper(context: Context) :
         private const val COLUMN_BLOB_TYPE = "BlobDataType"
         private const val COLUMN_HAS_FILE = "HasFile"
         private const val COLUMN_FILE_PATH = "FilePath"
-
         private const val COLUMN_DESCRIPTION = "description"
     }
 

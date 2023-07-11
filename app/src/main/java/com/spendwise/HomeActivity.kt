@@ -83,8 +83,10 @@ class HomeActivity : Activity() {
         descriptions = ArrayList()
         ids = ArrayList()
         filePaths = ArrayList()
+        val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
+        val tableName = removeDotsAndNumbers(email)
         try {
-            val database = DatabaseHelper(this)
+            val database = DatabaseHelper(this, tableName)
             val cursor = database.retrieveData()!!
             cursor.use {
                 while (it.moveToNext()) {
@@ -215,6 +217,11 @@ class HomeActivity : Activity() {
         }
 
 
+    }
+
+    fun removeDotsAndNumbers(email: String): String {
+        val pattern = Regex("[.0-9@]")
+        return pattern.replace(email, "")
     }
 
     private fun getWishes(): String {

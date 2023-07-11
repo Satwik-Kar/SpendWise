@@ -134,8 +134,10 @@ class Settings : AppCompatActivity() {
                         .build()
                 val googleSignInClient = GoogleSignIn.getClient(this, gso)
                 googleSignInClient.signOut()
-
-                DatabaseHelper(this@Settings).deleteAllData()
+                val email =
+                    getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
+                val tableName = removeDotsAndNumbers(email)
+                DatabaseHelper(this@Settings, tableName).deleteAllData()
                 Toast.makeText(this@Settings, "All app data deleted", Toast.LENGTH_SHORT).show()
                 getSharedPreferences("credentials", MODE_PRIVATE).edit().clear().apply()
                 finishAffinity()
@@ -156,5 +158,10 @@ class Settings : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun removeDotsAndNumbers(email: String): String {
+        val pattern = Regex("[.0-9@]")
+        return pattern.replace(email, "")
     }
 }
