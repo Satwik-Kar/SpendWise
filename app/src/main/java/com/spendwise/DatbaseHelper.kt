@@ -189,5 +189,10 @@ class DatabaseHelper(context: Context) :
         db.close()
     }
 
+    fun deleteAllData() {
+        val db = writableDatabase
+        db.delete(TABLE_NAME, null, null)
+        db.close()
+    }
 
 }

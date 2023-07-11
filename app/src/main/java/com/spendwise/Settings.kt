@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
+
 class Settings : AppCompatActivity() {
     private lateinit var switch: SwitchCompat
     private lateinit var logoutView: CardView
@@ -116,6 +117,41 @@ class Settings : AppCompatActivity() {
             alert.setTitle("Choose a country")
             alert.setMessage("Choose a country to use the currency for expenses.")
             alert.create().show()
+
+        }
+        deleteData.setOnClickListener {
+            val alert = AlertDialog.Builder(this@Settings)
+            alert.setTitle("Delete App data")
+                .setMessage("Alert! All app data including your login information and expenses will be deleted and cannot be undone.Are you sure?")
+            alert.setPositiveButton(
+                "Delete"
+
+
+            ) { _, _ ->
+
+                val gso =
+                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
+                        .build()
+                val googleSignInClient = GoogleSignIn.getClient(this, gso)
+                googleSignInClient.signOut()
+
+                DatabaseHelper(this@Settings).deleteAllData()
+                Toast.makeText(this@Settings, "All app data deleted", Toast.LENGTH_SHORT).show()
+                getSharedPreferences("credentials", MODE_PRIVATE).edit().clear().apply()
+                finishAffinity()
+                Toast.makeText(this@Settings, "Deleted App data", Toast.LENGTH_LONG).show()
+
+
+            }
+            alert.setNegativeButton("No") { _, _ ->
+
+                Toast.makeText(
+                    this@Settings, "Deleting data cancelled", Toast.LENGTH_SHORT
+                ).show()
+
+            }
+            alert.create().show()
+
 
         }
 
