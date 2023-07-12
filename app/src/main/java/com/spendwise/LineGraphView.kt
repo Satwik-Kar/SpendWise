@@ -19,7 +19,7 @@ class LineGraphView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     companion object {
-        private const val MAX_EXPENSE = 1000 // Maximum expense value for scaling
+        private var MAX_EXPENSE = 1000 // Maximum expense value for scaling
         private const val GRAPH_PADDING = 25 // Padding around the graph
         private const val LINE_STROKE_WIDTH = 1f // Stroke width of the line
         private const val TEXT_SIZE = 28f // Text size for expense values and month names
@@ -55,6 +55,11 @@ class LineGraphView @JvmOverloads constructor(
     fun setData(expensesData: ArrayList<String>, monthsData: ArrayList<String>) {
         expenses = expensesData.map { it.toInt() }
         months = monthsData
+        invalidate()
+    }
+
+    fun setMaxExpense(maxExpense: Int) {
+        MAX_EXPENSE = maxExpense
         invalidate()
     }
 

@@ -209,7 +209,7 @@ class HomeActivity : Activity() {
         val lineGraphView = LineGraphView(this@HomeActivity)
         val expensesData = ArrayList<String>()
         expensesData.add("200")
-        expensesData.add("300")
+        expensesData.add("100")
         expensesData.add("100")
         expensesData.add("0")
         val monthData = ArrayList<String>()
@@ -217,7 +217,7 @@ class HomeActivity : Activity() {
         monthData.add("Feb")
         monthData.add("Mar")
         monthData.add("Apr")
-
+        lineGraphView.setMaxExpense(250)
         lineGraphView.setData(expensesData, monthData)
 
         barLinearLayout.addView(lineGraphView)
