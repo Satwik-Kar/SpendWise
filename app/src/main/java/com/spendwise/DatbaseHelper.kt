@@ -29,7 +29,7 @@ class DatabaseHelper(context: Context, userID: String) :
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        // Create your database table
+
         val createTableQuery = "CREATE TABLE $TABLE_NAME " +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$COLUMN_TITLE TEXT, " +
@@ -195,5 +195,6 @@ class DatabaseHelper(context: Context, userID: String) :
         db.delete(TABLE_NAME, null, null)
         db.close()
     }
+
 
 }

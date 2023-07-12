@@ -37,7 +37,7 @@ class LineGraphView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
     }
     private val linePath: Path = Path()
-    private var expenses: List<Int>? = null
+    private var expenses: List<Double>? = null
     private var months: List<String>? = null
 
     init {
@@ -53,7 +53,7 @@ class LineGraphView @JvmOverloads constructor(
     }
 
     fun setData(expensesData: ArrayList<String>, monthsData: ArrayList<String>) {
-        expenses = expensesData.map { it.toInt() }
+        expenses = expensesData.map { it.toDouble() }
         months = monthsData
         invalidate()
     }
@@ -84,7 +84,7 @@ class LineGraphView @JvmOverloads constructor(
         for (i in expensesList.indices) {
             val x = GRAPH_PADDING.toFloat() + i * xInterval
             val y = (height - GRAPH_PADDING).toFloat() - expensesList[i] * yScale
-            linePath.lineTo(x, y)
+            linePath.lineTo(x, y.toFloat())
         }
 
         canvas.drawPath(linePath, linePaint)
@@ -106,11 +106,11 @@ class LineGraphView @JvmOverloads constructor(
 
             // Draw expense value above the peak
             val expenseValue = expensesList[i].toString()
-            canvas.drawText(expenseValue, x, y - TEXT_SIZE, textPaint)
+            canvas.drawText(expenseValue, x, (y - TEXT_SIZE).toFloat(), textPaint)
 
             // Draw month name below the peak
             val month = monthsList[i]
-            canvas.drawText(month, x, y + 2 * TEXT_SIZE, textPaint)
+            canvas.drawText(month, x, (y + 2 * TEXT_SIZE).toFloat(), textPaint)
         }
     }
 }

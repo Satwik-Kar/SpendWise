@@ -25,6 +25,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class HomeActivity : Activity() {
@@ -207,17 +209,39 @@ class HomeActivity : Activity() {
 
         addNewBtn = this.findViewById(R.id.addNew)
         val lineGraphView = LineGraphView(this@HomeActivity)
+//        val map = HashMap<String, String>()
+//        map["Jan"] = "01"
+//        map["Feb"] = "02"
+//        map["Mar"] = "03"
+//        map["Apr"] = "04"
+//        map["May"] = "05"
+//        map["Jun"] = "06"
+//        map["Jul"] = "07"
+//        map["Aug"] = "08"
+//        map["Sep"] = "09"
+//        map["Oct"] = "10"
+//        map["Nov"] = "11"
+//        map["Dec"] = "12"
+
+        val monthData = fetchLastSixMonths()
         val expensesData = ArrayList<String>()
-        expensesData.add("200")
+
+        val email1 = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
+        val tableName1 = removeDotsAndNumbers(email1)
+        val database1 = DatabaseHelper(this, tableName1)
+
+
+
         expensesData.add("100")
+        expensesData.add("250")
+        expensesData.add("230")
+        expensesData.add("440")
+        expensesData.add("230")
         expensesData.add("100")
-        expensesData.add("0")
-        val monthData = ArrayList<String>()
-        monthData.add("Jan")
-        monthData.add("Feb")
-        monthData.add("Mar")
-        monthData.add("Apr")
-        lineGraphView.setMaxExpense(250)
+
+
+
+        lineGraphView.setMaxExpense(460)
         lineGraphView.setData(expensesData, monthData)
 
         barLinearLayout.addView(lineGraphView)
@@ -228,6 +252,23 @@ class HomeActivity : Activity() {
         }
 
 
+    }
+
+    private fun fetchLastSixMonths(): ArrayList<String> {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("MMM", Locale.getDefault())
+
+        val lastSixMonths = ArrayList<String>()
+
+        for (i in 1..6) {
+            calendar.add(Calendar.MONTH, -1)
+            val previousMonth = calendar.time
+            lastSixMonths.add(dateFormat.format(previousMonth))
+        }
+
+
+
+        return lastSixMonths.reversed() as ArrayList<String>
     }
 
     private fun removeDotsAndNumbers(email: String): String {

@@ -395,7 +395,7 @@ class AddNew : AppCompatActivity() {
                     DATE,
                     CATEGORY,
                     P_METHOD,
-                    "$sign $AMOUNT",
+                    AMOUNT,
                     RECIEPT,
                     blobType,
                     DESCRIPTION,
@@ -411,7 +411,7 @@ class AddNew : AppCompatActivity() {
                     DATE,
                     CATEGORY,
                     P_METHOD,
-                    "$sign $AMOUNT",
+                    AMOUNT,
                     blobType,
                     RECIEPT,
                     hasFile.toString(),
@@ -421,12 +421,12 @@ class AddNew : AppCompatActivity() {
             }
 
             3 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT", DESCRIPTION)
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, DESCRIPTION)
                 Log.e("database", "successfullmine")
             }
 
             4 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, "$sign $AMOUNT")
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT)
 
             }
         }
@@ -567,7 +567,7 @@ class AddNew : AppCompatActivity() {
         }
     }
 
-    fun removeDotsAndNumbers(email: String): String {
+    private fun removeDotsAndNumbers(email: String): String {
         val pattern = Regex("[.0-9@]")
         return pattern.replace(email, "")
     }

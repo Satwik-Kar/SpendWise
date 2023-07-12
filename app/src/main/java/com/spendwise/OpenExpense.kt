@@ -188,8 +188,9 @@ class OpenExpense : AppCompatActivity() {
             alert.show()
 
         }
-        val uID = getSharedPreferences("credentials", MODE_PRIVATE).getString("uid", null)!!
-        val database = DatabaseHelper(applicationContext, uID)
+        val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
+        val refreshed = removeDotsAndNumbers(email)
+        val database = DatabaseHelper(applicationContext, refreshed)
         val cursor = database.retrieveDataById(id)
         cursor.use {
             while (cursor != null && cursor.moveToNext()) {
