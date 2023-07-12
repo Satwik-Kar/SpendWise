@@ -84,7 +84,7 @@ class OpenExpense : AppCompatActivity() {
         amount = intent.getStringExtra("amount").toString()
         val firstViewElement = layoutInflater.inflate(R.layout.open_expense_first_element, null)
         secondViewElementImage = layoutInflater.inflate(R.layout.image_viewer, null)
-        linearLayout = this.findViewById<LinearLayout>(R.id.openExpenseLinearLayout)
+        linearLayout = this.findViewById(R.id.openExpenseLinearLayout)
         firstViewElement.findViewById<TextView>(R.id.openExpense_title).text = title
         firstViewElement.findViewById<TextView>(R.id.openExpense_date).text = date
         firstViewElement.findViewById<TextView>(R.id.openExpense_category).text = category
@@ -155,7 +155,6 @@ class OpenExpense : AppCompatActivity() {
             amountInner.setText(amount)
             descInner.setText(desc)
             alert.setPositiveButton("Ok") { _, _ ->
-
 
                 if (titleInner.text!!.isNotEmpty() && amountInner.text!!.isNotEmpty() && descInner.text!!.isNotEmpty()) {
                     val email =

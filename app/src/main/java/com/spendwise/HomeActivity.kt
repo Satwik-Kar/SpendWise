@@ -206,10 +206,16 @@ class HomeActivity : Activity() {
 
 
         addNewBtn = this.findViewById(R.id.addNew)
-        val animatedView = BarChartView(
-            this, arrayListOf(100f, 200f, 300f, 400f, 500f), arrayListOf("s", "s", "s", "s", "s")
-        )
-        barLinearLayout.addView(animatedView)
+        val lineGraphView = LineGraphView(this@HomeActivity)
+        val expensesData = ArrayList<String>()
+        expensesData.add("200")
+        expensesData.add("300")
+        expensesData.add("100")
+        expensesData.add("0")
+
+        lineGraphView.setData(expensesData)
+
+        barLinearLayout.addView(lineGraphView)
         addNewBtn.setOnClickListener {
             val intent = Intent(this@HomeActivity, AddNew::class.java)
             intent.type = "new"
@@ -219,7 +225,7 @@ class HomeActivity : Activity() {
 
     }
 
-    fun removeDotsAndNumbers(email: String): String {
+    private fun removeDotsAndNumbers(email: String): String {
         val pattern = Regex("[.0-9@]")
         return pattern.replace(email, "")
     }
