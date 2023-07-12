@@ -212,8 +212,13 @@ class HomeActivity : Activity() {
         expensesData.add("300")
         expensesData.add("100")
         expensesData.add("0")
+        val monthData = ArrayList<String>()
+        monthData.add("Jan")
+        monthData.add("Feb")
+        monthData.add("Mar")
+        monthData.add("Apr")
 
-        lineGraphView.setData(expensesData)
+        lineGraphView.setData(expensesData, monthData)
 
         barLinearLayout.addView(lineGraphView)
         addNewBtn.setOnClickListener {

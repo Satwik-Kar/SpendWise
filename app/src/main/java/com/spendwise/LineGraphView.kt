@@ -1,6 +1,5 @@
 package com.spendwise
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -20,19 +19,26 @@ class LineGraphView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     companion object {
-        private const val MAX_EXPENSE = 1000
-        private const val GRAPH_PADDING = 5
-        private const val LINE_STROKE_WIDTH = 1f
+        private const val MAX_EXPENSE = 1000 // Maximum expense value for scaling
+        private const val GRAPH_PADDING = 25 // Padding around the graph
+        private const val LINE_STROKE_WIDTH = 1f // Stroke width of the line
+        private const val TEXT_SIZE = 28f // Text size for expense values and month names
     }
 
     private val linePaint: Paint = Paint().apply {
-        color = resources.getColor(R.color.app_theme)
+        color = resources.getColor(R.color.app_theme_transparent)
         strokeWidth = LINE_STROKE_WIDTH
         style = Paint.Style.STROKE
     }
     private val gradientPaint: Paint = Paint()
+    private val textPaint: Paint = Paint().apply {
+        color = Color.BLACK
+        textSize = TEXT_SIZE
+        textAlign = Paint.Align.CENTER
+    }
     private val linePath: Path = Path()
     private var expenses: List<Int>? = null
+    private var months: List<String>? = null
 
     init {
         gradientPaint.shader = LinearGradient(
@@ -40,23 +46,24 @@ class LineGraphView @JvmOverloads constructor(
             0f,
             0f,
             height.toFloat(),
-            Color.WHITE,
+            resources.getColor(R.color.app_theme_transparent),
             resources.getColor(R.color.app_theme_transparent),
             Shader.TileMode.CLAMP
         )
     }
 
-    fun setData(expensesData: ArrayList<String>) {
+    fun setData(expensesData: ArrayList<String>, monthsData: ArrayList<String>) {
         expenses = expensesData.map { it.toInt() }
+        months = monthsData
         invalidate()
     }
 
-    @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         val expensesList = expenses
-        if (expensesList == null || expensesList.size < 2) {
+        val monthsList = months
+        if (expensesList == null || monthsList == null || expensesList.size < 2 || monthsList.size < 2) {
             return
         }
 
@@ -65,6 +72,7 @@ class LineGraphView @JvmOverloads constructor(
         val xInterval = (width - 2 * GRAPH_PADDING).toFloat() / (expensesList.size - 1)
         val yScale = (height - 2 * GRAPH_PADDING).toFloat() / MAX_EXPENSE
 
+        // Draw line path
         linePath.reset()
         linePath.moveTo(GRAPH_PADDING.toFloat(), (height - GRAPH_PADDING).toFloat())
 
@@ -75,14 +83,29 @@ class LineGraphView @JvmOverloads constructor(
         }
 
         canvas.drawPath(linePath, linePaint)
+
+        // Draw gradient
         val gradientPath = Path(linePath)
         val bounds = RectF()
         linePath.computeBounds(bounds, true)
         gradientPath.lineTo(bounds.right, height.toFloat())
         gradientPath.lineTo(bounds.left, height.toFloat())
-
         gradientPath.close()
 
         canvas.drawPath(gradientPath, gradientPaint)
+
+        // Draw expense values and month names
+        for (i in expensesList.indices) {
+            val x = GRAPH_PADDING.toFloat() + i * xInterval
+            val y = (height - GRAPH_PADDING).toFloat() - expensesList[i] * yScale
+
+            // Draw expense value above the peak
+            val expenseValue = expensesList[i].toString()
+            canvas.drawText(expenseValue, x, y - TEXT_SIZE, textPaint)
+
+            // Draw month name below the peak
+            val month = monthsList[i]
+            canvas.drawText(month, x, y + 2 * TEXT_SIZE, textPaint)
+        }
     }
 }
