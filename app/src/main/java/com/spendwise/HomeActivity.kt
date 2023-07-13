@@ -42,6 +42,7 @@ class HomeActivity : Activity() {
     private lateinit var ids: ArrayList<String>
     private lateinit var amounts: ArrayList<String>
     private lateinit var filePaths: ArrayList<String>
+    private lateinit var signs: ArrayList<String>
 
     lateinit var addNewBtn: FloatingActionButton
     lateinit var recyclerViewListExpenses: RecyclerView
@@ -50,6 +51,11 @@ class HomeActivity : Activity() {
     private val COLUMN_CATEGORY = "category"
     private val COLUMN_P_METHOD = "p_method"
     private val COLUMN_AMOUNT = "amount"
+    private val COLUMN_AMOUNT_SIGN = "amount_sign"
+    private val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
+    private val COLUMN_BLOB_TYPE = "BlobDataType"
+    private val COLUMN_HAS_FILE = "HasFile"
+    private val COLUMN_FILE_PATH = "FilePath"
     private val COLUMN_DESCRIPTION = "description"
 
     @SuppressLint("Range", "SetTextI18n")
@@ -85,6 +91,7 @@ class HomeActivity : Activity() {
         descriptions = ArrayList()
         ids = ArrayList()
         filePaths = ArrayList()
+        signs = ArrayList()
         val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
         val tableName = removeDotsAndNumbers(email)
         try {
@@ -99,7 +106,7 @@ class HomeActivity : Activity() {
                     val pMethod = it.getString(it.getColumnIndex(COLUMN_P_METHOD))
                     val amount = it.getString(it.getColumnIndex(COLUMN_AMOUNT))
                     val description = it.getString(it.getColumnIndex(COLUMN_DESCRIPTION))
-
+                    val sign = it.getString(it.getColumnIndex(COLUMN_AMOUNT_SIGN))
                     ids.add(id)
                     titles.add(title)
                     dates.add(date)
@@ -107,7 +114,7 @@ class HomeActivity : Activity() {
                     pMethods.add(pMethod)
                     amounts.add(amount)
                     descriptions.add(description)
-
+                    signs.add(sign)
 
                 }
             }
@@ -121,7 +128,8 @@ class HomeActivity : Activity() {
             DividerItemDecoration(recyclerViewListExpenses.context, LinearLayoutManager.VERTICAL)
         recyclerViewListExpenses.addItemDecoration(dividerItemDecoration)
         if (titles.isNotEmpty()) {
-            val adapter = ListAdapter(titles, dates, categories, pMethods, descriptions, amounts)
+            val adapter =
+                ListAdapter(titles, dates, categories, pMethods, descriptions, amounts, signs)
             recyclerViewListExpenses.adapter = adapter
             recyclerViewListExpenses.layoutManager = LinearLayoutManager(this)
 
@@ -209,19 +217,6 @@ class HomeActivity : Activity() {
 
         addNewBtn = this.findViewById(R.id.addNew)
         val lineGraphView = LineGraphView(this@HomeActivity)
-//        val map = HashMap<String, String>()
-//        map["Jan"] = "01"
-//        map["Feb"] = "02"
-//        map["Mar"] = "03"
-//        map["Apr"] = "04"
-//        map["May"] = "05"
-//        map["Jun"] = "06"
-//        map["Jul"] = "07"
-//        map["Aug"] = "08"
-//        map["Sep"] = "09"
-//        map["Oct"] = "10"
-//        map["Nov"] = "11"
-//        map["Dec"] = "12"
 
         val monthData = ArrayList<String>()
         val expensesData = ArrayList<String>()
@@ -250,7 +245,12 @@ class HomeActivity : Activity() {
             doubleExpenseData.add(i.toDouble())
         }
 
-        val max = doubleExpenseData.max()
+        var max: Double = 0.0
+        try {
+            max = doubleExpenseData.max()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         lineGraphView.setMaxExpense((max + 300).toInt())
         lineGraphView.setData(expensesData, monthData)
 
@@ -295,7 +295,8 @@ class HomeActivity : Activity() {
         var categories: ArrayList<String>,
         var p_methods: ArrayList<String>,
         var descriptions: ArrayList<String>,
-        var amounts: ArrayList<String>
+        var amounts: ArrayList<String>,
+        var signs: ArrayList<String>
     ) : RecyclerView.Adapter<ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
@@ -312,7 +313,7 @@ class HomeActivity : Activity() {
             holder.imageView.setImageResource(R.drawable.baseline_auto_awesome_24)
             titleView.text = titles[position]
             dateView.text = dates[position]
-            amountView.text = amounts[position]
+            amountView.text = "${signs[position] + amounts[position]}"
             cardView.setOnClickListener {
                 val intent = Intent(this@HomeActivity, OpenExpense::class.java)
                 intent.putExtra("id", ids[position])

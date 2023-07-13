@@ -386,7 +386,7 @@ class AddNew : AppCompatActivity() {
         }
         val defaultCountry =
             getSharedPreferences("credentials", MODE_PRIVATE).getString("country", "India")
-        val sign = countryCurrencyMap[defaultCountry]
+        val sign = countryCurrencyMap[defaultCountry]!!
 
         when (a) {
             1 -> {
@@ -395,7 +395,7 @@ class AddNew : AppCompatActivity() {
                     DATE,
                     CATEGORY,
                     P_METHOD,
-                    AMOUNT,
+                    AMOUNT, sign,
                     RECIEPT,
                     blobType,
                     DESCRIPTION,
@@ -411,7 +411,7 @@ class AddNew : AppCompatActivity() {
                     DATE,
                     CATEGORY,
                     P_METHOD,
-                    AMOUNT,
+                    AMOUNT, sign,
                     blobType,
                     RECIEPT,
                     hasFile.toString(),
@@ -421,12 +421,12 @@ class AddNew : AppCompatActivity() {
             }
 
             3 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, DESCRIPTION)
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, sign, DESCRIPTION)
                 Log.e("database", "successfullmine")
             }
 
             4 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT)
+                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, sign)
 
             }
         }

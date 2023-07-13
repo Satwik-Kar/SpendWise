@@ -21,6 +21,7 @@ class DatabaseHelper(context: Context, userID: String) :
         private const val COLUMN_CATEGORY = "category"
         private const val COLUMN_P_METHOD = "p_method"
         private const val COLUMN_AMOUNT = "amount"
+        private const val COLUMN_AMOUNT_SIGN = "amount_sign"
         private const val COLUMN_BLOB_RECEIPT = "BlobDataReceipt"
         private const val COLUMN_BLOB_TYPE = "BlobDataType"
         private const val COLUMN_HAS_FILE = "HasFile"
@@ -37,6 +38,7 @@ class DatabaseHelper(context: Context, userID: String) :
                 "$COLUMN_CATEGORY TEXT, " +
                 "$COLUMN_P_METHOD TEXT, " +
                 "$COLUMN_AMOUNT TEXT, " +
+                "$COLUMN_AMOUNT_SIGN TEXT, " +
                 "$COLUMN_BLOB_RECEIPT BLOB, " +
                 "$COLUMN_BLOB_TYPE TEXT," +
                 "$COLUMN_HAS_FILE TEXT," +
@@ -59,6 +61,7 @@ class DatabaseHelper(context: Context, userID: String) :
         category: String,
         p_method: String,
         amount: String,
+        signAmount: String,
         blobFileData: ByteArray,
         blobType: String,
         description: String,
@@ -77,6 +80,7 @@ class DatabaseHelper(context: Context, userID: String) :
             put(COLUMN_DESCRIPTION, description)
             put(COLUMN_HAS_FILE, hasFile)
             put(COLUMN_FILE_PATH, filePath)
+            put(COLUMN_AMOUNT_SIGN, signAmount)
 
         }
         db.insert(TABLE_NAME, null, values)
@@ -89,6 +93,8 @@ class DatabaseHelper(context: Context, userID: String) :
         category: String,
         p_method: String,
         amount: String,
+        signAmount: String
+
     ) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -97,6 +103,7 @@ class DatabaseHelper(context: Context, userID: String) :
             put(COLUMN_CATEGORY, category)
             put(COLUMN_P_METHOD, p_method)
             put(COLUMN_AMOUNT, amount)
+            put(COLUMN_AMOUNT_SIGN, signAmount)
         }
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -108,6 +115,7 @@ class DatabaseHelper(context: Context, userID: String) :
         category: String,
         p_method: String,
         amount: String,
+        signAmount: String,
         blobType: String,
         blobFileData: ByteArray,
         hasFile: String,
@@ -124,6 +132,8 @@ class DatabaseHelper(context: Context, userID: String) :
             put(COLUMN_BLOB_TYPE, blobType)
             put(COLUMN_HAS_FILE, hasFile)
             put(COLUMN_FILE_PATH, filePath)
+            put(COLUMN_AMOUNT_SIGN, signAmount)
+
         }
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -135,6 +145,7 @@ class DatabaseHelper(context: Context, userID: String) :
         category: String,
         p_method: String,
         amount: String,
+        signAmount: String,
         description: String
     ) {
         val db = writableDatabase
@@ -144,6 +155,8 @@ class DatabaseHelper(context: Context, userID: String) :
             put(COLUMN_CATEGORY, category)
             put(COLUMN_P_METHOD, p_method)
             put(COLUMN_AMOUNT, amount)
+            put(COLUMN_AMOUNT_SIGN, signAmount)
+
             put(COLUMN_DESCRIPTION, description)
         }
         db.insert(TABLE_NAME, null, values)
