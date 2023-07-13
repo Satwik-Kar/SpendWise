@@ -196,5 +196,16 @@ class DatabaseHelper(context: Context, userID: String) :
         db.close()
     }
 
+    fun getAmountsForLast6Months(): Cursor {
+        val db = readableDatabase
+        val query =
+            "SELECT SUM($COLUMN_AMOUNT) AS total_amount, strftime('%m/%Y', date(substr($COLUMN_DATE, 7, 4) || '-' || substr($COLUMN_DATE, 4, 2) || '-' || substr($COLUMN_DATE, 1, 2))) AS month_year " +
+                    "FROM $TABLE_NAME " +
+                    "WHERE date(substr($COLUMN_DATE, 7, 4) || '-' || substr($COLUMN_DATE, 4, 2) || '-' || substr($COLUMN_DATE, 1, 2)) >= date('now', '-6 months') " +
+                    "GROUP BY month_year " +
+                    "ORDER BY month_year ASC"
+        return db.rawQuery(query, null)
+    }
+
 
 }

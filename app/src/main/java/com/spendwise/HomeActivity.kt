@@ -223,22 +223,32 @@ class HomeActivity : Activity() {
 //        map["Nov"] = "11"
 //        map["Dec"] = "12"
 
-        val monthData = fetchLastSixMonths()
+        val monthData = ArrayList<String>()
         val expensesData = ArrayList<String>()
 
         val email1 = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
         val tableName1 = removeDotsAndNumbers(email1)
         val database1 = DatabaseHelper(this, tableName1)
 
+        val cursor6Months = database1.getAmountsForLast6Months()
+
+        Log.e("expenses", "onCreate: ${cursor6Months.count}")
+        cursor6Months.let {
+            while (it.moveToNext()) {
+                val totalAmount = it.getDouble(it.getColumnIndex("total_amount"))
+                val monthYear = it.getString(it.getColumnIndex("month_year"))
+                Log.e("expenses", "onCreate: $totalAmount  :  $monthYear")
+                expensesData.add(totalAmount.toString())
+                monthData.add(monthYear.toString())
+
+            }
+        }
 
 
-        expensesData.add("100")
-        expensesData.add("250")
-        expensesData.add("230")
-        expensesData.add("440")
-        expensesData.add("230")
-        expensesData.add("100")
-
+//        expensesData.add("250")
+//        expensesData.add("230")
+//        monthData.add("Jan")
+//        monthData.add("Feb")
 
 
         lineGraphView.setMaxExpense(460)
