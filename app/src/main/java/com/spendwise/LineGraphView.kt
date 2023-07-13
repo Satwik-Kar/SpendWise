@@ -13,14 +13,12 @@ import android.view.View
 
 
 class LineGraphView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
     companion object {
         private var MAX_EXPENSE = 1000 // Maximum expense value for scaling
-        private const val GRAPH_PADDING = 25 // Padding around the graph
+        private const val GRAPH_PADDING = 40 // Padding around the graph
         private const val LINE_STROKE_WIDTH = 1f // Stroke width of the line
         private const val TEXT_SIZE = 28f // Text size for expense values and month names
     }
@@ -105,7 +103,7 @@ class LineGraphView @JvmOverloads constructor(
             val y = (height - GRAPH_PADDING).toFloat() - expensesList[i] * yScale
 
             // Draw expense value above the peak
-            val expenseValue = expensesList[i].toString()
+            val expenseValue = padAmount(expensesList[i])
             canvas.drawText(expenseValue, x, (y - TEXT_SIZE).toFloat(), textPaint)
 
             // Draw month name below the peak
@@ -113,4 +111,12 @@ class LineGraphView @JvmOverloads constructor(
             canvas.drawText(month, x, (y + 2 * TEXT_SIZE).toFloat(), textPaint)
         }
     }
+
+    fun padAmount(amount: Double): String {
+        return when {
+            amount >= 1000 -> "${amount / 1000}k"
+            else -> amount.toString()
+        }
+    }
+
 }

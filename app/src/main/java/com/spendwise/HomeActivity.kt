@@ -239,19 +239,19 @@ class HomeActivity : Activity() {
                 val monthYear = it.getString(it.getColumnIndex("month_year"))
                 Log.e("expenses", "onCreate: $totalAmount  :  $monthYear")
                 expensesData.add(totalAmount.toString())
-                monthData.add(monthYear.toString())
+                monthData.add(getMonthName(monthYear.toString()))
 
             }
         }
 
 
-//        expensesData.add("250")
-//        expensesData.add("230")
-//        monthData.add("Jan")
-//        monthData.add("Feb")
+        val doubleExpenseData = ArrayList<Double>()
+        for (i in expensesData) {
+            doubleExpenseData.add(i.toDouble())
+        }
 
-
-        lineGraphView.setMaxExpense(460)
+        val max = doubleExpenseData.max()
+        lineGraphView.setMaxExpense((max + 300).toInt())
         lineGraphView.setData(expensesData, monthData)
 
         barLinearLayout.addView(lineGraphView)
@@ -264,22 +264,13 @@ class HomeActivity : Activity() {
 
     }
 
-    private fun fetchLastSixMonths(): ArrayList<String> {
-        val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("MMM", Locale.getDefault())
-
-        val lastSixMonths = ArrayList<String>()
-
-        for (i in 1..6) {
-            calendar.add(Calendar.MONTH, -1)
-            val previousMonth = calendar.time
-            lastSixMonths.add(dateFormat.format(previousMonth))
-        }
-
-
-
-        return lastSixMonths.reversed() as ArrayList<String>
+    fun getMonthName(dateString: String): String {
+        val parser = SimpleDateFormat("MM/yyyy", Locale.ENGLISH)
+        val formatter = SimpleDateFormat("MMM", Locale.ENGLISH)
+        val date = parser.parse(dateString)
+        return formatter.format(date!!)
     }
+
 
     private fun removeDotsAndNumbers(email: String): String {
         val pattern = Regex("[.0-9@]")
