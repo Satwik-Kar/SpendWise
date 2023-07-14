@@ -245,14 +245,16 @@ class HomeActivity : Activity() {
             doubleExpenseData.add(i.toDouble())
         }
 
-        var max: Double = 0.0
+
         try {
-            max = doubleExpenseData.max()
+            val max = doubleExpenseData.max()
+            val finalMax = max + (max / 6)
+            lineGraphView.setMaxExpense(finalMax.toInt())
+            lineGraphView.setData(expensesData, monthData)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        lineGraphView.setMaxExpense((max + 300).toInt())
-        lineGraphView.setData(expensesData, monthData)
+
 
         barLinearLayout.addView(lineGraphView)
         addNewBtn.setOnClickListener {
@@ -313,7 +315,7 @@ class HomeActivity : Activity() {
             holder.imageView.setImageResource(R.drawable.baseline_auto_awesome_24)
             titleView.text = titles[position]
             dateView.text = dates[position]
-            amountView.text = "${signs[position] + amounts[position]}"
+            amountView.text = "${signs[position]} ${amounts[position]}"
             cardView.setOnClickListener {
                 val intent = Intent(this@HomeActivity, OpenExpense::class.java)
                 intent.putExtra("id", ids[position])

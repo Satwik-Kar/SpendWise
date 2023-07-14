@@ -17,10 +17,10 @@ class LineGraphView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     companion object {
-        private var MAX_EXPENSE = 1000 // Maximum expense value for scaling
-        private const val GRAPH_PADDING = 40 // Padding around the graph
-        private const val LINE_STROKE_WIDTH = 1f // Stroke width of the line
-        private const val TEXT_SIZE = 28f // Text size for expense values and month names
+        private var MAX_EXPENSE = 1000
+        private const val GRAPH_PADDING = 40
+        private const val LINE_STROKE_WIDTH = 1f
+        private const val TEXT_SIZE = 28f
     }
 
     private val linePaint: Paint = Paint().apply {
@@ -108,13 +108,13 @@ class LineGraphView @JvmOverloads constructor(
 
             // Draw month name below the peak
             val month = monthsList[i]
-            canvas.drawText(month, x, (y + 2 * TEXT_SIZE).toFloat(), textPaint)
+            canvas.drawText(month, x, (y + 1 * TEXT_SIZE).toFloat(), textPaint)
         }
     }
 
-    fun padAmount(amount: Double): String {
+    private fun padAmount(amount: Double): String {
         return when {
-            amount >= 1000 -> "${amount / 1000}k"
+            amount >= 1000 -> "${amount / 1000}T"
             else -> amount.toString()
         }
     }
