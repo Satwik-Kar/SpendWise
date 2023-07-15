@@ -154,6 +154,7 @@ class HomeActivity : Activity() {
             val settingView = view.findViewById<CardView>(R.id.profile_setting)
             val logOutView = view.findViewById<CardView>(R.id.profile_log)
             val versionTextView = view.findViewById<TextView>(R.id.versionText)
+            val addBudgetView = view.findViewById<TextView>(R.id.profile_add_budget)
 
             val parent = view.parent as? ViewGroup
             parent?.removeView(view)
@@ -209,7 +210,10 @@ class HomeActivity : Activity() {
 
             }
 
+            addBudgetView.setOnClickListener {
 
+
+            }
         }
         homeLinearLayout.addView(firstElementHome)
         homeLinearLayout.addView(secondElementHome)
