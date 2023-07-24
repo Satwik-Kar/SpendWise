@@ -32,7 +32,7 @@ class Settings : AppCompatActivity() {
         changeCountry = findViewById(R.id.setting_change_country)
         val stateOfAppLock = getSharedPreferences(
             "credentials", MODE_PRIVATE
-        ).getBoolean("setting_app_lock", false)
+        ).getBoolean("setting_app_lock", true)
         switch.isChecked = stateOfAppLock
         switch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {

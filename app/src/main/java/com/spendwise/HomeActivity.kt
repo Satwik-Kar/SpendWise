@@ -247,7 +247,9 @@ class HomeActivity : Activity() {
                 }
                 alert.setNegativeButton("Cancel") { _, _ ->
 
-
+                    Toast.makeText(
+                        this@HomeActivity, "Cancelled adding budget", Toast.LENGTH_LONG
+                    ).show()
                 }
                 alert.create().show()
 
