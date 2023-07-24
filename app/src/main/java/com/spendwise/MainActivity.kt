@@ -148,7 +148,8 @@ class MainActivity : AppCompatActivity() {
             builder.setPositiveButton("Next") { _, _ ->
                 val response = view.findViewById<Spinner>(R.id.spinner).selectedItem
                 getSharedPreferences("credentials", MODE_PRIVATE).edit()
-                    .putString("country", response.toString()).apply()
+                    .putString("country", response.toString())
+                    .putString("currency", Constants.getMap()[response.toString()]).apply()
                 startActivity(Intent(this@MainActivity, HomeActivity::class.java))
                 finishAffinity()
             }

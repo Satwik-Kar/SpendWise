@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -154,7 +156,7 @@ class HomeActivity : Activity() {
             val settingView = view.findViewById<CardView>(R.id.profile_setting)
             val logOutView = view.findViewById<CardView>(R.id.profile_log)
             val versionTextView = view.findViewById<TextView>(R.id.versionText)
-            val addBudgetView = view.findViewById<TextView>(R.id.profile_add_budget)
+            val addBudgetView = view.findViewById<CardView>(R.id.profile_add_budget)
 
             val parent = view.parent as? ViewGroup
             parent?.removeView(view)
@@ -211,6 +213,64 @@ class HomeActivity : Activity() {
             }
 
             addBudgetView.setOnClickListener {
+                var FINAL_AMOUNT: Int = 0
+                val currency =
+                    getSharedPreferences("credentials", MODE_PRIVATE).getString("currency", "")
+                val alert = AlertDialog.Builder(this@HomeActivity)
+                alert.setTitle("Budget").setMessage("Slide the slider to change the budget")
+                alert.setIcon(R.mipmap.ic_launcher_round)
+                val viewBudget = layoutInflater.inflate(R.layout.add_budget_view, null)
+                alert.setView(viewBudget)
+                val slider = viewBudget.findViewById<SeekBar>(R.id.seekBar_add_budget)
+                slider.max = 1000000
+                val addBudgetTextView = viewBudget.findViewById<TextView>(R.id.amount_add_budget)
+                alert.setPositiveButton(
+                    "Add"
+
+
+                ) { _, _ ->
+                    if (FINAL_AMOUNT != 0) {
+                        getSharedPreferences("credentials", MODE_PRIVATE).edit()
+                            .putString("budget", FINAL_AMOUNT.toString()).apply()
+                        Toast.makeText(
+                            this@HomeActivity,
+                            "Budget $currency $FINAL_AMOUNT added successfully.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            this@HomeActivity, "Cannot add budget 0!", Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+
+                }
+                alert.setNegativeButton("Cancel") { _, _ ->
+
+
+                }
+                alert.create().show()
+
+
+                addBudgetTextView.text = "$currency 0"
+                slider.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                    override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                        Log.e("TAG", "onProgressChanged: $p1")
+                        addBudgetTextView.text = "$currency $p1"
+                        FINAL_AMOUNT = p1
+
+                    }
+
+                    override fun onStartTrackingTouch(p0: SeekBar?) {
+
+                    }
+
+                    override fun onStopTrackingTouch(p0: SeekBar?) {
+
+                    }
+
+
+                })
 
 
             }
