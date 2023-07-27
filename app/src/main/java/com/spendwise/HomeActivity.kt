@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
@@ -103,11 +104,15 @@ class HomeActivity : Activity() {
                 }
             }
             if (expense > budgetA) {
-                budgetWarning.text = "Budget Warning \n      Monthly"
+                budgetWarning.text = "Budget Alert! \n    Monthly"
             }
 
         }
-
+        val blink_anim = AnimationUtils.loadAnimation(
+            applicationContext,
+            R.anim.blink
+        )
+        budgetWarning.startAnimation(blink_anim)
 
 
         recyclerViewListExpenses = secondElementHome.findViewById(R.id.recyclerView_list_expenses)
