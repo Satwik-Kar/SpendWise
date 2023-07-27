@@ -79,8 +79,37 @@ class HomeActivity : Activity() {
         }
         val name = getSharedPreferences("credentials", MODE_PRIVATE).getString("name", "Sir")!!
         val firstName = name.split(" ")
-        firstElementHome.findViewById<TextView>(R.id.homeWelcomeName).text =
-            "${getWishes()} ${firstName[0]}"
+        val homeName = firstElementHome.findViewById<TextView>(R.id.homeWelcomeName)
+
+        homeName.text = "${getWishes()} ${firstName[0]}"
+
+        val budgetWarning = firstElementHome.findViewById<TextView>(R.id.homeWelcomeBudgetWarning)
+        val budget = getSharedPreferences("credentials", MODE_PRIVATE).getString("budget", "N/A")
+        if (budget != "N/A") {
+
+            val budgetA = budget!!.toDouble()
+            val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
+            val tableName = removeDotsAndNumbers(email)
+            val db = DatabaseHelper(this@HomeActivity, tableName)
+            val cursor = db.getAmountsForLast6Months()
+            var expense = 0.0
+            cursor.let {
+                if (it.moveToLast()) {
+                    val totalAmount = it.getDouble(it.getColumnIndex("total_amount"))
+                    val monthYear = it.getString(it.getColumnIndex("month_year"))
+                    Log.e("expenses", "onCreate: $totalAmount  :  $monthYear")
+                    expense = totalAmount
+
+                }
+            }
+            if (expense > budgetA) {
+                budgetWarning.text = "Budget Warning \n      Monthly"
+            }
+
+        }
+
+
+
         recyclerViewListExpenses = secondElementHome.findViewById(R.id.recyclerView_list_expenses)
         barLinearLayout = firstElementHome.findViewById(R.id.barLinearLayout)
         homeLinearLayout = this.findViewById(R.id.homeActivity_LinearLayout)
@@ -213,7 +242,7 @@ class HomeActivity : Activity() {
             }
 
             addBudgetView.setOnClickListener {
-                var FINAL_AMOUNT: Int = 0
+                var FINAL_AMOUNT = 0
                 val currency =
                     getSharedPreferences("credentials", MODE_PRIVATE).getString("currency", "")
                 val alert = AlertDialog.Builder(this@HomeActivity)
