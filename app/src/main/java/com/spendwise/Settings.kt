@@ -71,6 +71,7 @@ class Settings : AppCompatActivity() {
 
 
             }
+            
             alert.setNegativeButton("No") { _, _ ->
 
                 Toast.makeText(

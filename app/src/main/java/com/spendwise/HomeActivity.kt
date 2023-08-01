@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -67,6 +68,8 @@ class HomeActivity : Activity() {
         setContentView(R.layout.activity_home)
         val firstElementHome = layoutInflater.inflate(R.layout.first_element_home, null)
         val secondElementHome = layoutInflater.inflate(R.layout.list_of_expenses, null)
+        val firstElementCardView =
+            firstElementHome.findViewById<MaterialCardView>(R.id.firstElementCardView)
         val uri = getSharedPreferences("credentials", MODE_PRIVATE).getString("photo_url", null)
         Log.e("uri", "onCreate: $uri")
         if (uri != null) {
@@ -311,8 +314,7 @@ class HomeActivity : Activity() {
 
             }
         }
-        homeLinearLayout.addView(firstElementHome)
-        homeLinearLayout.addView(secondElementHome)
+
 
 
         addNewBtn = this.findViewById(R.id.addNew)
@@ -356,7 +358,16 @@ class HomeActivity : Activity() {
         }
 
 
+
+
         barLinearLayout.addView(lineGraphView)
+        if (expensesData.isEmpty()) {
+            firstElementCardView.visibility = View.GONE
+
+        }
+
+        homeLinearLayout.addView(firstElementHome)
+        homeLinearLayout.addView(secondElementHome)
         addNewBtn.setOnClickListener {
             val intent = Intent(this@HomeActivity, AddNew::class.java)
             intent.type = "new"

@@ -22,7 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult
 class MainActivity : AppCompatActivity() {
     private val RC_SIGN_IN: Int = 1024
     private var mGoogleSignInClient: GoogleSignInClient? = null
-    private lateinit var biometricManager: BiometricManager
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var biometricPromptInfo: PromptInfo
     private val SPLASH_TIMEOUT: Long = 2000
@@ -76,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
                 })
             biometricPromptInfo = PromptInfo.Builder().setTitle("SpendWise Security")
-                .setDescription("Use biometric sensors to move inside SpendWise")
+                .setDescription("Use your fingerprint to continue")
                 .setDeviceCredentialAllowed(true).build()
             val signedIn = getSharedPreferences("credentials", MODE_PRIVATE).getBoolean(
                 "hasAccountLoggedIn", false
