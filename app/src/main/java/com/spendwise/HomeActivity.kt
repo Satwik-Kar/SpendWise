@@ -85,13 +85,14 @@ class HomeActivity : Activity() {
         val firstName = name.split(" ")
         val homeName = firstElementHome.findViewById<TextView>(R.id.homeWelcomeName)
 
-        homeName.text = "${getWishes()} ${firstName[0]}"
+        homeName.text = "${getWishes()} ${firstName[0]}!"
 
         val budgetWarning = firstElementHome.findViewById<TextView>(R.id.homeWelcomeBudgetWarning)
         val budget = getSharedPreferences("credentials", MODE_PRIVATE).getString("budget", "N/A")
         if (budget != "N/A") {
 
-            val budgetA = budget!!.toDouble()
+            val budget = budget!!.split(" ")
+            val budgetA = budget[1].toDouble()
             val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
             val tableName = removeDotsAndNumbers(email)
             val db = DatabaseHelper(this@HomeActivity, tableName)
@@ -194,7 +195,13 @@ class HomeActivity : Activity() {
             val logOutView = view.findViewById<CardView>(R.id.profile_log)
             val versionTextView = view.findViewById<TextView>(R.id.versionText)
             val addBudgetView = view.findViewById<CardView>(R.id.profile_add_budget)
-
+            val budgetText = view.findViewById<TextView>(R.id.profile_budget)
+            val budget = getSharedPreferences("credentials", MODE_PRIVATE).getString("budget", null)
+            if (budget != null) {
+                budgetText.text = "Budget • $budget"
+            } else {
+                budgetText.visibility = View.GONE
+            }
             val parent = view.parent as? ViewGroup
             parent?.removeView(view)
             alertDialog.setView(view)
@@ -267,13 +274,17 @@ class HomeActivity : Activity() {
 
                 ) { _, _ ->
                     if (FINAL_AMOUNT != 0) {
+
+                        val budgetText = "$currency $FINAL_AMOUNT"
                         getSharedPreferences("credentials", MODE_PRIVATE).edit()
-                            .putString("budget", FINAL_AMOUNT.toString()).apply()
+                            .putString("budget", budgetText).apply()
                         Toast.makeText(
                             this@HomeActivity,
                             "Budget $currency $FINAL_AMOUNT added successfully.",
                             Toast.LENGTH_LONG
                         ).show()
+                        startActivity(intent)
+                        finishAffinity()
                     } else {
                         Toast.makeText(
                             this@HomeActivity, "Cannot add budget 0!", Toast.LENGTH_LONG
@@ -361,7 +372,7 @@ class HomeActivity : Activity() {
 
 
         barLinearLayout.addView(lineGraphView)
-        if (expensesData.isEmpty()) {
+        if (expensesData.size < 2) {
             firstElementCardView.visibility = View.GONE
 
         }
@@ -394,10 +405,10 @@ class HomeActivity : Activity() {
         val calendar = Calendar.getInstance()
 
         return when (calendar.get(Calendar.HOUR_OF_DAY)) {
-            in 0..11 -> "Good morning!"
-            in 12..15 -> "Good afternoon!"
-            in 16..20 -> "Good evening!"
-            else -> "Hello!"
+            in 0..11 -> "Good morning"
+            in 12..15 -> "Good afternoon"
+            in 16..20 -> "Good evening"
+            else -> "Hello"
         }
     }
 
