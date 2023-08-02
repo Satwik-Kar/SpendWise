@@ -4,6 +4,7 @@ package com.spendwise
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
@@ -61,6 +62,7 @@ class HomeActivity : Activity() {
     private val COLUMN_HAS_FILE = "HasFile"
     private val COLUMN_FILE_PATH = "FilePath"
     private val COLUMN_DESCRIPTION = "description"
+    private var lineColor = Color.TRANSPARENT
 
     @SuppressLint("Range", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,15 +110,17 @@ class HomeActivity : Activity() {
                 }
             }
             if (expense > budgetA) {
+                lineColor = Color.RED
                 budgetWarning.text = "Budget Alert! \n    Monthly"
+                val blink_anim = AnimationUtils.loadAnimation(
+                    applicationContext,
+                    R.anim.blink
+                )
+                budgetWarning.startAnimation(blink_anim)
             }
 
         }
-        val blink_anim = AnimationUtils.loadAnimation(
-            applicationContext,
-            R.anim.blink
-        )
-        budgetWarning.startAnimation(blink_anim)
+
 
 
         recyclerViewListExpenses = secondElementHome.findViewById(R.id.recyclerView_list_expenses)
@@ -363,6 +367,7 @@ class HomeActivity : Activity() {
             val max = doubleExpenseData.max()
             val finalMax = max + (max / 6)
             lineGraphView.setMaxExpense(finalMax.toInt())
+            lineGraphView.setLineColor(lineColor)
             lineGraphView.setData(expensesData, monthData)
         } catch (e: Exception) {
             e.printStackTrace()

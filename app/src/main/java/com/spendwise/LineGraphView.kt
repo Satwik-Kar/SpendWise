@@ -10,6 +10,8 @@ import android.graphics.RectF
 import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 
 class LineGraphView @JvmOverloads constructor(
@@ -18,13 +20,15 @@ class LineGraphView @JvmOverloads constructor(
 
     companion object {
         private var MAX_EXPENSE = 1000
-        private const val GRAPH_PADDING = 40
-        private const val LINE_STROKE_WIDTH = 1f
+        private const val GRAPH_PADDING = 55
+        private const val LINE_STROKE_WIDTH = 4f
         private const val TEXT_SIZE = 28f
+        private var LINE_COLOR = Color.TRANSPARENT
     }
 
+
     private val linePaint: Paint = Paint().apply {
-        color = resources.getColor(R.color.app_theme_transparent)
+        color = LINE_COLOR
         strokeWidth = LINE_STROKE_WIDTH
         style = Paint.Style.STROKE
     }
@@ -37,6 +41,7 @@ class LineGraphView @JvmOverloads constructor(
     private val linePath: Path = Path()
     private var expenses: List<Double>? = null
     private var months: List<String>? = null
+
 
     init {
         gradientPaint.shader = LinearGradient(
@@ -58,6 +63,12 @@ class LineGraphView @JvmOverloads constructor(
 
     fun setMaxExpense(maxExpense: Int) {
         MAX_EXPENSE = maxExpense
+        invalidate()
+    }
+
+    fun setLineColor(color: Int) {
+        LINE_COLOR = color
+        linePaint.color = LINE_COLOR
         invalidate()
     }
 
@@ -114,7 +125,19 @@ class LineGraphView @JvmOverloads constructor(
 
     private fun padAmount(amount: Double): String {
         return when {
-            amount >= 1000 -> "${amount / 1000}T"
+            amount >= 1000 -> {
+
+                val decimalPlaces = 2.0
+                val roundedVal =
+                    ((amount / 1000) * 10.0.pow(decimalPlaces)).roundToInt() / 10.0.pow(
+                        decimalPlaces
+                    )
+
+                return "${roundedVal}T"
+
+
+            }
+
             else -> amount.toString()
         }
     }
