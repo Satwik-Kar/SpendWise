@@ -391,6 +391,10 @@ class HomeActivity : Activity() {
         }
 
 
+        val creditBillView = layoutInflater.inflate(R.layout.add_credit_bills, null)
+        homeLinearLayout.addView(creditBillView)
+
+
     }
 
     fun getMonthName(dateString: String): String {
@@ -468,6 +472,46 @@ class HomeActivity : Activity() {
     }
 
     private inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val title: TextView = itemView.findViewById(R.id.title_view)
+        val date: TextView = itemView.findViewById(R.id.date_view)
+        val amount: TextView = itemView.findViewById(R.id.amount_view)
+        val cardView: CardView = itemView.findViewById(R.id.listExpenses_cardView)
+        val imageView: ImageView = itemView.findViewById(R.id.imageView2)
+
+    }
+
+
+    //////////////////////////////////////////
+
+    private inner class ListAdapterCredit(
+        var creditIds: ArrayList<String>,
+        var titles: ArrayList<String>,
+        var creditDate: ArrayList<String>,
+        var dueDate: ArrayList<String>,
+        var descriptions: ArrayList<String>,
+        var amounts: ArrayList<String>,
+        var signs: ArrayList<String>
+    ) : RecyclerView.Adapter<ViewHolderCredit>() {
+
+        override fun onBindViewHolder(holder: ViewHolderCredit, position: Int) {
+
+
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderCredit {
+
+            TODO()
+        }
+
+        override fun getItemCount(): Int {
+
+            TODO()
+        }
+
+
+    }
+
+    private inner class ViewHolderCredit(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.title_view)
         val date: TextView = itemView.findViewById(R.id.date_view)
         val amount: TextView = itemView.findViewById(R.id.amount_view)
