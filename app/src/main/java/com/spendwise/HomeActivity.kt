@@ -111,7 +111,7 @@ class HomeActivity : Activity() {
             }
             if (expense > budgetA) {
                 lineColor = Color.RED
-                budgetWarning.text = "Budget Alert! \n    Monthly"
+                budgetWarning.text = "Monthly Budget \n     Exceeded"
                 val blink_anim = AnimationUtils.loadAnimation(
                     applicationContext,
                     R.anim.blink

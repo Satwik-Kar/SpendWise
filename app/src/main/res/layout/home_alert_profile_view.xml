@@ -154,7 +154,7 @@
                 android:drawableStart="@drawable/baseline_post_add_24"
                 android:drawablePadding="20sp"
                 android:gravity="center"
-                android:text="Add Budget"
+                android:text="Add new Budget"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

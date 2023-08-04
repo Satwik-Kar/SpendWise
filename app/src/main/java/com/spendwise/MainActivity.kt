@@ -144,6 +144,7 @@ class MainActivity : AppCompatActivity() {
             builder.setTitle("Choose Country")
             builder.setMessage("Choose the default country")
             builder.setView(view)
+            builder.setCancelable(false)
             builder.setPositiveButton("Next") { _, _ ->
                 val response = view.findViewById<Spinner>(R.id.spinner).selectedItem
                 getSharedPreferences("credentials", MODE_PRIVATE).edit()

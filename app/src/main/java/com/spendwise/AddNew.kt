@@ -132,10 +132,14 @@ class AddNew : AppCompatActivity() {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val hrs = calendar.get(Calendar.HOUR_OF_DAY)
+        val mins = calendar.get(Calendar.MINUTE)
+        val secs = calendar.get(Calendar.SECOND)
 
         val datePickerDialog = DatePickerDialog(
             this, { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
-                val selectedDate = formatDate(selectedYear, selectedMonth, selectedDay)
+                val selectedDate =
+                    formatDate(selectedYear, selectedMonth, selectedDay, hrs, mins, secs)
                 detailDate.setText(selectedDate)
             }, year, month, day
         )
@@ -151,10 +155,17 @@ class AddNew : AppCompatActivity() {
      * @param day Day
      * @return
      */
-    private fun formatDate(year: Int, month: Int, day: Int): String {
+    private fun formatDate(
+        year: Int,
+        month: Int,
+        day: Int,
+        hrs: Int,
+        mins: Int,
+        secs: Int
+    ): String {
         val formattedMonth = if (month + 1 < 10) "0${month + 1}" else "${month + 1}"
         val formattedDay = if (day < 10) "0$day" else "$day"
-        return "$formattedDay/$formattedMonth/$year"
+        return "$formattedDay/$formattedMonth/$year  $hrs:$mins:$secs"
     }
 
     /**
