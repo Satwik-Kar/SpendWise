@@ -392,6 +392,17 @@ class HomeActivity : Activity() {
 
 
         val creditBillView = layoutInflater.inflate(R.layout.add_credit_bills, null)
+
+        val addNewCreditBtn =
+            creditBillView.findViewById<FloatingActionButton>(R.id.add_credit_bill_once_btn)
+        addNewCreditBtn.setOnClickListener {
+
+
+            val intent = Intent(this@HomeActivity, AddNewCredit::class.java)
+            startActivity(intent)
+
+        }
+
         homeLinearLayout.addView(creditBillView)
 
 

@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-    
+
 
     <application
         android:allowBackup="true"
@@ -46,6 +46,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddNewCredit"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity

@@ -1,8 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".AddNewCredit">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:cardCornerRadius="10sp"
+        app:cardElevation="5sp"
+
+        app:contentPadding="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/app_theme"
+        app:strokeWidth="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Credit Details"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView6"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:layout_marginStart="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@mipmap/ic_launcher_round" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/credit_title"
@@ -10,16 +57,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="90dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="90dp"
         android:drawableStart="@drawable/baseline_title_24"
         android:drawableTint="@color/app_theme"
-        android:hint="Username"
+        android:hint="Title"
         app:boxCornerRadiusTopStart="18dp"
         app:boxStrokeColor="@color/app_theme"
         app:boxStrokeWidth="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
         app:startIconDrawable="@drawable/baseline_title_24"
         app:startIconTint="@color/app_theme">
 
@@ -39,7 +87,7 @@
         android:drawableTint="@color/app_theme"
         android:ems="10"
         android:enabled="false"
-        android:hint="Date of expense"
+        android:hint="Date of credit taken"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,11 +152,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:drawableStart="@drawable/baseline_receipt_long_24"
+        android:drawableStart="@drawable/baseline_calendar_month_24"
         android:drawableTint="@color/app_theme"
         android:ems="10"
         android:enabled="false"
-        android:hint="Bill/Reciept (Optional)"
+        android:hint="Due Date"
         android:inputType="text"
         android:paddingStart="3sp"
         android:paddingEnd="3sp"
@@ -126,7 +174,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/credit_reciept"
         app:layout_constraintTop_toTopOf="@+id/credit_reciept"
-        app:srcCompat="@drawable/baseline_add_photo_alternate_24"
+        app:srcCompat="@drawable/baseline_edit_calendar_24"
         app:tint="@color/app_theme" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -162,5 +210,18 @@
 
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/addCreditBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:text="Add credit"
+        app:cornerRadius="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/credit_desc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
