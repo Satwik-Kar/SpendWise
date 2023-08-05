@@ -7,15 +7,14 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
-class DatabaseHelper(context: Context, userID: String) :
+class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
-
-    private val TABLE_NAME = userID
 
     companion object {
         private const val DATABASE_NAME = "ExpenseDetails.db"
         private const val DATABASE_VERSION = 1
+        private const val COLUMN_USER_MAIL = "mail"
         private const val COLUMN_TITLE = "title"
         private const val COLUMN_DATE = "date"
         private const val COLUMN_CATEGORY = "category"
@@ -27,35 +26,57 @@ class DatabaseHelper(context: Context, userID: String) :
         private const val COLUMN_HAS_FILE = "HasFile"
         private const val COLUMN_FILE_PATH = "FilePath"
         private const val COLUMN_DESCRIPTION = "description"
+        private const val COLUMN_DUE_DATE = "due_date"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
 
-        val createTableQuery = "CREATE TABLE $TABLE_NAME " +
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "$COLUMN_TITLE TEXT, " +
-                "$COLUMN_DATE TEXT, " +
-                "$COLUMN_CATEGORY TEXT, " +
-                "$COLUMN_P_METHOD TEXT, " +
-                "$COLUMN_AMOUNT TEXT, " +
-                "$COLUMN_AMOUNT_SIGN TEXT, " +
-                "$COLUMN_BLOB_RECEIPT BLOB, " +
-                "$COLUMN_BLOB_TYPE TEXT," +
-                "$COLUMN_HAS_FILE TEXT," +
-                "$COLUMN_FILE_PATH TEXT," +
-                "$COLUMN_DESCRIPTION TEXT)"
+
+        val createTableQueryCREDIT: String =
+            "CREATE TABLE " +
+                    "${Constants.TABLE_CREDIT} " + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "$COLUMN_TITLE TEXT, " +
+                    "$COLUMN_USER_MAIL TEXT, " +
+                    "$COLUMN_DATE TEXT, " +
+                    "$COLUMN_DUE_DATE TEXT, " +
+                    "$COLUMN_AMOUNT TEXT, " +
+                    "$COLUMN_AMOUNT_SIGN TEXT, " +
+                    "$COLUMN_DESCRIPTION TEXT)"
+
+
+        val createTableQuery: String =
+            "CREATE TABLE " +
+                    "${Constants.TABLE_EXPENSE} " + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "$COLUMN_TITLE TEXT, " +
+                    "$COLUMN_USER_MAIL TEXT, " +
+                    "$COLUMN_DATE TEXT, " +
+                    "$COLUMN_CATEGORY TEXT, " +
+                    "$COLUMN_P_METHOD TEXT, " +
+                    "$COLUMN_AMOUNT TEXT, " +
+                    "$COLUMN_AMOUNT_SIGN TEXT, " +
+                    "$COLUMN_BLOB_RECEIPT BLOB, " +
+                    "$COLUMN_BLOB_TYPE TEXT," +
+                    "$COLUMN_HAS_FILE TEXT," +
+                    "$COLUMN_FILE_PATH TEXT," +
+                    "$COLUMN_DESCRIPTION TEXT)"
+
+
         db.execSQL(createTableQuery)
+        db.execSQL(createTableQueryCREDIT)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // Perform necessary actions when upgrading the database
         // For simplicity, we'll drop the table and recreate it
-        val dropTableQuery = "DROP TABLE IF EXISTS $TABLE_NAME"
+        val dropTableQuery = "DROP TABLE IF EXISTS ${Constants.TABLE_EXPENSE}"
         db.execSQL(dropTableQuery)
+        val dropTableQueryCredit = "DROP TABLE IF EXISTS ${Constants.TABLE_CREDIT}"
+        db.execSQL(dropTableQueryCredit)
         onCreate(db)
     }
 
     fun insertData(
+        mail: String,
         title: String,
         date: String,
         category: String,
@@ -70,6 +91,8 @@ class DatabaseHelper(context: Context, userID: String) :
     ) {
         val db = writableDatabase
         val values = ContentValues().apply {
+
+            put(COLUMN_USER_MAIL, mail)
             put(COLUMN_TITLE, title)
             put(COLUMN_DATE, date)
             put(COLUMN_CATEGORY, category)
@@ -83,11 +106,13 @@ class DatabaseHelper(context: Context, userID: String) :
             put(COLUMN_AMOUNT_SIGN, signAmount)
 
         }
-        db.insert(TABLE_NAME, null, values)
+        db.insert(Constants.TABLE_EXPENSE, null, values)
         db.close()
     }
 
     fun insertData(
+        mail: String,
+
         title: String,
         date: String,
         category: String,
@@ -98,6 +123,8 @@ class DatabaseHelper(context: Context, userID: String) :
     ) {
         val db = writableDatabase
         val values = ContentValues().apply {
+            put(COLUMN_USER_MAIL, mail)
+
             put(COLUMN_TITLE, title)
             put(COLUMN_DATE, date)
             put(COLUMN_CATEGORY, category)
@@ -105,11 +132,13 @@ class DatabaseHelper(context: Context, userID: String) :
             put(COLUMN_AMOUNT, amount)
             put(COLUMN_AMOUNT_SIGN, signAmount)
         }
-        db.insert(TABLE_NAME, null, values)
+        db.insert(Constants.TABLE_EXPENSE, null, values)
         db.close()
     }
 
     fun insertData(
+        mail: String,
+
         title: String,
         date: String,
         category: String,
@@ -133,13 +162,16 @@ class DatabaseHelper(context: Context, userID: String) :
             put(COLUMN_HAS_FILE, hasFile)
             put(COLUMN_FILE_PATH, filePath)
             put(COLUMN_AMOUNT_SIGN, signAmount)
+            put(COLUMN_USER_MAIL, mail)
 
         }
-        db.insert(TABLE_NAME, null, values)
+        db.insert(Constants.TABLE_EXPENSE, null, values)
         db.close()
     }
 
     fun insertData(
+        mail: String,
+
         title: String,
         date: String,
         category: String,
@@ -156,30 +188,31 @@ class DatabaseHelper(context: Context, userID: String) :
             put(COLUMN_P_METHOD, p_method)
             put(COLUMN_AMOUNT, amount)
             put(COLUMN_AMOUNT_SIGN, signAmount)
+            put(COLUMN_USER_MAIL, mail)
 
             put(COLUMN_DESCRIPTION, description)
         }
-        db.insert(TABLE_NAME, null, values)
+        db.insert(Constants.TABLE_EXPENSE, null, values)
         db.close()
         Log.e("database", "successfull")
     }
 
 
-    fun retrieveData(): Cursor? {
+    fun retrieveExpensesData(): Cursor? {
         val db = readableDatabase
-        return db.query(TABLE_NAME, null, null, null, null, null, null)
+        return db.query(Constants.TABLE_EXPENSE, null, null, null, null, null, null)
     }
 
-    fun retrieveDataById(id: String): Cursor? {
+    fun retrieveExpenseDataById(id: String): Cursor? {
         val db = readableDatabase
         val selection = "_id = ?"
         val selectionArgs = arrayOf(id)
-        return db.query(TABLE_NAME, null, selection, selectionArgs, null, null, null)
+        return db.query(Constants.TABLE_EXPENSE, null, selection, selectionArgs, null, null, null)
     }
 
-    fun deleteDataById(id: String) {
+    fun deleteExpenseDataById(id: String) {
         val db = writableDatabase
-        val deleteQuery = "DELETE FROM $TABLE_NAME WHERE _id = $id"
+        val deleteQuery = "DELETE FROM ${Constants.TABLE_EXPENSE} WHERE _id = $id"
         db.execSQL(deleteQuery)
         db.close()
     }
@@ -199,25 +232,70 @@ class DatabaseHelper(context: Context, userID: String) :
         }
         val selection = "_id = ?"
         val selectionArgs = arrayOf(id)
-        db.update(TABLE_NAME, values, selection, selectionArgs)
+        db.update(Constants.TABLE_EXPENSE, values, selection, selectionArgs)
         db.close()
     }
 
     fun deleteAllData() {
         val db = writableDatabase
-        db.delete(TABLE_NAME, null, null)
+        db.delete(Constants.TABLE_EXPENSE, null, null)
+        db.delete(Constants.TABLE_CREDIT, null, null)
         db.close()
     }
 
-    fun getAmountsForLast6Months(): Cursor {
+    fun getExpensesAmountsForLast6Months(): Cursor {
         val db = readableDatabase
         val query =
-            "SELECT SUM($COLUMN_AMOUNT) AS total_amount, strftime('%m/%Y', date(substr($COLUMN_DATE, 7, 4) || '-' || substr($COLUMN_DATE, 4, 2) || '-' || substr($COLUMN_DATE, 1, 2))) AS month_year " +
-                    "FROM $TABLE_NAME " +
-                    "WHERE date(substr($COLUMN_DATE, 7, 4) || '-' || substr($COLUMN_DATE, 4, 2) || '-' || substr($COLUMN_DATE, 1, 2)) >= date('now', '-6 months') " +
-                    "GROUP BY month_year " +
-                    "ORDER BY month_year ASC"
+            "SELECT SUM($COLUMN_AMOUNT) AS total_amount, strftime('%m/%Y', date(substr($COLUMN_DATE, 7, 4) || '-' || substr($COLUMN_DATE, 4, 2) || '-' || substr($COLUMN_DATE, 1, 2))) AS month_year " + "FROM ${Constants.TABLE_EXPENSE} " + "WHERE date(substr($COLUMN_DATE, 7, 4) || '-' || substr($COLUMN_DATE, 4, 2) || '-' || substr($COLUMN_DATE, 1, 2)) >= date('now', '-6 months') " + "GROUP BY month_year " + "ORDER BY month_year ASC"
         return db.rawQuery(query, null)
+    }
+
+    fun insertData(
+        mail: String,
+
+        creditTitle: String,
+        creditDate: String,
+        creditAmount: String,
+        creditDueDate: String,
+        creditDescription: String
+    ) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_TITLE, creditTitle)
+            put(COLUMN_DATE, creditDate)
+            put(COLUMN_DUE_DATE, creditDueDate)
+            put(COLUMN_AMOUNT, creditAmount)
+            put(COLUMN_USER_MAIL, mail)
+
+            put(COLUMN_DESCRIPTION, creditDescription)
+        }
+        db.insert(Constants.TABLE_CREDIT, null, values)
+        db.close()
+        Log.e("database", "successfull")
+
+    }
+
+    fun insertData(
+        mail: String,
+
+        creditTitle: String,
+        creditDate: String,
+        creditAmount: String,
+        creditDueDate: String,
+    ) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_TITLE, creditTitle)
+            put(COLUMN_DATE, creditDate)
+            put(COLUMN_DUE_DATE, creditDueDate)
+            put(COLUMN_AMOUNT, creditAmount)
+            put(COLUMN_USER_MAIL, mail)
+
+        }
+        db.insert(Constants.TABLE_CREDIT, null, values)
+        db.close()
+        Log.e("database", "successfull")
+
     }
 
 

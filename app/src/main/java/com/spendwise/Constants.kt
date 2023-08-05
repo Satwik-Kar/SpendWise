@@ -201,6 +201,10 @@ class Constants {
             "Zimbabwe" to "Z$"
         )
 
+
+        val TABLE_CREDIT = "table_credit"
+        val TABLE_EXPENSE = "table_expense"
+
         fun getMap(): Map<String, String> = countryCurrencyMap
 
     }

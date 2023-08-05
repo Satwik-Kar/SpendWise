@@ -188,8 +188,8 @@ class AddNew : AppCompatActivity() {
     @SuppressLint("Range")
     private fun submit(hasDescription: Boolean, hasReceipt: Boolean) {
         val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-        val tableName = removeDotsAndNumbers(email)
-        val database = DatabaseHelper(this@AddNew, tableName)
+
+        val database = DatabaseHelper(this@AddNew)
         var a by Delegates.notNull<Int>()
         if (hasDescription && hasReceipt) {
             a = 1
@@ -207,6 +207,7 @@ class AddNew : AppCompatActivity() {
         when (a) {
             1 -> {
                 database.insertData(
+                    email,
                     TITLE,
                     DATE,
                     CATEGORY,
@@ -223,6 +224,7 @@ class AddNew : AppCompatActivity() {
 
             2 -> {
                 database.insertData(
+                    email,
                     TITLE,
                     DATE,
                     CATEGORY,
@@ -237,12 +239,21 @@ class AddNew : AppCompatActivity() {
             }
 
             3 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, sign, DESCRIPTION)
+                database.insertData(
+                    email,
+                    TITLE,
+                    DATE,
+                    CATEGORY,
+                    P_METHOD,
+                    AMOUNT,
+                    sign,
+                    DESCRIPTION
+                )
                 Log.e("database", "successfullmine")
             }
 
             4 -> {
-                database.insertData(TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, sign)
+                database.insertData(email, TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, sign)
 
             }
         }
@@ -383,9 +394,5 @@ class AddNew : AppCompatActivity() {
         }
     }
 
-    private fun removeDotsAndNumbers(email: String): String {
-        val pattern = Regex("[.0-9@]")
-        return pattern.replace(email, "")
-    }
 
 }

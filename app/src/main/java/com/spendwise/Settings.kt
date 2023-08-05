@@ -71,7 +71,7 @@ class Settings : AppCompatActivity() {
 
 
             }
-            
+
             alert.setNegativeButton("No") { _, _ ->
 
                 Toast.makeText(
@@ -138,7 +138,7 @@ class Settings : AppCompatActivity() {
                 val email =
                     getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
                 val tableName = removeDotsAndNumbers(email)
-                DatabaseHelper(this@Settings, tableName).deleteAllData()
+                DatabaseHelper(this@Settings).deleteAllData()
                 Toast.makeText(this@Settings, "All app data deleted", Toast.LENGTH_SHORT).show()
                 getSharedPreferences("credentials", MODE_PRIVATE).edit().clear().apply()
                 finishAffinity()

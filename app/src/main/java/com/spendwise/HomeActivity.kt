@@ -96,9 +96,8 @@ class HomeActivity : Activity() {
             val budget = budget!!.split(" ")
             val budgetA = budget[1].toDouble()
             val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-            val tableName = removeDotsAndNumbers(email)
-            val db = DatabaseHelper(this@HomeActivity, tableName)
-            val cursor = db.getAmountsForLast6Months()
+            val db = DatabaseHelper(this@HomeActivity)
+            val cursor = db.getExpensesAmountsForLast6Months()
             var expense = 0.0
             cursor.let {
                 if (it.moveToLast()) {
@@ -137,10 +136,9 @@ class HomeActivity : Activity() {
         filePaths = ArrayList()
         signs = ArrayList()
         val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-        val tableName = removeDotsAndNumbers(email)
         try {
-            val database = DatabaseHelper(this, tableName)
-            val cursor = database.retrieveData()!!
+            val database = DatabaseHelper(this)
+            val cursor = database.retrieveExpensesData()!!
             cursor.use {
                 while (it.moveToNext()) {
                     val id = it.getString(it.getColumnIndex("_id"))
@@ -339,10 +337,9 @@ class HomeActivity : Activity() {
         val expensesData = ArrayList<String>()
 
         val email1 = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-        val tableName1 = removeDotsAndNumbers(email1)
-        val database1 = DatabaseHelper(this, tableName1)
+        val database1 = DatabaseHelper(this)
 
-        val cursor6Months = database1.getAmountsForLast6Months()
+        val cursor6Months = database1.getExpensesAmountsForLast6Months()
 
         Log.e("expenses", "onCreate: ${cursor6Months.count}")
         cursor6Months.let {

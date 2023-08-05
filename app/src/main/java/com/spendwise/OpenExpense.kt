@@ -102,11 +102,10 @@ class OpenExpense : AppCompatActivity() {
             alert.setPositiveButton("Delete") { _, _ ->
                 val email =
                     getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-                val tableName = removeDotsAndNumbers(email)
-                val database = DatabaseHelper(this, tableName)
+                val database = DatabaseHelper(this)
                 try {
 
-                    database.deleteDataById(id)
+                    database.deleteExpenseDataById(id)
                     if (hasFile == true.toString()) {
                         try {
                             pdfFile.delete()
@@ -159,8 +158,7 @@ class OpenExpense : AppCompatActivity() {
                 if (titleInner.text!!.isNotEmpty() && amountInner.text!!.isNotEmpty() && descInner.text!!.isNotEmpty()) {
                     val email =
                         getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-                    val tableName = removeDotsAndNumbers(email)
-                    val database = DatabaseHelper(this@OpenExpense, tableName)
+                    val database = DatabaseHelper(this@OpenExpense)
                     database.updateData(
                         id,
                         titleInner.text.toString(),
@@ -189,9 +187,8 @@ class OpenExpense : AppCompatActivity() {
 
         }
         val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-        val refreshed = removeDotsAndNumbers(email)
-        val database = DatabaseHelper(applicationContext, refreshed)
-        val cursor = database.retrieveDataById(id)
+        val database = DatabaseHelper(applicationContext)
+        val cursor = database.retrieveExpenseDataById(id)
         cursor.use {
             while (cursor != null && cursor.moveToNext()) {
                 try {
