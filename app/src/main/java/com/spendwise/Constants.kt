@@ -202,8 +202,8 @@ class Constants {
         )
 
 
-        val TABLE_CREDIT = "table_credit"
-        val TABLE_EXPENSE = "table_expense"
+        const val TABLE_CREDIT = "table_credit"
+        const val TABLE_EXPENSE = "table_expense"
 
         fun getMap(): Map<String, String> = countryCurrencyMap
 

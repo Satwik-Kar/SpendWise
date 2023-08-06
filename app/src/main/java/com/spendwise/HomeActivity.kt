@@ -96,7 +96,7 @@ class HomeActivity : Activity() {
             val budget = budget!!.split(" ")
             val budgetA = budget[1].toDouble()
             val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-            val db = DatabaseHelper(this@HomeActivity)
+            val db = DatabaseHelper(this@HomeActivity, email)
             val cursor = db.getExpensesAmountsForLast6Months()
             var expense = 0.0
             cursor.let {
@@ -137,7 +137,7 @@ class HomeActivity : Activity() {
         signs = ArrayList()
         val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
         try {
-            val database = DatabaseHelper(this)
+            val database = DatabaseHelper(this, email)
             val cursor = database.retrieveExpensesData()!!
             cursor.use {
                 while (it.moveToNext()) {
@@ -337,7 +337,7 @@ class HomeActivity : Activity() {
         val expensesData = ArrayList<String>()
 
         val email1 = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-        val database1 = DatabaseHelper(this)
+        val database1 = DatabaseHelper(this, email1)
 
         val cursor6Months = database1.getExpensesAmountsForLast6Months()
 

@@ -189,7 +189,7 @@ class AddNew : AppCompatActivity() {
     private fun submit(hasDescription: Boolean, hasReceipt: Boolean) {
         val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
 
-        val database = DatabaseHelper(this@AddNew)
+        val database = DatabaseHelper(this@AddNew, email)
         var a by Delegates.notNull<Int>()
         if (hasDescription && hasReceipt) {
             a = 1

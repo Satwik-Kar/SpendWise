@@ -102,7 +102,7 @@ class OpenExpense : AppCompatActivity() {
             alert.setPositiveButton("Delete") { _, _ ->
                 val email =
                     getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-                val database = DatabaseHelper(this)
+                val database = DatabaseHelper(this, email)
                 try {
 
                     database.deleteExpenseDataById(id)
@@ -158,7 +158,7 @@ class OpenExpense : AppCompatActivity() {
                 if (titleInner.text!!.isNotEmpty() && amountInner.text!!.isNotEmpty() && descInner.text!!.isNotEmpty()) {
                     val email =
                         getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-                    val database = DatabaseHelper(this@OpenExpense)
+                    val database = DatabaseHelper(this@OpenExpense, email)
                     database.updateData(
                         id,
                         titleInner.text.toString(),
@@ -187,7 +187,7 @@ class OpenExpense : AppCompatActivity() {
 
         }
         val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-        val database = DatabaseHelper(applicationContext)
+        val database = DatabaseHelper(applicationContext, email)
         val cursor = database.retrieveExpenseDataById(id)
         cursor.use {
             while (cursor != null && cursor.moveToNext()) {
@@ -408,8 +408,5 @@ class OpenExpense : AppCompatActivity() {
         imageViewViewer.setImageBitmap(bitmap)
     }
 
-    fun removeDotsAndNumbers(email: String): String {
-        val pattern = Regex("[.0-9@]")
-        return pattern.replace(email, "")
-    }
+
 }

@@ -7,12 +7,18 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
-class DatabaseHelper(context: Context) :
+class DatabaseHelper(context: Context, userMail: String) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
+    private val DATABASE_TABLE_EXPENSE =
+        Constants.TABLE_EXPENSE + "_" + removeDotsAndNumbers(userMail)
+    private val DATABASE_TABLE_CREDIT =
+        Constants.TABLE_CREDIT + "_" + removeDotsAndNumbers(userMail)
 
     companion object {
+
         private const val DATABASE_NAME = "ExpenseDetails.db"
+
         private const val DATABASE_VERSION = 1
         private const val COLUMN_USER_MAIL = "mail"
         private const val COLUMN_TITLE = "title"
@@ -34,7 +40,7 @@ class DatabaseHelper(context: Context) :
 
         val createTableQueryCREDIT: String =
             "CREATE TABLE " +
-                    "${Constants.TABLE_CREDIT} " + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "$DATABASE_TABLE_CREDIT " + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$COLUMN_TITLE TEXT, " +
                     "$COLUMN_USER_MAIL TEXT, " +
                     "$COLUMN_DATE TEXT, " +
@@ -46,7 +52,7 @@ class DatabaseHelper(context: Context) :
 
         val createTableQuery: String =
             "CREATE TABLE " +
-                    "${Constants.TABLE_EXPENSE} " + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "$DATABASE_TABLE_EXPENSE " + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$COLUMN_TITLE TEXT, " +
                     "$COLUMN_USER_MAIL TEXT, " +
                     "$COLUMN_DATE TEXT, " +
@@ -68,11 +74,16 @@ class DatabaseHelper(context: Context) :
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // Perform necessary actions when upgrading the database
         // For simplicity, we'll drop the table and recreate it
-        val dropTableQuery = "DROP TABLE IF EXISTS ${Constants.TABLE_EXPENSE}"
+        val dropTableQuery = "DROP TABLE IF EXISTS $DATABASE_TABLE_EXPENSE"
         db.execSQL(dropTableQuery)
-        val dropTableQueryCredit = "DROP TABLE IF EXISTS ${Constants.TABLE_CREDIT}"
+        val dropTableQueryCredit = "DROP TABLE IF EXISTS $DATABASE_TABLE_CREDIT"
         db.execSQL(dropTableQueryCredit)
         onCreate(db)
+    }
+
+    fun removeDotsAndNumbers(email: String): String {
+        val pattern = Regex("[.0-9@]")
+        return pattern.replace(email, "")
     }
 
     fun insertData(
@@ -106,7 +117,7 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_AMOUNT_SIGN, signAmount)
 
         }
-        db.insert(Constants.TABLE_EXPENSE, null, values)
+        db.insert(DATABASE_TABLE_EXPENSE, null, values)
         db.close()
     }
 
@@ -132,7 +143,7 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_AMOUNT, amount)
             put(COLUMN_AMOUNT_SIGN, signAmount)
         }
-        db.insert(Constants.TABLE_EXPENSE, null, values)
+        db.insert(DATABASE_TABLE_EXPENSE, null, values)
         db.close()
     }
 
@@ -165,7 +176,7 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_USER_MAIL, mail)
 
         }
-        db.insert(Constants.TABLE_EXPENSE, null, values)
+        db.insert(DATABASE_TABLE_EXPENSE, null, values)
         db.close()
     }
 
@@ -192,7 +203,7 @@ class DatabaseHelper(context: Context) :
 
             put(COLUMN_DESCRIPTION, description)
         }
-        db.insert(Constants.TABLE_EXPENSE, null, values)
+        db.insert(DATABASE_TABLE_EXPENSE, null, values)
         db.close()
         Log.e("database", "successfull")
     }
@@ -200,19 +211,19 @@ class DatabaseHelper(context: Context) :
 
     fun retrieveExpensesData(): Cursor? {
         val db = readableDatabase
-        return db.query(Constants.TABLE_EXPENSE, null, null, null, null, null, null)
+        return db.query(DATABASE_TABLE_EXPENSE, null, null, null, null, null, null)
     }
 
     fun retrieveExpenseDataById(id: String): Cursor? {
         val db = readableDatabase
         val selection = "_id = ?"
         val selectionArgs = arrayOf(id)
-        return db.query(Constants.TABLE_EXPENSE, null, selection, selectionArgs, null, null, null)
+        return db.query(DATABASE_TABLE_EXPENSE, null, selection, selectionArgs, null, null, null)
     }
 
     fun deleteExpenseDataById(id: String) {
         val db = writableDatabase
-        val deleteQuery = "DELETE FROM ${Constants.TABLE_EXPENSE} WHERE _id = $id"
+        val deleteQuery = "DELETE FROM $DATABASE_TABLE_EXPENSE WHERE _id = $id"
         db.execSQL(deleteQuery)
         db.close()
     }
@@ -232,21 +243,21 @@ class DatabaseHelper(context: Context) :
         }
         val selection = "_id = ?"
         val selectionArgs = arrayOf(id)
-        db.update(Constants.TABLE_EXPENSE, values, selection, selectionArgs)
+        db.update(DATABASE_TABLE_EXPENSE, values, selection, selectionArgs)
         db.close()
     }
 
     fun deleteAllData() {
         val db = writableDatabase
-        db.delete(Constants.TABLE_EXPENSE, null, null)
-        db.delete(Constants.TABLE_CREDIT, null, null)
+        db.delete(DATABASE_TABLE_EXPENSE, null, null)
+        db.delete(DATABASE_TABLE_CREDIT, null, null)
         db.close()
     }
 
     fun getExpensesAmountsForLast6Months(): Cursor {
         val db = readableDatabase
         val query =
-            "SELECT SUM($COLUMN_AMOUNT) AS total_amount, strftime('%m/%Y', date(substr($COLUMN_DATE, 7, 4) || '-' || substr($COLUMN_DATE, 4, 2) || '-' || substr($COLUMN_DATE, 1, 2))) AS month_year " + "FROM ${Constants.TABLE_EXPENSE} " + "WHERE date(substr($COLUMN_DATE, 7, 4) || '-' || substr($COLUMN_DATE, 4, 2) || '-' || substr($COLUMN_DATE, 1, 2)) >= date('now', '-6 months') " + "GROUP BY month_year " + "ORDER BY month_year ASC"
+            "SELECT SUM($COLUMN_AMOUNT) AS total_amount, strftime('%m/%Y', date(substr($COLUMN_DATE, 7, 4) || '-' || substr($COLUMN_DATE, 4, 2) || '-' || substr($COLUMN_DATE, 1, 2))) AS month_year " + "FROM $DATABASE_TABLE_EXPENSE " + "WHERE date(substr($COLUMN_DATE, 7, 4) || '-' || substr($COLUMN_DATE, 4, 2) || '-' || substr($COLUMN_DATE, 1, 2)) >= date('now', '-6 months') " + "GROUP BY month_year " + "ORDER BY month_year ASC"
         return db.rawQuery(query, null)
     }
 
@@ -269,7 +280,7 @@ class DatabaseHelper(context: Context) :
 
             put(COLUMN_DESCRIPTION, creditDescription)
         }
-        db.insert(Constants.TABLE_CREDIT, null, values)
+        db.insert(DATABASE_TABLE_CREDIT, null, values)
         db.close()
         Log.e("database", "successfull")
 
@@ -292,7 +303,7 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_USER_MAIL, mail)
 
         }
-        db.insert(Constants.TABLE_CREDIT, null, values)
+        db.insert(DATABASE_TABLE_CREDIT, null, values)
         db.close()
         Log.e("database", "successfull")
 

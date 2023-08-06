@@ -138,7 +138,7 @@ class Settings : AppCompatActivity() {
                 val email =
                     getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
                 val tableName = removeDotsAndNumbers(email)
-                DatabaseHelper(this@Settings).deleteAllData()
+                DatabaseHelper(this@Settings, email).deleteAllData()
                 Toast.makeText(this@Settings, "All app data deleted", Toast.LENGTH_SHORT).show()
                 getSharedPreferences("credentials", MODE_PRIVATE).edit().clear().apply()
                 finishAffinity()

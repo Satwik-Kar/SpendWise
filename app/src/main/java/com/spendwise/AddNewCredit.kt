@@ -57,7 +57,7 @@ class AddNewCredit : AppCompatActivity() {
 
                 val email =
                     getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-                val database = DatabaseHelper(this@AddNewCredit)
+                val database = DatabaseHelper(this@AddNewCredit, email)
 
                 database.insertData(
                     email,
@@ -74,7 +74,7 @@ class AddNewCredit : AppCompatActivity() {
             ) {
                 val email =
                     getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-                val database = DatabaseHelper(this@AddNewCredit)
+                val database = DatabaseHelper(this@AddNewCredit, email)
 
                 database.insertData(
                     email,
