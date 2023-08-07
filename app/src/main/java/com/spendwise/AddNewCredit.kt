@@ -13,14 +13,14 @@ import java.util.Calendar
 
 class AddNewCredit : AppCompatActivity() {
     private val calendar = Calendar.getInstance()
-    lateinit var creditTitle: TextInputEditText
-    lateinit var creditAmount: TextInputEditText
-    lateinit var creditDateTaken: EditText
-    lateinit var creditDueDate: EditText
-    lateinit var creditDescription: TextInputEditText
-    lateinit var addCreditBtn: Button
-    lateinit var datebtn: FloatingActionButton
-    lateinit var dueDateBtn: FloatingActionButton
+    private lateinit var creditTitle: TextInputEditText
+    private lateinit var creditAmount: TextInputEditText
+    private lateinit var creditDateTaken: EditText
+    private lateinit var creditDueDate: EditText
+    private lateinit var creditDescription: TextInputEditText
+    private lateinit var addCreditBtn: Button
+    private lateinit var dateBtn: FloatingActionButton
+    private lateinit var dueDateBtn: FloatingActionButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,11 +33,11 @@ class AddNewCredit : AppCompatActivity() {
         addCreditBtn = this.findViewById(R.id.addCreditBtn)
         creditDateTaken = this.findViewById(R.id.credit__date)
         creditDueDate = this.findViewById(R.id.credit_due_date)
-        datebtn = this.findViewById(R.id.creditShowCalendarBtn)
+        dateBtn = this.findViewById(R.id.creditShowCalendarBtn)
         dueDateBtn = this.findViewById(R.id.creditShowDueDateBtn)
 
 
-        datebtn.setOnClickListener {
+        dateBtn.setOnClickListener {
 
             showDatePickerDialog("date")
 

@@ -502,18 +502,42 @@ class HomeActivity : Activity() {
     ) : RecyclerView.Adapter<ViewHolderCredit>() {
 
         override fun onBindViewHolder(holder: ViewHolderCredit, position: Int) {
+            val titleView = holder.title
+            val dateView = holder.date
+            val amountView = holder.amount
+            val cardView = holder.cardView
+            holder.imageView.setImageResource(R.drawable.baseline_auto_awesome_24)
+            titleView.text = titles[position]
+            dateView.text = dates[position]
+            amountView.text = "${signs[position]} ${amounts[position]}"
+            cardView.setOnClickListener {
+                val intent = Intent(this@HomeActivity, OpenExpense::class.java)
+                intent.putExtra("id", creditIds[position])
+                intent.putExtra("sign", signs[position])
+                intent.putExtra("title", titles[position])
+                intent.putExtra("date", creditDate[position])
+                intent.putExtra("due_date", dueDate[position])
+                intent.putExtra("desc", descriptions[position])
+                intent.putExtra("amount", amounts[position])
+
+                startActivity(intent)
+
+
+            }
 
 
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderCredit {
 
-            TODO()
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_of_expenses_recycler_view, parent, false)
+            return ViewHolderCredit(view)
         }
 
         override fun getItemCount(): Int {
 
-            TODO()
+            return creditIds.size
         }
 
 
