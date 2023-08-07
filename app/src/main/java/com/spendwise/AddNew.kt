@@ -206,7 +206,7 @@ class AddNew : AppCompatActivity() {
 
         when (a) {
             1 -> {
-                database.insertData(
+                database.insertDataExpense(
                     email,
                     TITLE,
                     DATE,
@@ -223,7 +223,7 @@ class AddNew : AppCompatActivity() {
             }
 
             2 -> {
-                database.insertData(
+                database.insertDataExpense(
                     email,
                     TITLE,
                     DATE,
@@ -239,7 +239,7 @@ class AddNew : AppCompatActivity() {
             }
 
             3 -> {
-                database.insertData(
+                database.insertDataExpense(
                     email,
                     TITLE,
                     DATE,
@@ -253,7 +253,7 @@ class AddNew : AppCompatActivity() {
             }
 
             4 -> {
-                database.insertData(email, TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, sign)
+                database.insertDataExpense(email, TITLE, DATE, CATEGORY, P_METHOD, AMOUNT, sign)
 
             }
         }

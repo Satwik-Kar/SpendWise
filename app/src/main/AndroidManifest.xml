@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpendWise"
         tools:targetApi="34">
-
+        <activity
+            android:name=".OpenCredit"
+            android:exported="false" />
         <activity
             android:name=".Settings"
             android:exported="false"

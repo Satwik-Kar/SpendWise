@@ -49,8 +49,18 @@ class HomeActivity : Activity() {
     private lateinit var filePaths: ArrayList<String>
     private lateinit var signs: ArrayList<String>
 
+    private lateinit var creditTitles: ArrayList<String>
+    private lateinit var creditDates: ArrayList<String>
+    private lateinit var creditDueDates: ArrayList<String>
+    private lateinit var creditDescriptions: ArrayList<String>
+    private lateinit var creditIds: ArrayList<String>
+    private lateinit var creditAmounts: ArrayList<String>
+    private lateinit var creditSigns: ArrayList<String>
+
+
     lateinit var addNewBtn: FloatingActionButton
     lateinit var recyclerViewListExpenses: RecyclerView
+    lateinit var recyclerViewListCredits: RecyclerView
     private val COLUMN_TITLE = "title"
     private val COLUMN_DATE = "date"
     private val COLUMN_CATEGORY = "category"
@@ -62,6 +72,8 @@ class HomeActivity : Activity() {
     private val COLUMN_HAS_FILE = "HasFile"
     private val COLUMN_FILE_PATH = "FilePath"
     private val COLUMN_DESCRIPTION = "description"
+    private val COLUMN_DUE_DATE = "due_date"
+
     private var lineColor = Color.TRANSPARENT
 
     @SuppressLint("Range", "SetTextI18n")
@@ -70,6 +82,8 @@ class HomeActivity : Activity() {
         setContentView(R.layout.activity_home)
         val firstElementHome = layoutInflater.inflate(R.layout.first_element_home, null)
         val secondElementHome = layoutInflater.inflate(R.layout.list_of_expenses, null)
+        val thirdCreditsView = layoutInflater.inflate(R.layout.add_credit_bills, null)
+
         val firstElementCardView =
             firstElementHome.findViewById<MaterialCardView>(R.id.firstElementCardView)
         val uri = getSharedPreferences("credentials", MODE_PRIVATE).getString("photo_url", null)
@@ -123,6 +137,7 @@ class HomeActivity : Activity() {
 
 
         recyclerViewListExpenses = secondElementHome.findViewById(R.id.recyclerView_list_expenses)
+        recyclerViewListCredits = thirdCreditsView.findViewById(R.id.credit_bill_recycler_home)
         barLinearLayout = firstElementHome.findViewById(R.id.barLinearLayout)
         homeLinearLayout = this.findViewById(R.id.homeActivity_LinearLayout)
         titles = ArrayList()
@@ -135,6 +150,14 @@ class HomeActivity : Activity() {
         ids = ArrayList()
         filePaths = ArrayList()
         signs = ArrayList()
+
+        creditDates = ArrayList()
+        creditDueDates = ArrayList()
+        creditDescriptions = ArrayList()
+        creditSigns = ArrayList()
+        creditIds = ArrayList()
+        creditTitles = ArrayList()
+        creditAmounts = ArrayList()
         val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
         try {
             val database = DatabaseHelper(this, email)
@@ -165,10 +188,41 @@ class HomeActivity : Activity() {
             Log.e("database", "onCreate: $e")
 
         }
+        try {
+            val database = DatabaseHelper(this, email)
+            val cursor = database.retrieveCreditsData()!!
+            cursor.use {
+                while (it.moveToNext()) {
+                    val credit_id = it.getString(it.getColumnIndex("_id"))
+                    val credit_title = it.getString(it.getColumnIndex(COLUMN_TITLE))
+                    val credit_date = it.getString(it.getColumnIndex(COLUMN_DATE))
+                    val due_date = it.getString(it.getColumnIndex(COLUMN_DUE_DATE))
+                    val credit_amount = it.getString(it.getColumnIndex(COLUMN_AMOUNT))
+                    val credit_description = it.getString(it.getColumnIndex(COLUMN_DESCRIPTION))
+                    val credit_sign = it.getString(it.getColumnIndex(COLUMN_AMOUNT_SIGN))
+                    creditIds.add(credit_id)
+                    creditTitles.add(credit_title)
+                    creditDates.add(credit_date)
+                    creditDueDates.add(due_date)
+                    creditAmounts.add(credit_amount)
+                    creditDescriptions.add(credit_description)
+                    creditSigns.add(credit_sign)
 
-        val dividerItemDecoration =
+                }
+            }
+
+        } catch (e: Exception) {
+            Log.e("database", "onCreate: $e")
+
+        }
+
+        val dividerItemDecorationExpenses =
             DividerItemDecoration(recyclerViewListExpenses.context, LinearLayoutManager.VERTICAL)
-        recyclerViewListExpenses.addItemDecoration(dividerItemDecoration)
+        val dividerItemDecorationCredits =
+            DividerItemDecoration(recyclerViewListCredits.context, LinearLayoutManager.VERTICAL)
+        recyclerViewListExpenses.addItemDecoration(dividerItemDecorationExpenses)
+        recyclerViewListCredits.addItemDecoration(dividerItemDecorationCredits)
+
         if (titles.isNotEmpty()) {
             val adapter =
                 ListAdapter(titles, dates, categories, pMethods, descriptions, amounts, signs)
@@ -177,6 +231,19 @@ class HomeActivity : Activity() {
 
         } else {
             secondElementHome.findViewById<TextView>(R.id.noitemtext).visibility = View.VISIBLE
+        }
+        if (creditTitles.isNotEmpty()) {
+            val adapter =
+                ListAdapterCredit(
+                    creditTitles,
+                    creditDates,
+                    creditDueDates,
+                    creditDescriptions,
+                    creditAmounts,
+                    creditSigns
+                )
+            recyclerViewListCredits.adapter = adapter
+            recyclerViewListCredits.layoutManager = LinearLayoutManager(this)
         }
         val accountPicture = firstElementHome.findViewById<ImageView>(R.id.accountPicture)
         val view = layoutInflater.inflate(R.layout.home_alert_profile_view, null)
@@ -388,10 +455,8 @@ class HomeActivity : Activity() {
         }
 
 
-        val creditBillView = layoutInflater.inflate(R.layout.add_credit_bills, null)
-
         val addNewCreditBtn =
-            creditBillView.findViewById<FloatingActionButton>(R.id.add_credit_bill_once_btn)
+            thirdCreditsView.findViewById<FloatingActionButton>(R.id.add_credit_bill_once_btn)
         addNewCreditBtn.setOnClickListener {
 
 
@@ -400,7 +465,7 @@ class HomeActivity : Activity() {
 
         }
 
-        homeLinearLayout.addView(creditBillView)
+        homeLinearLayout.addView(thirdCreditsView)
 
 
     }
@@ -492,13 +557,12 @@ class HomeActivity : Activity() {
     //////////////////////////////////////////
 
     private inner class ListAdapterCredit(
-        var creditIds: ArrayList<String>,
-        var titles: ArrayList<String>,
+        var creditTitles: ArrayList<String>,
         var creditDate: ArrayList<String>,
-        var dueDate: ArrayList<String>,
-        var descriptions: ArrayList<String>,
-        var amounts: ArrayList<String>,
-        var signs: ArrayList<String>
+        var creditDueDate: ArrayList<String>,
+        var creditDescriptions: ArrayList<String>,
+        var creditAmounts: ArrayList<String>,
+        var creditSigns: ArrayList<String>
     ) : RecyclerView.Adapter<ViewHolderCredit>() {
 
         override fun onBindViewHolder(holder: ViewHolderCredit, position: Int) {
@@ -507,18 +571,18 @@ class HomeActivity : Activity() {
             val amountView = holder.amount
             val cardView = holder.cardView
             holder.imageView.setImageResource(R.drawable.baseline_auto_awesome_24)
-            titleView.text = titles[position]
-            dateView.text = dates[position]
-            amountView.text = "${signs[position]} ${amounts[position]}"
+            titleView.text = creditTitles[position]
+            dateView.text = creditDueDate[position]
+            amountView.text = "${creditSigns[position]} ${creditAmounts[position]}"
             cardView.setOnClickListener {
-                val intent = Intent(this@HomeActivity, OpenExpense::class.java)
+                val intent = Intent(this@HomeActivity, OpenCredit::class.java)
                 intent.putExtra("id", creditIds[position])
-                intent.putExtra("sign", signs[position])
-                intent.putExtra("title", titles[position])
+                intent.putExtra("sign", creditSigns[position])
+                intent.putExtra("title", creditTitles[position])
                 intent.putExtra("date", creditDate[position])
-                intent.putExtra("due_date", dueDate[position])
-                intent.putExtra("desc", descriptions[position])
-                intent.putExtra("amount", amounts[position])
+                intent.putExtra("due_date", creditDueDate[position])
+                intent.putExtra("desc", creditDescriptions[position])
+                intent.putExtra("amount", creditAmounts[position])
 
                 startActivity(intent)
 

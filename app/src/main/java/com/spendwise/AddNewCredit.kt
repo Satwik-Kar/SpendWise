@@ -57,10 +57,12 @@ class AddNewCredit : AppCompatActivity() {
 
                 val email =
                     getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
+                val sign =
+                    getSharedPreferences("credentials", MODE_PRIVATE).getString("currency", null)!!
                 val database = DatabaseHelper(this@AddNewCredit, email)
 
-                database.insertData(
-                    email,
+                database.insertDataCredit(
+                    email, sign,
                     creditTitle.text.toString(),
                     creditDateTaken.text.toString(),
                     creditAmount.text.toString(),
@@ -74,10 +76,13 @@ class AddNewCredit : AppCompatActivity() {
             ) {
                 val email =
                     getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
+                val sign =
+                    getSharedPreferences("credentials", MODE_PRIVATE).getString("currency", null)!!
+
                 val database = DatabaseHelper(this@AddNewCredit, email)
 
-                database.insertData(
-                    email,
+                database.insertDataCredit(
+                    email, sign,
                     creditTitle.text.toString(),
                     creditDateTaken.text.toString(),
                     creditAmount.text.toString(),

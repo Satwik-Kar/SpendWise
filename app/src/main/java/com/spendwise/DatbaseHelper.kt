@@ -65,7 +65,7 @@ class DatabaseHelper(context: Context, userMail: String) :
         return pattern.replace(email, "")
     }
 
-    fun insertData(
+    fun insertDataExpense(
         mail: String,
         title: String,
         date: String,
@@ -100,7 +100,7 @@ class DatabaseHelper(context: Context, userMail: String) :
         db.close()
     }
 
-    fun insertData(
+    fun insertDataExpense(
         mail: String,
 
         title: String,
@@ -126,7 +126,7 @@ class DatabaseHelper(context: Context, userMail: String) :
         db.close()
     }
 
-    fun insertData(
+    fun insertDataExpense(
         mail: String,
 
         title: String,
@@ -159,7 +159,7 @@ class DatabaseHelper(context: Context, userMail: String) :
         db.close()
     }
 
-    fun insertData(
+    fun insertDataExpense(
         mail: String,
 
         title: String,
@@ -191,6 +191,11 @@ class DatabaseHelper(context: Context, userMail: String) :
     fun retrieveExpensesData(): Cursor? {
         val db = readableDatabase
         return db.query(DATABASE_TABLE_EXPENSE, null, null, null, null, null, null)
+    }
+
+    fun retrieveCreditsData(): Cursor? {
+        val db = readableDatabase
+        return db.query(DATABASE_TABLE_CREDIT, null, null, null, null, null, null)
     }
 
     fun retrieveExpenseDataById(id: String): Cursor? {
@@ -240,8 +245,9 @@ class DatabaseHelper(context: Context, userMail: String) :
         return db.rawQuery(query, null)
     }
 
-    fun insertData(
+    fun insertDataCredit(
         mail: String,
+        creditSign: String,
         creditTitle: String,
         creditDate: String,
         creditAmount: String,
@@ -264,8 +270,9 @@ class DatabaseHelper(context: Context, userMail: String) :
 
     }
 
-    fun insertData(
+    fun insertDataCredit(
         mail: String,
+        creditSign: String,
 
         creditTitle: String,
         creditDate: String,
