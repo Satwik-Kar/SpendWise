@@ -261,7 +261,7 @@ class DatabaseHelper(context: Context, userMail: String) :
             put(COLUMN_DUE_DATE, creditDueDate)
             put(COLUMN_AMOUNT, creditAmount)
             put(COLUMN_USER_MAIL, mail)
-
+            put(COLUMN_AMOUNT_SIGN, creditSign)
             put(COLUMN_DESCRIPTION, creditDescription)
         }
         db.insert(DATABASE_TABLE_CREDIT, null, values)
@@ -286,6 +286,7 @@ class DatabaseHelper(context: Context, userMail: String) :
             put(COLUMN_DUE_DATE, creditDueDate)
             put(COLUMN_AMOUNT, creditAmount)
             put(COLUMN_USER_MAIL, mail)
+            put(COLUMN_AMOUNT_SIGN, creditSign)
 
         }
         db.insert(DATABASE_TABLE_CREDIT, null, values)
