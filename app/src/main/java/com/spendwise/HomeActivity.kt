@@ -570,7 +570,7 @@ class HomeActivity : Activity() {
             val dateView = holder.date
             val amountView = holder.amount
             val cardView = holder.cardView
-            holder.imageView.setImageResource(R.drawable.baseline_auto_awesome_24)
+            holder.imageView.setImageResource(R.drawable.icons8_creditcard_payment_96__1_)
             titleView.text = creditTitles[position]
             dateView.text = creditDueDate[position]
             amountView.text = "${creditSigns[position]} ${creditAmounts[position]}"

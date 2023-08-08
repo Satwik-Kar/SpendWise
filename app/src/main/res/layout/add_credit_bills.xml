@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="Credit bills"
+                android:text="Credits"
                 android:textColor="@color/app_theme"
                 android:textSize="24sp"
                 android:textStyle="bold"
