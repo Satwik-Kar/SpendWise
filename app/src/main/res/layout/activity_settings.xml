@@ -7,6 +7,63 @@
     tools:context=".Settings">
 
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/setting_backup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/app_theme_transparent"
+        app:cardCornerRadius="20sp"
+        app:cardElevation="0dp"
+        app:contentPadding="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_delete_data">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="15dp"
+            tools:layout_editor_absoluteY="15dp">
+
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:drawablePadding="50sp"
+                android:gravity="center"
+                android:text="Backup and restore"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Backup your data, so that you can restore them when you reinstall SpendWise."
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView29"
+                app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+            <ImageView
+                android:id="@+id/imageView20"
+                android:layout_width="25sp"
+                android:layout_height="25sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_backup_24"
+                app:tint="@color/app_theme" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
@@ -219,7 +276,7 @@
                 android:id="@+id/textView13"
                 android:layout_width="0dp"
                 android:layout_height="16dp"
-                android:text="Factory resets the app"
+                android:text="Factory resets the app."
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView10"
                 app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -250,7 +307,7 @@
         app:contentPadding="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_delete_data">
+        app:layout_constraintTop_toBottomOf="@+id/setting_backup">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

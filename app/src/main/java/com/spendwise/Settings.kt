@@ -17,6 +17,7 @@ class Settings : AppCompatActivity() {
     private lateinit var logoutView: CardView
     private lateinit var deleteData: CardView
     private lateinit var changeCountry: CardView
+    private lateinit var backup: CardView
     override fun onBackPressed() {
         super.onBackPressed()
         startActivity(Intent(this@Settings, HomeActivity::class.java))
@@ -30,6 +31,7 @@ class Settings : AppCompatActivity() {
         logoutView = findViewById(R.id.setting_log_out)
         deleteData = findViewById(R.id.setting_delete_data)
         changeCountry = findViewById(R.id.setting_change_country)
+        backup = findViewById(R.id.setting_backup)
         val stateOfAppLock = getSharedPreferences(
             "credentials", MODE_PRIVATE
         ).getBoolean("setting_app_lock", true)
@@ -155,6 +157,13 @@ class Settings : AppCompatActivity() {
             }
             alert.create().show()
 
+
+        }
+        backup.setOnClickListener {
+
+
+            val intent = Intent(this@Settings, BackupActivity::class.java)
+            startActivity(intent)
 
         }
 

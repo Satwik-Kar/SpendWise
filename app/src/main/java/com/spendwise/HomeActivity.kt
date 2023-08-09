@@ -2,11 +2,9 @@ package com.spendwise
 
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.icu.util.Calendar
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,8 +30,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.io.File
-import java.io.FileInputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -84,7 +80,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        initiateBackupInDevice()
         val firstElementHome = layoutInflater.inflate(R.layout.first_element_home, null)
         val secondElementHome = layoutInflater.inflate(R.layout.list_of_expenses, null)
         val thirdCreditsView = layoutInflater.inflate(R.layout.add_credit_bills, null)
@@ -474,29 +469,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    private fun initiateBackupInDevice() {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "application/octet-stream"
-        intent.putExtra(Intent.EXTRA_TITLE, Constants.BACKUP_FILE_NAME)
-
-        startActivityForResult(intent, 122)
-    }
-
-    private fun performBackup(uri: Uri) {
-        val sourceDBPath = this@HomeActivity.getDatabasePath(Constants.DATABASE_NAME).absolutePath
-
-        val sourceDBFile = File(sourceDBPath)
-        val outputStream = this@HomeActivity.contentResolver.openOutputStream(uri)
-
-        outputStream?.use { output ->
-            FileInputStream(sourceDBFile).use { input ->
-                input.copyTo(output)
-                Toast.makeText(this@HomeActivity, "Backup Successful", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
     fun getMonthName(dateString: String): String {
         val parser = SimpleDateFormat("MM/yyyy", Locale.ENGLISH)
         val formatter = SimpleDateFormat("MMM", Locale.ENGLISH)
@@ -513,15 +485,6 @@ class HomeActivity : AppCompatActivity() {
             in 12..15 -> "Good afternoon"
             in 16..20 -> "Good evening"
             else -> "Hello"
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 122 && resultCode == Activity.RESULT_OK) {
-            data?.data?.let { uri ->
-                performBackup(uri)
-            }
         }
     }
 
