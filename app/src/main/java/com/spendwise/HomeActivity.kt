@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.icu.util.Calendar
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -30,11 +32,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.io.File
+import java.io.FileInputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class HomeActivity : Activity() {
+class HomeActivity : AppCompatActivity() {
     lateinit var barLinearLayout: LinearLayout
     lateinit var homeLinearLayout: LinearLayout
 
@@ -80,6 +84,7 @@ class HomeActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        initiateBackupInDevice()
         val firstElementHome = layoutInflater.inflate(R.layout.first_element_home, null)
         val secondElementHome = layoutInflater.inflate(R.layout.list_of_expenses, null)
         val thirdCreditsView = layoutInflater.inflate(R.layout.add_credit_bills, null)
@@ -126,8 +131,7 @@ class HomeActivity : Activity() {
                 lineColor = Color.RED
                 budgetWarning.text = "Monthly Budget \n     Exceeded"
                 val blink_anim = AnimationUtils.loadAnimation(
-                    applicationContext,
-                    R.anim.blink
+                    applicationContext, R.anim.blink
                 )
                 budgetWarning.startAnimation(blink_anim)
             }
@@ -233,15 +237,14 @@ class HomeActivity : Activity() {
             secondElementHome.findViewById<TextView>(R.id.noitemtext).visibility = View.VISIBLE
         }
         if (creditTitles.isNotEmpty()) {
-            val adapter =
-                ListAdapterCredit(
-                    creditTitles,
-                    creditDates,
-                    creditDueDates,
-                    creditDescriptions,
-                    creditAmounts,
-                    creditSigns
-                )
+            val adapter = ListAdapterCredit(
+                creditTitles,
+                creditDates,
+                creditDueDates,
+                creditDescriptions,
+                creditAmounts,
+                creditSigns
+            )
             recyclerViewListCredits.adapter = adapter
             recyclerViewListCredits.layoutManager = LinearLayoutManager(this)
         }
@@ -470,6 +473,30 @@ class HomeActivity : Activity() {
 
     }
 
+
+    private fun initiateBackupInDevice() {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "application/octet-stream"
+        intent.putExtra(Intent.EXTRA_TITLE, Constants.BACKUP_FILE_NAME)
+
+        startActivityForResult(intent, 122)
+    }
+
+    private fun performBackup(uri: Uri) {
+        val sourceDBPath = this@HomeActivity.getDatabasePath(Constants.DATABASE_NAME).absolutePath
+
+        val sourceDBFile = File(sourceDBPath)
+        val outputStream = this@HomeActivity.contentResolver.openOutputStream(uri)
+
+        outputStream?.use { output ->
+            FileInputStream(sourceDBFile).use { input ->
+                input.copyTo(output)
+                Toast.makeText(this@HomeActivity, "Backup Successful", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     fun getMonthName(dateString: String): String {
         val parser = SimpleDateFormat("MM/yyyy", Locale.ENGLISH)
         val formatter = SimpleDateFormat("MMM", Locale.ENGLISH)
@@ -477,11 +504,6 @@ class HomeActivity : Activity() {
         return formatter.format(date!!)
     }
 
-
-    private fun removeDotsAndNumbers(email: String): String {
-        val pattern = Regex("[.0-9@]")
-        return pattern.replace(email, "")
-    }
 
     private fun getWishes(): String {
         val calendar = Calendar.getInstance()
@@ -491,6 +513,15 @@ class HomeActivity : Activity() {
             in 12..15 -> "Good afternoon"
             in 16..20 -> "Good evening"
             else -> "Hello"
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 122 && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { uri ->
+                performBackup(uri)
+            }
         }
     }
 

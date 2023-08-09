@@ -204,6 +204,10 @@ class Constants {
 
         const val TABLE_CREDIT = "table_credit"
         const val TABLE_EXPENSE = "table_expense"
+        const val BACKUP_FOLDER_NAME = "SpendWise_BACKUP"
+        const val BACKUP_FILE_NAME = "backup.db"
+        const val DATABASE_NAME = "ExpenseDetails.db"
+
 
         fun getMap(): Map<String, String> = countryCurrencyMap
 
