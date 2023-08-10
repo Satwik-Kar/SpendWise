@@ -33,13 +33,14 @@ class DatabaseHelper(context: Context, userMail: String) :
         private const val COLUMN_FILE_PATH = "FilePath"
         private const val COLUMN_DESCRIPTION = "description"
         private const val COLUMN_DUE_DATE = "due_date"
+        private const val COLUMN_RATE_OF_INTEREST = "rate_of_interest"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
 
 
         val createTableQueryCREDIT: String =
-            "CREATE TABLE " + "$DATABASE_TABLE_CREDIT " + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " + "$COLUMN_TITLE TEXT, " + "$COLUMN_USER_MAIL TEXT, " + "$COLUMN_DATE TEXT, " + "$COLUMN_DUE_DATE TEXT, " + "$COLUMN_AMOUNT TEXT, " + "$COLUMN_AMOUNT_SIGN TEXT, " + "$COLUMN_DESCRIPTION TEXT)"
+            "CREATE TABLE " + "$DATABASE_TABLE_CREDIT " + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " + "$COLUMN_TITLE TEXT, " + "$COLUMN_USER_MAIL TEXT, " + "$COLUMN_DATE TEXT, " + "$COLUMN_DUE_DATE TEXT, " + "$COLUMN_RATE_OF_INTEREST TEXT, " + "$COLUMN_AMOUNT TEXT, " + "$COLUMN_AMOUNT_SIGN TEXT, " + "$COLUMN_DESCRIPTION TEXT)"
 
 
         val createTableQuery: String =
@@ -246,6 +247,7 @@ class DatabaseHelper(context: Context, userMail: String) :
     }
 
     fun insertDataCredit(
+        creditRateOfInterest: String,
         mail: String,
         creditSign: String,
         creditTitle: String,
@@ -263,6 +265,7 @@ class DatabaseHelper(context: Context, userMail: String) :
             put(COLUMN_USER_MAIL, mail)
             put(COLUMN_AMOUNT_SIGN, creditSign)
             put(COLUMN_DESCRIPTION, creditDescription)
+            put(COLUMN_RATE_OF_INTEREST, creditRateOfInterest)
         }
         db.insert(DATABASE_TABLE_CREDIT, null, values)
         db.close()
@@ -271,9 +274,9 @@ class DatabaseHelper(context: Context, userMail: String) :
     }
 
     fun insertDataCredit(
+        creditRateOfInterest: String,
         mail: String,
         creditSign: String,
-
         creditTitle: String,
         creditDate: String,
         creditAmount: String,
@@ -287,6 +290,7 @@ class DatabaseHelper(context: Context, userMail: String) :
             put(COLUMN_AMOUNT, creditAmount)
             put(COLUMN_USER_MAIL, mail)
             put(COLUMN_AMOUNT_SIGN, creditSign)
+            put(COLUMN_RATE_OF_INTEREST, creditRateOfInterest)
 
         }
         db.insert(DATABASE_TABLE_CREDIT, null, values)

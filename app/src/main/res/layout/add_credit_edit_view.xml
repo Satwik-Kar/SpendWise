@@ -54,7 +54,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="600sp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
@@ -147,7 +147,7 @@
                 android:drawableStart="@drawable/baseline_attach_money_24"
                 android:drawableTint="@color/app_theme"
                 android:ems="10"
-                android:hint="Amount"
+                android:hint="Principal Amount"
                 app:boxCornerRadiusTopStart="18dp"
                 app:boxStrokeColor="@color/app_theme"
                 app:boxStrokeWidth="2dp"
@@ -216,7 +216,7 @@
                 app:boxStrokeWidth="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/credit_due_date"
+                app:layout_constraintTop_toBottomOf="@+id/rateOfInterestSlider"
                 app:startIconDrawable="@drawable/baseline_description_24"
                 app:startIconTint="@color/app_theme">
 
@@ -229,6 +229,28 @@
 
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <SeekBar
+                android:id="@+id/rateOfInterestSlider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:max="100"
+                android:thumbTint="@color/app_theme"
+                app:layout_constraintEnd_toEndOf="@+id/credit_due_date"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/credit_due_date"
+                app:layout_constraintTop_toBottomOf="@+id/rateOfInterest" />
+
+            <TextView
+                android:id="@+id/rateOfInterest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Rate of interest"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/credit_due_date"
+                app:layout_constraintTop_toBottomOf="@+id/credit_due_date" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

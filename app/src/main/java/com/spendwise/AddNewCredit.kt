@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -21,7 +24,9 @@ class AddNewCredit : AppCompatActivity() {
     private lateinit var addCreditBtn: Button
     private lateinit var dateBtn: FloatingActionButton
     private lateinit var dueDateBtn: FloatingActionButton
-
+    private lateinit var rateOfInterestText: TextView
+    private lateinit var rateOfInterestSlider: SeekBar
+    var RATE_OF_INTEREST = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +41,24 @@ class AddNewCredit : AppCompatActivity() {
         dateBtn = this.findViewById(R.id.creditShowCalendarBtn)
         dueDateBtn = this.findViewById(R.id.creditShowDueDateBtn)
 
+        rateOfInterestText = this.findViewById(R.id.rateOfInterest)
+        rateOfInterestSlider = this.findViewById(R.id.rateOfInterestSlider)
+
+
+        rateOfInterestSlider.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                rateOfInterestText.text = "Rate of interest • $p1 %"
+                RATE_OF_INTEREST = p1
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+        })
 
         dateBtn.setOnClickListener {
 
@@ -62,6 +85,7 @@ class AddNewCredit : AppCompatActivity() {
                 val database = DatabaseHelper(this@AddNewCredit, email)
 
                 database.insertDataCredit(
+                    RATE_OF_INTEREST.toString(),
                     email, sign,
                     creditTitle.text.toString(),
                     creditDateTaken.text.toString(),
@@ -82,6 +106,7 @@ class AddNewCredit : AppCompatActivity() {
                 val database = DatabaseHelper(this@AddNewCredit, email)
 
                 database.insertDataCredit(
+                    RATE_OF_INTEREST.toString(),
                     email, sign,
                     creditTitle.text.toString(),
                     creditDateTaken.text.toString(),
