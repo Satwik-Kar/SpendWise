@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="@color/app_theme"
-        app:strokeWidth="1dp">
+        app:strokeWidth="2.5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -51,177 +51,200 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/credit_title"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="90dp"
-        android:drawableStart="@drawable/baseline_title_24"
-        android:drawableTint="@color/app_theme"
-        android:hint="Title"
-        app:boxCornerRadiusTopStart="18dp"
-        app:boxStrokeColor="@color/app_theme"
-        app:boxStrokeWidth="2dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        app:contentPadding="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:startIconDrawable="@drawable/baseline_title_24"
-        app:startIconTint="@color/app_theme">
+        app:strokeColor="@color/app_theme"
+        app:strokeWidth="1dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/credit_Title_editText"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <EditText
-        android:id="@+id/credit__date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:drawableStart="@drawable/baseline_calendar_month_24"
-        android:drawableTint="@color/app_theme"
-        android:ems="10"
-        android:enabled="false"
-        android:hint="Date of credit taken"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/credit_title" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/creditShowCalendarBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/credit__date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/credit__date"
-        app:layout_constraintTop_toTopOf="@+id/credit__date"
-        app:srcCompat="@drawable/baseline_edit_calendar_24"
-        app:tint="@color/app_theme" />
+            android:layout_height="match_parent">
 
 
-    <Spinner
-        android:id="@+id/credit_spinner_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:entries="@array/expenseDetails_spinner_category"
-        app:layout_constraintEnd_toEndOf="@+id/credit__date"
-        app:layout_constraintStart_toStartOf="@+id/credit__date"
-        app:layout_constraintTop_toBottomOf="@+id/credit__date" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/credit_title"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="90dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="90dp"
+                android:drawableStart="@drawable/baseline_title_24"
+                android:drawableTint="@color/app_theme"
+                android:hint="Title"
+                app:boxCornerRadiusTopStart="18dp"
+                app:boxStrokeColor="@color/app_theme"
+                app:boxStrokeWidth="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView"
+                app:startIconDrawable="@drawable/baseline_title_24"
+                app:startIconTint="@color/app_theme">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/credit_amount"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="90dp"
-        android:drawableStart="@drawable/baseline_attach_money_24"
-        android:drawableTint="@color/app_theme"
-        android:ems="10"
-        android:hint="Amount"
-        app:boxCornerRadiusTopStart="18dp"
-        app:boxStrokeColor="@color/app_theme"
-        app:boxStrokeWidth="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/credit_spinner_category"
-        app:startIconDrawable="@drawable/baseline_attach_money_24"
-        app:startIconTint="@color/app_theme">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/credit_Title_editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/creditAmount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
+            <EditText
+                android:id="@+id/credit__date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableStart="@drawable/baseline_calendar_month_24"
+                android:drawableTint="@color/app_theme"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="Date of credit taken"
+                android:inputType="number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/credit_title" />
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <EditText
-        android:id="@+id/credit_due_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:drawableStart="@drawable/baseline_calendar_month_24"
-        android:drawableTint="@color/app_theme"
-        android:ems="10"
-        android:enabled="false"
-        android:hint="Due Date"
-        android:inputType="text"
-        android:paddingStart="3sp"
-        android:paddingEnd="3sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/credit_amount" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/creditShowDueDateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/credit_due_date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/credit_due_date"
-        app:layout_constraintTop_toTopOf="@+id/credit_due_date"
-        app:srcCompat="@drawable/baseline_edit_calendar_24"
-        app:tint="@color/app_theme" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/credit_desc"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="90dp"
-        android:drawableStart="@drawable/baseline_description_24"
-        android:drawableTint="@color/app_theme"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="Description (Optional)"
-        android:paddingStart="3sp"
-        android:paddingEnd="3sp"
-        app:boxCornerRadiusTopStart="18dp"
-        app:boxStrokeColor="@color/app_theme"
-        app:boxStrokeWidth="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/credit_due_date"
-        app:startIconDrawable="@drawable/baseline_description_24"
-        app:startIconTint="@color/app_theme">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/creditShowCalendarBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:backgroundTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/credit__date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/credit__date"
+                app:layout_constraintTop_toTopOf="@+id/credit__date"
+                app:srcCompat="@drawable/baseline_edit_calendar_24"
+                app:tint="@color/app_theme" />
 
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/creditDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine" />
+            <Spinner
+                android:id="@+id/credit_spinner_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:entries="@array/expenseDetails_spinner_category"
+                app:layout_constraintEnd_toEndOf="@+id/credit__date"
+                app:layout_constraintStart_toStartOf="@+id/credit__date"
+                app:layout_constraintTop_toBottomOf="@+id/credit__date" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/credit_amount"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="90dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="90dp"
+                android:drawableStart="@drawable/baseline_attach_money_24"
+                android:drawableTint="@color/app_theme"
+                android:ems="10"
+                android:hint="Amount"
+                app:boxCornerRadiusTopStart="18dp"
+                app:boxStrokeColor="@color/app_theme"
+                app:boxStrokeWidth="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/credit_spinner_category"
+                app:startIconDrawable="@drawable/baseline_attach_money_24"
+                app:startIconTint="@color/app_theme">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/creditAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <EditText
+                android:id="@+id/credit_due_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableStart="@drawable/baseline_calendar_month_24"
+                android:drawableTint="@color/app_theme"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="Due Date"
+                android:inputType="text"
+                android:paddingStart="3sp"
+                android:paddingEnd="3sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/credit_amount" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/creditShowDueDateBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:backgroundTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/credit_due_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/credit_due_date"
+                app:layout_constraintTop_toTopOf="@+id/credit_due_date"
+                app:srcCompat="@drawable/baseline_edit_calendar_24"
+                app:tint="@color/app_theme" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/credit_desc"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="90dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="90dp"
+                android:drawableStart="@drawable/baseline_description_24"
+                android:drawableTint="@color/app_theme"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Description (Optional)"
+                android:paddingStart="3sp"
+                android:paddingEnd="3sp"
+                app:boxCornerRadiusTopStart="18dp"
+                app:boxStrokeColor="@color/app_theme"
+                app:boxStrokeWidth="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/credit_due_date"
+                app:startIconDrawable="@drawable/baseline_description_24"
+                app:startIconTint="@color/app_theme">
 
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/creditDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
 
     <Button
         android:id="@+id/addCreditBtn"
-        android:layout_width="0dp"
+        android:layout_width="363dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
         android:text="Add credit"
         app:cornerRadius="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/credit_desc" />
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
