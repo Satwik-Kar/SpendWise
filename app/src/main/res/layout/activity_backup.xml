@@ -95,4 +95,25 @@
         android:text="Back up"
         app:layout_constraintStart_toStartOf="@+id/sizeOfBackup"
         app:layout_constraintTop_toBottomOf="@+id/sizeOfBackup" />
+
+    <Button
+        android:id="@+id/restoreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Import a backup"
+        app:icon="@drawable/baseline_download_24"
+        app:layout_constraintStart_toStartOf="@+id/backUpButton"
+        app:layout_constraintTop_toBottomOf="@+id/backUpButton" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Warning: Do not change the file name or file extension while choosing the destination. The restoration process will not work when the file name and extension is changed."
+        android:textColor="#000000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/restoreButton"
+        app:layout_constraintTop_toBottomOf="@+id/restoreButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
