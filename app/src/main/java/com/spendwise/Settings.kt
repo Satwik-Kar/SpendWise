@@ -7,17 +7,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.cardview.widget.CardView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.card.MaterialCardView
 
 
 class Settings : AppCompatActivity() {
     private lateinit var switch: SwitchCompat
-    private lateinit var logoutView: CardView
-    private lateinit var deleteData: CardView
-    private lateinit var changeCountry: CardView
-    private lateinit var backup: CardView
+    private lateinit var logoutView: MaterialCardView
+    private lateinit var deleteData: MaterialCardView
+    private lateinit var changeCountry: MaterialCardView
+    private lateinit var backup: MaterialCardView
     override fun onBackPressed() {
         super.onBackPressed()
         startActivity(Intent(this@Settings, HomeActivity::class.java))
