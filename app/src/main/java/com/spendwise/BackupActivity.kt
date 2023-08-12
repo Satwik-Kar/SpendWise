@@ -81,7 +81,6 @@ class BackupActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "*/*"
-
         startActivityForResult(intent, REQUEST_CODE_RESTORE)
     }
 
@@ -173,7 +172,7 @@ class BackupActivity : AppCompatActivity() {
 
 
         val fileExtension = MimeTypeMap.getFileExtensionFromUrl(fileUri.toString())
-        if (fileExtension != null && fileExtension.equals("db", ignoreCase = true)) {
+        if (fileExtension != null && fileExtension.equals("bak", ignoreCase = true)) {
 
             val mimeType = contentResolver.getType(fileUri)
             if (mimeType != null && mimeType == "application/octet-stream") {
