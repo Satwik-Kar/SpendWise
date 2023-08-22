@@ -17,8 +17,11 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.Toast
+
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -84,6 +87,11 @@ class HomeActivity : AppCompatActivity() {
         val secondElementHome = layoutInflater.inflate(R.layout.list_of_expenses, null)
         val thirdCreditsView = layoutInflater.inflate(R.layout.add_credit_bills, null)
 
+        val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.logo = AppCompatResources.getDrawable(this, R.mipmap.ic_launcher_round)
+        toolbar.setTitleTextColor(Color.WHITE)
+
         val firstElementCardView =
             firstElementHome.findViewById<MaterialCardView>(R.id.firstElementCardView)
         val uri = getSharedPreferences("credentials", MODE_PRIVATE).getString("photo_url", null)
@@ -92,7 +100,7 @@ class HomeActivity : AppCompatActivity() {
             val requestOptions: RequestOptions = RequestOptions.circleCropTransform()
 
             Glide.with(this).load(uri.toUri()).apply(requestOptions)
-                .into(firstElementHome.findViewById(R.id.accountPicture))
+                .into(findViewById(R.id.accountPicture))
 
         } else {
             Log.e("account-photo", "onCreate: photo_url is null")
@@ -243,7 +251,7 @@ class HomeActivity : AppCompatActivity() {
             recyclerViewListCredits.adapter = adapter
             recyclerViewListCredits.layoutManager = LinearLayoutManager(this)
         }
-        val accountPicture = firstElementHome.findViewById<ImageView>(R.id.accountPicture)
+        val accountPicture = this.findViewById<ImageView>(R.id.accountPicture)
         val view = layoutInflater.inflate(R.layout.home_alert_profile_view, null)
         val alertDialog = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
         accountPicture.setOnClickListener {

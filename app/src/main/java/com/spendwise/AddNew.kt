@@ -7,6 +7,7 @@ import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -18,6 +19,7 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import java.io.ByteArrayOutputStream
@@ -68,6 +70,14 @@ class AddNew : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new)
+        val toolbar = findViewById<Toolbar>(R.id.addNewToolbar)
+        setSupportActionBar(toolbar)
+        toolbar.subtitle = "Add a Expense"
+        toolbar.setSubtitleTextColor(Color.WHITE)
+        toolbar.setTitleTextColor(Color.WHITE)
+        
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         val type = intent.type
         val view = layoutInflater.inflate(R.layout.detailsview, null)
         val addNewLinearLayout = findViewById<LinearLayout>(R.id.expenseDetails)

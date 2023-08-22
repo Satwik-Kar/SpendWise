@@ -172,7 +172,7 @@ class BackupActivity : AppCompatActivity() {
 
 
         val fileExtension = MimeTypeMap.getFileExtensionFromUrl(fileUri.toString())
-        if (fileExtension != null && fileExtension.equals("bak", ignoreCase = true)) {
+        if (fileExtension != null && fileExtension.equals("db", ignoreCase = true)) {
 
             val mimeType = contentResolver.getType(fileUri)
             if (mimeType != null && mimeType == "application/octet-stream") {
