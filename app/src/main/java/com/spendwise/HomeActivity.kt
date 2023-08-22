@@ -88,10 +88,11 @@ class HomeActivity : AppCompatActivity() {
         val thirdCreditsView = layoutInflater.inflate(R.layout.add_credit_bills, null)
 
         val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
         toolbar.logo = AppCompatResources.getDrawable(this, R.mipmap.ic_launcher_round)
         toolbar.setTitleTextColor(Color.WHITE)
-
+        toolbar.setSubtitleTextColor(Color.WHITE)
+        toolbar.subtitle = "Home"
+        setSupportActionBar(toolbar)
         val firstElementCardView =
             firstElementHome.findViewById<MaterialCardView>(R.id.firstElementCardView)
         val uri = getSharedPreferences("credentials", MODE_PRIVATE).getString("photo_url", null)

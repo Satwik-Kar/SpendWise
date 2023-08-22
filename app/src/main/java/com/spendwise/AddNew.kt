@@ -71,13 +71,14 @@ class AddNew : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new)
         val toolbar = findViewById<Toolbar>(R.id.addNewToolbar)
-        setSupportActionBar(toolbar)
+
         toolbar.subtitle = "Add a Expense"
         toolbar.setSubtitleTextColor(Color.WHITE)
         toolbar.setTitleTextColor(Color.WHITE)
-        
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_ios_24)
         val type = intent.type
         val view = layoutInflater.inflate(R.layout.detailsview, null)
         val addNewLinearLayout = findViewById<LinearLayout>(R.id.expenseDetails)

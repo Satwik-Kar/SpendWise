@@ -21,13 +21,16 @@
         tools:targetApi="34">
         <activity
             android:name=".BackupActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Settings" />
         <activity
             android:name=".OpenCredit"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".Settings"
             android:exported="false"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait" />
 
         <provider
@@ -43,10 +46,12 @@
         <activity
             android:name=".OpenExpense"
             android:exported="false"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".AddNew"
             android:exported="true"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity"
@@ -55,6 +60,7 @@
         <activity
             android:name=".AddNewCredit"
             android:exported="true"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
