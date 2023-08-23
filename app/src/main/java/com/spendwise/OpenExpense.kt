@@ -11,6 +11,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -49,8 +51,7 @@ class OpenExpense : AppCompatActivity() {
     private lateinit var nextBtn: Button
     private lateinit var prevBtn: Button
     private lateinit var fullScrBtn: FloatingActionButton
-    private lateinit var delete: FloatingActionButton
-    private lateinit var edit: FloatingActionButton
+
     private lateinit var linearLayout: LinearLayout
     private lateinit var secondViewElementImage: View
     private val COLUMN_BLOB_TYPE = "BlobDataType"
@@ -83,7 +84,6 @@ class OpenExpense : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_ios_24)
-        delete = findViewById(R.id.floatingActionButtonDelete)
 
         title = intent.getStringExtra("title").toString()
         id = intent.getStringExtra("id").toString()
@@ -101,101 +101,12 @@ class OpenExpense : AppCompatActivity() {
         firstViewElement.findViewById<TextView>(R.id.openExpense_p_method).text = pMethod
         firstViewElement.findViewById<TextView>(R.id.openExpense_Desc).text = desc
         firstViewElement.findViewById<TextView>(R.id.openExpense_amount).text = amount
-        edit = findViewById(R.id.floatingActionButtonEdit)
         imageViewViewer = secondViewElementImage.findViewById(R.id.imageViewViewer)
         nextBtn = secondViewElementImage.findViewById(R.id.nextBtn)
         prevBtn = secondViewElementImage.findViewById(R.id.previousBtn)
         fullScrBtn = secondViewElementImage.findViewById(R.id.fullScreen)
         linearLayout.addView(firstViewElement)
-        delete.setOnClickListener {
-            val alert = AlertDialog.Builder(this@OpenExpense)
-            alert.setPositiveButton("Delete") { _, _ ->
-                val email =
-                    getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-                val database = DatabaseHelper(this, email)
-                try {
 
-                    database.deleteExpenseDataById(id)
-                    if (hasFile == true.toString()) {
-                        try {
-                            pdfFile.delete()
-                        } catch (e: Exception) {
-                            Log.e("delete", "onCreate: ${e.message}")
-                        }
-                        try {
-                            imageFile.delete()
-                        } catch (e: Exception) {
-                            Log.e("delete", "onCreate: ${e.message}")
-
-                        }
-
-                    }
-                    val intent = Intent(this@OpenExpense, HomeActivity::class.java)
-                    startActivity(intent)
-                    finishAffinity()
-                    Toast.makeText(this@OpenExpense, "Deleted", Toast.LENGTH_LONG).show()
-
-                } catch (e: Exception) {
-                    Log.e("delete", "onCreate: cannot delete data" + e.message)
-                }
-
-
-            }
-            alert.setNegativeButton("No") { _, _ ->
-
-                Toast.makeText(this@OpenExpense, "Delete Cancelled", Toast.LENGTH_LONG).show()
-            }
-            alert.setMessage("Are you sure to delete this expense?")
-            alert.setTitle("Delete?")
-            alert.show()
-
-        }
-        edit.setOnClickListener {
-
-            val alert = AlertDialog.Builder(this@OpenExpense)
-            alert.setTitle("Edit")
-            alert.setMessage("Edit the details and click OK to save.")
-            val view = layoutInflater.inflate(R.layout.edit_view, null)
-            alert.setView(view)
-            val titleInner = view.findViewById<TextInputEditText>(R.id.expenseEditTitle)
-            val amountInner = view.findViewById<TextInputEditText>(R.id.expenseEditAmount)
-            val descInner = view.findViewById<TextInputEditText>(R.id.expenseEditDesc)
-            titleInner.setText(title)
-            amountInner.setText(amount)
-            descInner.setText(desc)
-            alert.setPositiveButton("Ok") { _, _ ->
-
-                if (titleInner.text!!.isNotEmpty() && amountInner.text!!.isNotEmpty() && descInner.text!!.isNotEmpty()) {
-                    val email =
-                        getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
-                    val database = DatabaseHelper(this@OpenExpense, email)
-                    database.updateData(
-                        id,
-                        titleInner.text.toString(),
-                        amountInner.text.toString(),
-                        descInner.text.toString()
-                    )
-                    startActivity(Intent(this@OpenExpense, HomeActivity::class.java))
-                    finishAffinity()
-                    Toast.makeText(this@OpenExpense, "Edited Successfully", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-
-                    Toast.makeText(
-                        this@OpenExpense, "Fill up the required fields.", Toast.LENGTH_SHORT
-                    ).show()
-
-                }
-
-
-            }
-            alert.setNegativeButton("Cancel") { _, _ ->
-                Toast.makeText(this@OpenExpense, "Cancelled", Toast.LENGTH_SHORT).show()
-
-            }
-            alert.show()
-
-        }
         val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
         val database = DatabaseHelper(applicationContext, email)
         val cursor = database.retrieveExpenseDataById(id)
@@ -284,6 +195,104 @@ class OpenExpense : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.expense_details_menu_items, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val idItem = item.itemId
+        if (idItem == R.id.action_delete) {
+            val alert = AlertDialog.Builder(this@OpenExpense)
+            alert.setPositiveButton("Delete") { _, _ ->
+                val email =
+                    getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
+                val database = DatabaseHelper(this, email)
+                try {
+
+                    database.deleteExpenseDataById(id)
+                    if (hasFile == true.toString()) {
+                        try {
+                            pdfFile.delete()
+                        } catch (e: Exception) {
+                            Log.e("delete", "onCreate: ${e.message}")
+                        }
+                        try {
+                            imageFile.delete()
+                        } catch (e: Exception) {
+                            Log.e("delete", "onCreate: ${e.message}")
+
+                        }
+
+                    }
+                    val intent = Intent(this@OpenExpense, HomeActivity::class.java)
+                    startActivity(intent)
+                    finishAffinity()
+                    Toast.makeText(this@OpenExpense, "Deleted", Toast.LENGTH_LONG).show()
+
+                } catch (e: Exception) {
+                    Log.e("delete", "onCreate: cannot delete data" + e.message)
+                }
+
+
+            }
+            alert.setNegativeButton("No") { _, _ ->
+
+                Toast.makeText(this@OpenExpense, "Delete Cancelled", Toast.LENGTH_LONG).show()
+            }
+            alert.setMessage("Are you sure to delete this expense?")
+            alert.setTitle("Delete?")
+            alert.show()
+            return true
+        } else if (idItem == R.id.action_edit) {
+            val alert = AlertDialog.Builder(this@OpenExpense)
+            alert.setTitle("Edit")
+            alert.setMessage("Edit the details and click OK to save.")
+            val view = layoutInflater.inflate(R.layout.edit_view, null)
+            alert.setView(view)
+            val titleInner = view.findViewById<TextInputEditText>(R.id.expenseEditTitle)
+            val amountInner = view.findViewById<TextInputEditText>(R.id.expenseEditAmount)
+            val descInner = view.findViewById<TextInputEditText>(R.id.expenseEditDesc)
+            titleInner.setText(title)
+            amountInner.setText(amount)
+            descInner.setText(desc)
+            alert.setPositiveButton("Ok") { _, _ ->
+
+                if (titleInner.text!!.isNotEmpty() && amountInner.text!!.isNotEmpty() && descInner.text!!.isNotEmpty()) {
+                    val email =
+                        getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
+                    val database = DatabaseHelper(this@OpenExpense, email)
+                    database.updateData(
+                        id,
+                        titleInner.text.toString(),
+                        amountInner.text.toString(),
+                        descInner.text.toString()
+                    )
+                    startActivity(Intent(this@OpenExpense, HomeActivity::class.java))
+                    finishAffinity()
+                    Toast.makeText(this@OpenExpense, "Edited Successfully", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+
+                    Toast.makeText(
+                        this@OpenExpense, "Fill up the required fields.", Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+
+
+            }
+            alert.setNegativeButton("Cancel") { _, _ ->
+                Toast.makeText(this@OpenExpense, "Cancelled", Toast.LENGTH_SHORT).show()
+
+            }
+            alert.show()
+
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 
