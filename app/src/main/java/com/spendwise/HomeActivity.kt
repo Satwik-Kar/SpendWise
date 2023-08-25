@@ -17,10 +17,8 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.Toast
-
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
@@ -88,9 +86,8 @@ class HomeActivity : AppCompatActivity() {
         val thirdCreditsView = layoutInflater.inflate(R.layout.add_credit_bills, null)
 
         val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
-        toolbar.logo = AppCompatResources.getDrawable(this, R.mipmap.ic_launcher_round)
-        toolbar.setTitleTextColor(Color.WHITE)
-        toolbar.setSubtitleTextColor(Color.WHITE)
+        toolbar.setTitleTextColor(Color.BLACK)
+        toolbar.setSubtitleTextColor(Color.BLACK)
         toolbar.subtitle = "Home"
         setSupportActionBar(toolbar)
         val firstElementCardView =
