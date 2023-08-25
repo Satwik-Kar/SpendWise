@@ -1,6 +1,7 @@
 package com.spendwise
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
@@ -84,7 +85,7 @@ class AddNewCredit : AppCompatActivity() {
         addCreditBtn.setOnClickListener {
 
             if (creditTitle.text!!.isNotEmpty() && creditDateTaken.text.isNotEmpty()
-                && creditAmount.text!!.isNotEmpty() && creditDueDate.text.isNotEmpty()
+                && creditAmount.text!!.isNotEmpty() && creditDueDate.text.isNotEmpty() && creditDescription.text!!.isEmpty()
             ) {
 
                 val email =
@@ -102,8 +103,10 @@ class AddNewCredit : AppCompatActivity() {
                     creditDueDate.text.toString()
                 )
                 Toast.makeText(
-                    this@AddNewCredit, "added", Toast.LENGTH_SHORT
+                    this@AddNewCredit, "Credit added", Toast.LENGTH_SHORT
                 ).show()
+                startActivity(Intent(this@AddNewCredit, HomeActivity::class.java))
+                finishAffinity()
             } else if (creditTitle.text!!.isNotEmpty() && creditDateTaken.text.isNotEmpty()
                 && creditAmount.text!!.isNotEmpty() && creditDueDate.text.isNotEmpty() && creditDescription.text!!.isNotEmpty()
             ) {
@@ -123,7 +126,11 @@ class AddNewCredit : AppCompatActivity() {
                     creditDueDate.text.toString(),
                     creditDescription.text.toString()
                 )
-
+                Toast.makeText(
+                    this@AddNewCredit, "Credit added", Toast.LENGTH_SHORT
+                ).show()
+                startActivity(Intent(this@AddNewCredit, HomeActivity::class.java))
+                finishAffinity()
             } else {
                 Toast.makeText(
                     this@AddNewCredit,

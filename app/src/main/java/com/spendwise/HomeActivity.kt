@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -57,6 +56,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var creditIds: ArrayList<String>
     private lateinit var creditAmounts: ArrayList<String>
     private lateinit var creditSigns: ArrayList<String>
+    private lateinit var creditROIS: ArrayList<String>
 
 
     lateinit var addNewBtn: FloatingActionButton
@@ -74,6 +74,7 @@ class HomeActivity : AppCompatActivity() {
     private val COLUMN_FILE_PATH = "FilePath"
     private val COLUMN_DESCRIPTION = "description"
     private val COLUMN_DUE_DATE = "due_date"
+    private val COLUMN_RATE_OF_INTEREST = "rate_of_interest"
 
     private var lineColor = Color.TRANSPARENT
 
@@ -163,6 +164,7 @@ class HomeActivity : AppCompatActivity() {
         creditIds = ArrayList()
         creditTitles = ArrayList()
         creditAmounts = ArrayList()
+        creditROIS = ArrayList()
         val email = getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
         try {
             val database = DatabaseHelper(this, email)
@@ -205,6 +207,8 @@ class HomeActivity : AppCompatActivity() {
                     val credit_amount = it.getString(it.getColumnIndex(COLUMN_AMOUNT))
                     val credit_description = it.getString(it.getColumnIndex(COLUMN_DESCRIPTION))
                     val credit_sign = it.getString(it.getColumnIndex(COLUMN_AMOUNT_SIGN))
+                    val rateOfInterest = it.getString(it.getColumnIndex(COLUMN_RATE_OF_INTEREST))
+
                     creditIds.add(credit_id)
                     creditTitles.add(credit_title)
                     creditDates.add(credit_date)
@@ -212,6 +216,8 @@ class HomeActivity : AppCompatActivity() {
                     creditAmounts.add(credit_amount)
                     creditDescriptions.add(credit_description)
                     creditSigns.add(credit_sign)
+                    creditROIS.add(rateOfInterest)
+
 
                 }
             }
@@ -221,12 +227,12 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
-        val dividerItemDecorationExpenses =
-            DividerItemDecoration(recyclerViewListExpenses.context, LinearLayoutManager.VERTICAL)
-        val dividerItemDecorationCredits =
-            DividerItemDecoration(recyclerViewListCredits.context, LinearLayoutManager.VERTICAL)
-        recyclerViewListExpenses.addItemDecoration(dividerItemDecorationExpenses)
-        recyclerViewListCredits.addItemDecoration(dividerItemDecorationCredits)
+//        val dividerItemDecorationExpenses =
+//            DividerItemDecoration(recyclerViewListExpenses.context, LinearLayoutManager.VERTICAL)
+//        val dividerItemDecorationCredits =
+//            DividerItemDecoration(recyclerViewListCredits.context, LinearLayoutManager.VERTICAL)
+//        recyclerViewListExpenses.addItemDecoration(dividerItemDecorationExpenses)
+//        recyclerViewListCredits.addItemDecoration(dividerItemDecorationCredits)
 
         if (titles.isNotEmpty()) {
             val adapter =
@@ -244,7 +250,8 @@ class HomeActivity : AppCompatActivity() {
                 creditDueDates,
                 creditDescriptions,
                 creditAmounts,
-                creditSigns
+                creditSigns,
+                creditROIS
             )
             recyclerViewListCredits.adapter = adapter
             recyclerViewListCredits.layoutManager = LinearLayoutManager(this)
@@ -562,7 +569,8 @@ class HomeActivity : AppCompatActivity() {
         var creditDueDate: ArrayList<String>,
         var creditDescriptions: ArrayList<String>,
         var creditAmounts: ArrayList<String>,
-        var creditSigns: ArrayList<String>
+        var creditSigns: ArrayList<String>,
+        var creditRateOfInterest: ArrayList<String>
     ) : RecyclerView.Adapter<ViewHolderCredit>() {
 
         override fun onBindViewHolder(holder: ViewHolderCredit, position: Int) {
@@ -583,6 +591,7 @@ class HomeActivity : AppCompatActivity() {
                 intent.putExtra("due_date", creditDueDate[position])
                 intent.putExtra("desc", creditDescriptions[position])
                 intent.putExtra("amount", creditAmounts[position])
+                intent.putExtra("roi", creditRateOfInterest[position])
 
                 startActivity(intent)
 
