@@ -35,8 +35,8 @@ class AddNewCredit : AppCompatActivity() {
         setContentView(R.layout.add_credit_edit_view)
         val toolbar = this.findViewById<Toolbar>(R.id.addNewCreditToolbar)
         toolbar.subtitle = "Add a credit"
-        toolbar.setSubtitleTextColor(Color.WHITE)
-        toolbar.setTitleTextColor(Color.WHITE)
+        toolbar.setSubtitleTextColor(Color.BLACK)
+        toolbar.setTitleTextColor(Color.BLACK)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)

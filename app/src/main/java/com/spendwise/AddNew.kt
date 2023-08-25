@@ -73,8 +73,8 @@ class AddNew : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.addNewToolbar)
 
         toolbar.subtitle = "Add a Expense"
-        toolbar.setSubtitleTextColor(Color.WHITE)
-        toolbar.setTitleTextColor(Color.WHITE)
+        toolbar.setSubtitleTextColor(Color.BLACK)
+        toolbar.setTitleTextColor(Color.BLACK)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)

@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context=".AddNewCredit">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/addNewCreditToolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:background="@color/app_theme"
+        android:background="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -233,7 +231,9 @@
         android:layout_width="363dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:background="@color/app_theme_transparent"
         android:text="Add credit"
+        android:textColor="#000000"
         app:cornerRadius="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

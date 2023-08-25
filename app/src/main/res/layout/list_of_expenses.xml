@@ -11,14 +11,14 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@color/app_theme_transparent"
         app:cardCornerRadius="18sp"
         app:contentPadding="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/app_theme"
-        app:strokeWidth="2sp">
+        app:strokeWidth="0sp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_list_expenses"

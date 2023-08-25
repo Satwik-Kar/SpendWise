@@ -11,8 +11,8 @@ class OpenCredit : AppCompatActivity() {
         setContentView(R.layout.activity_open_credit)
         val toolbar = this.findViewById<Toolbar>(R.id.openCreditToolbar)
         toolbar.subtitle = "Credit Details"
-        toolbar.setSubtitleTextColor(Color.WHITE)
-        toolbar.setTitleTextColor(Color.WHITE)
+        toolbar.setSubtitleTextColor(Color.BLACK)
+        toolbar.setTitleTextColor(Color.BLACK)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)

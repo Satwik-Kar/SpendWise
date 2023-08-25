@@ -78,8 +78,8 @@ class OpenExpense : AppCompatActivity() {
         setContentView(R.layout.activity_open_expense)
         val toolbar = this.findViewById<Toolbar>(R.id.openExpenseToolbar)
         toolbar.subtitle = "Expense Details"
-        toolbar.setSubtitleTextColor(Color.WHITE)
-        toolbar.setTitleTextColor(Color.WHITE)
+        toolbar.setSubtitleTextColor(Color.BLACK)
+        toolbar.setTitleTextColor(Color.BLACK)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)

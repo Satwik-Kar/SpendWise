@@ -33,7 +33,7 @@ class Settings : AppCompatActivity() {
         val toolbar = this.findViewById<Toolbar>(R.id.settingsToolbar)
         toolbar.title = "Settings"
 
-        toolbar.setTitleTextColor(Color.WHITE)
+        toolbar.setTitleTextColor(Color.BLACK)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)

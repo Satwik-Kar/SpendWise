@@ -12,7 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text=""
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,16 +25,16 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="#FFFFFF"
+        android:layout_marginBottom="16dp"
 
+        app:cardBackgroundColor="@color/app_theme_transparent"
         app:cardCornerRadius="18sp"
         app:contentPadding="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeWelcomeName"
-        app:strokeColor="@color/app_theme"
-        app:strokeWidth="2dp">
+        app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/barConstrain"
