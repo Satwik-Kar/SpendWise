@@ -536,6 +536,7 @@ class HomeActivity : AppCompatActivity() {
                 intent.putExtra("p_method", p_methods[position])
                 intent.putExtra("desc", descriptions[position])
                 intent.putExtra("amount", amounts[position])
+                intent.putExtra("sign", signs[position])
 
                 startActivity(intent)
 

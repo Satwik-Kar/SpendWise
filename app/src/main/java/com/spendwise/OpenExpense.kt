@@ -45,6 +45,7 @@ class OpenExpense : AppCompatActivity() {
     lateinit var pMethod: String
     lateinit var desc: String
     lateinit var amount: String
+    lateinit var sign: String
     private lateinit var receipt: ByteArray
     private lateinit var receiptType: String
     private lateinit var imageViewViewer: ImageView
@@ -92,6 +93,7 @@ class OpenExpense : AppCompatActivity() {
         pMethod = intent.getStringExtra("p_method").toString()
         desc = intent.getStringExtra("desc").toString()
         amount = intent.getStringExtra("amount").toString()
+        sign = intent.getStringExtra("sign").toString()
         val firstViewElement = layoutInflater.inflate(R.layout.open_expense_first_element, null)
         secondViewElementImage = layoutInflater.inflate(R.layout.image_viewer, null)
         linearLayout = this.findViewById(R.id.openExpenseLinearLayout)
@@ -100,7 +102,7 @@ class OpenExpense : AppCompatActivity() {
         firstViewElement.findViewById<TextView>(R.id.openExpense_category).text = category
         firstViewElement.findViewById<TextView>(R.id.openExpense_p_method).text = pMethod
         firstViewElement.findViewById<TextView>(R.id.openExpense_Desc).text = desc
-        firstViewElement.findViewById<TextView>(R.id.openExpense_amount).text = amount
+        firstViewElement.findViewById<TextView>(R.id.openExpense_amount).text = "$sign $amount"
         imageViewViewer = secondViewElementImage.findViewById(R.id.imageViewViewer)
         nextBtn = secondViewElementImage.findViewById(R.id.nextBtn)
         prevBtn = secondViewElementImage.findViewById(R.id.previousBtn)
