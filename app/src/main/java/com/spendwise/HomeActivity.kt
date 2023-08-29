@@ -238,7 +238,10 @@ class HomeActivity : AppCompatActivity() {
             val adapter =
                 ListAdapter(titles, dates, categories, pMethods, descriptions, amounts, signs)
             recyclerViewListExpenses.adapter = adapter
-            recyclerViewListExpenses.layoutManager = LinearLayoutManager(this)
+            val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
+            linearLayoutManager.stackFromEnd = true
+            recyclerViewListExpenses.layoutManager = linearLayoutManager
+
 
         } else {
             secondElementHome.findViewById<TextView>(R.id.noitemtext).visibility = View.VISIBLE
@@ -254,7 +257,10 @@ class HomeActivity : AppCompatActivity() {
                 creditROIS
             )
             recyclerViewListCredits.adapter = adapter
-            recyclerViewListCredits.layoutManager = LinearLayoutManager(this)
+            val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
+            linearLayoutManager.stackFromEnd = true
+            recyclerViewListCredits.layoutManager =
+                linearLayoutManager
         }
         val accountPicture = this.findViewById<ImageView>(R.id.accountPicture)
         val view = layoutInflater.inflate(R.layout.home_alert_profile_view, null)

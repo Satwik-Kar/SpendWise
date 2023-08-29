@@ -266,7 +266,7 @@ class OpenExpense : AppCompatActivity() {
                     val email =
                         getSharedPreferences("credentials", MODE_PRIVATE).getString("email", null)!!
                     val database = DatabaseHelper(this@OpenExpense, email)
-                    database.updateData(
+                    database.updateExpenseData(
                         id,
                         titleInner.text.toString(),
                         amountInner.text.toString(),

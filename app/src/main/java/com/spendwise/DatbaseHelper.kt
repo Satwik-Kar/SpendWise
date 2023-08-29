@@ -205,6 +205,13 @@ class DatabaseHelper(context: Context, userMail: String) :
         return db.query(DATABASE_TABLE_EXPENSE, null, selection, selectionArgs, null, null, null)
     }
 
+    fun retrieveCreditDataById(id: String): Cursor? {
+        val db = readableDatabase
+        val selection = "_id = ?"
+        val selectionArgs = arrayOf(id)
+        return db.query(DATABASE_TABLE_CREDIT, null, selection, selectionArgs, null, null, null)
+    }
+
     fun deleteExpenseDataById(id: String) {
         val db = writableDatabase
         val deleteQuery = "DELETE FROM $DATABASE_TABLE_EXPENSE WHERE _id = $id"
@@ -212,7 +219,14 @@ class DatabaseHelper(context: Context, userMail: String) :
         db.close()
     }
 
-    fun updateData(
+    fun deleteCreditDataById(id: String) {
+        val db = writableDatabase
+        val deleteQuery = "DELETE FROM $DATABASE_TABLE_CREDIT WHERE _id = $id"
+        db.execSQL(deleteQuery)
+        db.close()
+    }
+
+    fun updateExpenseData(
         id: String,
         title: String,
         amount: String,

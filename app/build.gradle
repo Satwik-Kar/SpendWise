@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.spendwise"
-        minSdk 24 //android7
+        minSdk 26 //android8
         targetSdk 34
         versionCode 1
         versionName "1.0"
