@@ -1,5 +1,7 @@
 # SpendWise
-To create an expense recorder app for Android, you'll need to gather and store various types of data to effectively track and manage expenses. Here are some essential data points to consider:
+
+To create an expense recorder app for Android, you'll need to gather and store various types of data
+to effectively track and manage expenses. Here are some essential data points to consider:
 
 Expense Details:
 
@@ -27,12 +29,24 @@ Budgeting: Ability to set budgets and compare them against actual expenses.
 Currency: Support for multiple currencies if users travel internationally.
 Cloud Sync and Backup (optional):
 
-Cloud Storage: Integration with cloud services (e.g., Google Drive, Dropbox) to sync data across devices and provide backup.
+Cloud Storage: Integration with cloud services (e.g., Google Drive, Dropbox) to sync data across
+devices and provide backup.
 Data Encryption: Security measures to encrypt sensitive user data when stored in the cloud.
 Settings and Preferences:
 
 Currency Format: Allow users to choose their preferred currency format.
 Language: Support for multiple languages.
-Notification Preferences: Allow users to customize notifications for reminders or overspending alerts.
+Notification Preferences: Allow users to customize notifications for reminders or overspending
+alerts.
 Data Export: Enable users to export their expense data in various formats (e.g., CSV, PDF).
-Remember to follow best practices for data security, including encryption, secure API communication, and adherence to relevant data protection regulations, such as GDPR (General Data Protection Regulation) if applicable to your target audience.
+
+--each day user will know the balance by the notification. (how much income as well as expenditure)
+--each month user will know the balance by the notification. (how much income as well as
+expenditure)
+--each year user will know the balance by the notification. (how much income as well as expenditure)
+-- estimate the travel expense
+-- choose hotels accor to the budget
+
+Remember to follow best practices for data security, including encryption, secure API communication,
+and adherence to relevant data protection regulations, such as GDPR (General Data Protection
+Regulation) if applicable to your target audience.
