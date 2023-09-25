@@ -46,6 +46,7 @@ expenditure)
 --each year user will know the balance by the notification. (how much income as well as expenditure)
 -- estimate the travel expense
 -- choose hotels accor to the budget
+-- travel mode(emergency hospital nearest fetch)
 
 Remember to follow best practices for data security, including encryption, secure API communication,
 and adherence to relevant data protection regulations, such as GDPR (General Data Protection
