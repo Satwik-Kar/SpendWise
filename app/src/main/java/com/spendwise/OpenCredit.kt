@@ -16,6 +16,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 
 class OpenCredit : AppCompatActivity() {
 
@@ -56,7 +57,8 @@ class OpenCredit : AppCompatActivity() {
 //        this.findViewById<TextView>(R.id.openCredit_category).text = pMethod
         this.findViewById<TextView>(R.id.openCredit_Desc).text = desc
         this.findViewById<TextView>(R.id.openCredit_amount).text = "Credit Amount • $sign $amount"
-        val tenure = findTenure(pickDate(date.toString()), pickDate(due_date.toString()))
+        val tenure =
+            findTenure(pickDate(date.toString(), true), pickDate(due_date.toString(), false))
         val total =
             calculateTotalAfterInterest(amount.toDouble(), roi.toDouble(), tenure.toDouble())
         this.findViewById<TextView>(R.id.tenure).text = "Tenure • $tenure Month(s)"
@@ -80,11 +82,19 @@ class OpenCredit : AppCompatActivity() {
 
     }
 
-    fun pickDate(dateTime: String): LocalDate {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm:ss")
-        val date = LocalDateTime.parse(dateTime, formatter)
-        val fDate = date.toLocalDate()
-        return fDate
+    fun pickDate(dateString: String, hasTime: Boolean): LocalDate {
+        val formatter: DateTimeFormatter = if (hasTime) {
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+        } else {
+            DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+        }
+
+        return if (hasTime) {
+            val dateTime = LocalDateTime.parse(dateString, formatter)
+            dateTime.toLocalDate()
+        } else {
+            LocalDate.parse(dateString, formatter)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

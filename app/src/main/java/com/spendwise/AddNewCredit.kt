@@ -143,7 +143,7 @@ class AddNewCredit : AppCompatActivity() {
         }
     }
 
-    private fun formatDate(
+    private fun formatDateTime(
         year: Int,
         month: Int,
         day: Int,
@@ -153,7 +153,20 @@ class AddNewCredit : AppCompatActivity() {
     ): String {
         val formattedMonth = if (month + 1 < 10) "0${month + 1}" else "${month + 1}"
         val formattedDay = if (day < 10) "0$day" else "$day"
-        return "$formattedDay/$formattedMonth/$year  $hrs:$mins:$secs"
+        val formattedHrs = if (hrs < 10) "0$hrs" else "$hrs"
+        val formattedMins = if (mins < 10) "0$mins" else "$mins"
+        val formattedSecs = if (secs < 10) "0$secs" else "$secs"
+        return "$formattedDay/$formattedMonth/$year  $formattedHrs:$formattedMins:$formattedSecs"
+    }
+
+    private fun formatDate(
+        year: Int,
+        month: Int,
+        day: Int
+    ): String {
+        val formattedMonth = if (month + 1 < 10) "0${month + 1}" else "${month + 1}"
+        val formattedDay = if (day < 10) "0$day" else "$day"
+        return "$formattedDay/$formattedMonth/$year"
     }
 
     private fun showDatePickerDialog(which: String) {
@@ -166,11 +179,15 @@ class AddNewCredit : AppCompatActivity() {
 
         val datePickerDialog = DatePickerDialog(
             this, { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
-                val selectedDate =
-                    formatDate(selectedYear, selectedMonth, selectedDay, hrs, mins, secs)
+
+
                 if (which == "date") {
+                    val selectedDate =
+                        formatDateTime(selectedYear, selectedMonth, selectedDay, hrs, mins, secs)
                     creditDateTaken.setText(selectedDate)
                 } else if (which == "due_date") {
+                    val selectedDate =
+                        formatDate(selectedYear, selectedMonth, selectedDay)
                     creditDueDate.setText(selectedDate)
                 }
 
