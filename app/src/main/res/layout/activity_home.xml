@@ -27,6 +27,16 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteY="76dp" />
+
+
+        <ImageView
+            android:id="@+id/menu_travel"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            app:srcCompat="@drawable/travel"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="32dp" />
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
