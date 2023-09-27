@@ -20,6 +20,9 @@
         android:theme="@style/Theme.SpendWise"
         tools:targetApi="34">
         <activity
+            android:name=".TravelActivity"
+            android:exported="false" />
+        <activity
             android:name=".BackupActivity"
             android:exported="false"
             android:parentActivityName=".Settings" />
