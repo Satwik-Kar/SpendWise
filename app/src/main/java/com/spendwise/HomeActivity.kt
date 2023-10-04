@@ -262,7 +262,7 @@ class HomeActivity : AppCompatActivity() {
             recyclerViewListCredits.layoutManager =
                 linearLayoutManager
         }
-        val travelMenu=this.findViewById<ImageView>(R.id.menu_travel);
+        val travelMenu = this.findViewById<ImageView>(R.id.menu_travel)
         val accountPicture = this.findViewById<ImageView>(R.id.accountPicture)
         val view = layoutInflater.inflate(R.layout.home_alert_profile_view, null)
         val alertDialog = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
@@ -413,8 +413,10 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        travelMenu.setOnClickListener{
+        travelMenu.setOnClickListener {
 
+
+            startActivity(Intent(this@HomeActivity, TravelActivity::class.java))
         }
 
         addNewBtn = this.findViewById(R.id.addNew)
