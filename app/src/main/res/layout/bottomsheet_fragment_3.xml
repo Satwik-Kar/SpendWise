@@ -209,7 +209,7 @@
         android:id="@+id/button8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="148dp"
+        android:layout_marginBottom="288dp"
         android:text="Done"
         android:textColor="#F3ECEC"
         android:textSize="16sp"
