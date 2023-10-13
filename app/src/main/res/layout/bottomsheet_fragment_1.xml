@@ -25,7 +25,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
         android:drawableStart="@drawable/baseline_travel_person_add_alt_1_24"
-        android:text="Add Travelers"
+        android:text="Add Travelers • Default 1"
         android:textSize="20sp"
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toTopOf="@+id/textView23"
@@ -53,10 +53,9 @@
         app:cardCornerRadius="20dp"
         app:cardUseCompatPadding="true"
         app:contentPadding="10sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/textView23"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163">
+        app:layout_constraintTop_toTopOf="@+id/textView23">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:text="1"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageButton"
                 app:layout_constraintStart_toEndOf="@+id/button"
@@ -106,11 +106,10 @@
         android:id="@+id/textView25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
         android:layout_marginTop="60dp"
         android:text="Children"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView23"
         app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
     <androidx.cardview.widget.CardView
@@ -178,7 +177,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="56dp"
-        android:text="Choose Class"
+        android:text="Choose the Class"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -200,28 +199,30 @@
     <Button
         android:id="@+id/button5"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:text="First Class"
-        android:textAlignment="inherit"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         app:cornerRadius="5dp"
-        app:layout_constraintStart_toStartOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintBottom_toBottomOf="@+id/button7"
+        app:layout_constraintEnd_toEndOf="@+id/button2"
+        app:layout_constraintStart_toStartOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
         android:text="Premium Economy"
         android:textAlignment="inherit"
         android:textSize="14sp"
         android:textStyle="bold"
         app:cornerRadius="5dp"
-        app:layout_constraintStart_toStartOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintBottom_toBottomOf="@+id/button2"
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toTopOf="@+id/button2" />
 
     <Button
         android:id="@+id/button2"
@@ -241,14 +242,16 @@
         android:id="@+id/button7"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Business Class"
         android:textAlignment="inherit"
         android:textSize="14sp"
         android:textStyle="bold"
         app:cornerRadius="5dp"
-        app:layout_constraintStart_toStartOf="@+id/button5"
-        app:layout_constraintTop_toBottomOf="@+id/button5" />
+        app:layout_constraintEnd_toEndOf="@+id/button3"
+        app:layout_constraintStart_toEndOf="@+id/button5"
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
